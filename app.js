@@ -203,7 +203,7 @@ $('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CS
 let telemetry=[],selectedRace='';
 $('import-trigger').onclick=()=>$('import').click();
 function renderSectors(){
- $('sectors').innerHTML=PLANETS.map((planet,i)=>{const results=rows.filter(r=>r.planet===planet&&r.pilot==='Shade');const wins=results.filter(r=>r.position===1&&!isDQ(r)).length;return `<button class="sector sector-${i} ${$('planet').value===planet?'selected':''}" data-planet="${esc(planet)}" aria-pressed="${$('planet').value===planet}"><span class="sector-orb" aria-hidden="true"></span><span><small>SECTOR 0${i+1}</small><strong>${esc(planet)}</strong><em>${results.length} starts · ${wins} wins</em></span><span class="sector-arrow">↗</span></button>`;}).join('');
+ $('sectors').innerHTML=PLANETS.map((planet,i)=>{const results=rows.filter(r=>r.planet===planet&&r.pilot==='Shade');const wins=results.filter(r=>r.position===1&&!isDQ(r)).length;return `<button class="sector sector-${i} ${$('planet').value===planet?'selected':''}" data-planet="${esc(planet)}" aria-pressed="${$('planet').value===planet}"><span class="sector-orb" aria-hidden="true"></span><span><small>SECTOR 0${i+1}</small><strong>${esc(planet)}</strong><em>${results.length} starts · ${wins} wins</em></span></button>`;}).join('');
 }
 function renderTelemetry(data){
  const events=[...new Map(data.map(r=>[r.race_id,r])).values()].sort((a,b)=>a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id)).slice(-12);
