@@ -56,13 +56,13 @@ Shade’s supported vehicles are Land speeder, Speeder bike, Skim speeder, and P
 
 DQ covers elimination, crashing out, or not starting. It earns **zero points**. In Eliminator events, keep the displayed numeric position and set `status` to `DQ`: the popup preserves that order and shows a red badge such as **P6 · DQ**. Unranked DQs use `position=DQ` and appear below ranked racers. Older CSV files without a status column remain supported. If only Shade’s DQ is available, log only that row; unknown rival results and times are never invented.
 
-Average finish uses completed finishes only. Podium rate and DQ rate use all recorded starts. DQs are excluded from track records and time-gap calculations and appear in a separate telemetry lane. After a DQ-only event, that tour’s league movement reads **Incomplete results** until the missing results are supplied. Standings otherwise reflect recorded results only.
+Average finish uses completed finishes only. Podium rate and DQ rate use all recorded starts. DQs are excluded from track records and time-gap calculations and appear in a separate telemetry lane. After a DQ-only event, subsequent league movement reads **Incomplete results** until the missing results are supplied. Standings otherwise reflect recorded results only.
 
 ## Scoring and league movement
 
 The tracker currently uses its own simple score: **12 points for first, 11 for second, down to 1 for twelfth**. Places beyond twelfth and DQs earn zero. The same scale applies to smaller grids. This is the tracker’s scoring convention, rather than an assertion about the game’s points system.
 
-Ties use wins, average completed finish, then pilot name. League-change arrows compare standings immediately before and after each race **within its tour**. They use the full recorded history and remain stable when filtering or searching. The first recorded standing shows **Initial ranking**. Events are ordered by logged date, then race ID, so keep same-day IDs sequential.
+Ties use wins, average completed finish, then pilot name. League-change arrows compare standings immediately before and after each race **across all tours**. They use the full recorded history and remain stable when filtering or searching. Only a pilot’s first recorded standing shows **Initial ranking**; starting a new tour does not reset the league. Events are ordered by logged date, then race ID, so keep same-day IDs sequential.
 
 Track records compare results within the same planet, circuit, category, and subcategory; unidentified circuits are excluded. Time-gap telemetry compares a racer’s time with the fastest recorded finish in that event.
 
