@@ -104,7 +104,7 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .record-planet-heading button[aria-pressed="true"]{background:#eddfc7;border-color:var(--accent);color:var(--accent)}
 .archive{display:flex;flex-direction:column}.archive>.pagination{margin-top:auto}
 
-.record-config{position:relative;top:2px}
+.record-config{position:relative;top:3px}
 
 .panel-head .filter-summary,.race-modal-head .filter-summary{min-height:3.2em;line-height:1.6}
 
@@ -150,3 +150,11 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .metrics:not(.detail-metrics) article:nth-child(3),.metrics:not(.detail-metrics) article:nth-child(4){border-top-color:#b28e48}
 .metrics.detail-metrics article.category-least,.metrics.detail-metrics article.category-most,.metrics.detail-metrics article.vehicle-least,.metrics.detail-metrics article.vehicle-most{border-top-color:#7d9080}
 .metrics.detail-metrics article.dnf-total,.metrics.detail-metrics article.dnf-rate,.metrics.detail-metrics article.elimination-total,.metrics.detail-metrics article.elimination-rate{border-top-color:#b55c4d}
+
+.record-times{display:flex;align-items:flex-end;gap:10px;margin:12px 0 8px}.record .record-times strong{margin:3px 0 0;font-size:clamp(24px,2vw,30px);white-space:nowrap}.record-time-label{display:block;font-size:11px;line-height:1.4;color:var(--muted)}.record-time-dot{align-self:center;color:var(--muted);font-size:20px}.record-times .record-equal strong{color:#287344}.record-times .record-slower strong{color:#ab5548}.record-times .record-missing strong{color:var(--muted)}
+
+.record-times{align-items:flex-start}.record-times>div{display:flex;flex-direction:column;align-items:flex-start}.record .record-times>div:not(:first-child) strong{font-size:clamp(20px,1.6vw,24px);line-height:1.2;margin-top:3px}.record-time-dot{display:block;flex:0 0 3px;width:3px;height:3px;border-radius:50%;background:#92988c;font-size:0;align-self:flex-start;margin-top:calc(15.4px + 3px + 15px)}
+
+.record-times{gap:16px;flex-wrap:wrap}.record-time-dot{display:none}
+
+.record-times .record-equal strong{color:#52795d}.record-times .record-slower strong{color:#a66356}
