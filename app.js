@@ -103,6 +103,8 @@ function reserveDashboardSpace(){
   const height=node.getBoundingClientRect().height;
   node.style.minHeight=Math.max(parseFloat(node.style.minHeight)||0,height)+'px';
  }
+ if(window.innerWidth>1250){const standings=document.getElementById('standings'),telemetry=document.querySelector?.('.circuit');if(standings?.style&&telemetry){const height=telemetry.getBoundingClientRect().height;standings.style.minHeight=height+'px';standings.style.maxHeight=height+'px';}}
+
 }
 function render(){
  reserveDashboardSpace();
@@ -256,4 +258,4 @@ $('records').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e
 $('records').addEventListener('click',e=>{const heading=e.target.closest?.('[data-record-planet]');if(!heading)return;const planet=heading.dataset.recordPlanet;$('planet').value=$('planet').value===planet?'':planet;recordLaps=null;options();page=0;render();const replacement=[...$('records').querySelectorAll('[data-record-planet]')].find(n=>n.dataset.recordPlanet===planet);replacement?.focus();});
 
 let dashboardWidth=window.innerWidth;
-window.addEventListener?.('resize',()=>{if(window.innerWidth===dashboardWidth)return;dashboardWidth=window.innerWidth;for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail')||[])node.style.minHeight='';reserveDashboardSpace();});
+window.addEventListener?.('resize',()=>{if(window.innerWidth===dashboardWidth)return;dashboardWidth=window.innerWidth;for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail')||[]){node.style.minHeight='';if(node.id==='standings')node.style.maxHeight='';}reserveDashboardSpace();});
