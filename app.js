@@ -73,7 +73,13 @@ function options(){
  }
 }
 function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(!vehicle||races.has(r.race_id))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
+function renderFilterSummaries(){
+ const labels={tour:'Tour',planet:'Planet',track:'Track',vehicle:'Vehicle',category:'Category',subcategory:'Subcategory'};
+ const summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value)).join(' · ');
+ for(const section of ['standings','telemetry','records','archive']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
+}
 function render(){
+ renderFilterSummaries();
  const data=filtered(),groups=new Map();
  data.forEach(r=>{if(!groups.has(r.pilot))groups.set(r.pilot,newPilotStats(r.pilot));addResult(groups.get(r.pilot),r);});
  const leaders=[...groups.values()].sort(compareStandings);

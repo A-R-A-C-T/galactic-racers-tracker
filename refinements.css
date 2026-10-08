@@ -53,3 +53,5 @@ body:has(#race-dialog[open]){overflow:hidden}
 .filter-bar{flex-wrap:wrap}
 
 .vehicle-metrics article{border-top-color:#b56030}.vehicle-metrics strong{font-size:clamp(24px,2.2vw,34px);line-height:1.2;overflow-wrap:anywhere}
+
+.panel-head .filter-summary{margin:8px 0 0;color:#72776d;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0;max-width:65ch;overflow-wrap:anywhere}.filter-summary[hidden]{display:none}
