@@ -76,7 +76,7 @@ function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.fi
 function renderFilterSummaries(){
  const labels={tour:'Tour',planet:'Planet',track:'Track',vehicle:'Vehicle',category:'Category',subcategory:'Subcategory'};
  const summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value)).join(' · ');
- for(const section of ['standings','telemetry','records','archive']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
+ for(const section of ['standings','telemetry','records','archive','dialog']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
 }
 function render(){
  renderFilterSummaries();

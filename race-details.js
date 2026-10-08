@@ -3,6 +3,7 @@ const raceDialog=$('race-dialog');let raceCloseTimer;
 function openRaceDialog(raceId){
  const results=rows.filter(r=>r.race_id===raceId).sort(resultOrder);
  if(!results.length)return;
+ renderFilterSummaries();
  clearTimeout(raceCloseTimer);raceDialog.classList.remove('closing');
  const race=results[0],shade=results.find(r=>r.pilot==='Shade'),movement=computeLeagueChanges(filtered()).get(raceId)?.pilots,winner=results.find(r=>r.position===1&&!isDQ(r));
  $('race-dialog-code').textContent=raceId+' / '+galacticDate(race.date);
