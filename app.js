@@ -85,6 +85,18 @@ function renderFilterSummaries(){
  const summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value)).join(' · ');
  for(const section of ['standings','telemetry','records','archive','dialog']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
 }
+function planetVisitTrend(data){
+ const events=groupRaceResults(rows),included=new Set(data.map(r=>r.race_id));let end=-1;
+ for(let i=0;i<events.length;i++)if(included.has(events[i].race_id))end=i;
+ if(end<0)return {planet:null,changes:new Map()};
+ let start=end;while(start>0&&events[start-1].planet===events[end].planet&&events[start-1].tour===events[end].tour)start--;
+ const earlier=new Set(events.slice(0,start).map(r=>r.race_id));
+ function ranks(results){const stats=new Map();for(const r of results){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}return new Map([...stats.values()].sort(compareStandings).map((p,i)=>[p.pilot,i+1]));}
+ const before=ranks(data.filter(r=>earlier.has(r.race_id))),after=ranks(data),changes=new Map();
+ for(const [pilot,rank] of after)changes.set(pilot,before.has(pilot)?before.get(pilot)-rank:null);
+ return {planet:events[end].planet,changes};
+}
+function trendMarkup(delta){if(delta===null||delta===undefined)return '<span class="league-move neutral" title="No standing before this visit">—</span>';const label=delta>0?'gained':delta<0?'lost':'unchanged';return '<span class="league-move '+label+'" aria-label="'+(delta?Math.abs(delta)+' league positions '+label:'League position unchanged')+'">'+(delta>0?'↗ '+delta:delta<0?'↘ '+Math.abs(delta):'—')+'</span>';}
 function render(){
  renderFilterSummaries();
  const latestRace=groupRaceResults(rows).at(-1);
@@ -113,7 +125,9 @@ function render(){
   $('vehicle-'+kind+'-count').textContent=vehicles.length?count+' recorded start'+(count===1?'':'s')+(vehicles.length>1?' each · tied':''):selectedPilot==='Shade'?'No vehicle records in this selection':'Vehicle data unavailable';
  }
  if(typeof syncPlanetDisplay==='function')syncPlanetDisplay();
- $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge">${esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">TRACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No results match these filters.</td></tr>';
+ const visitTrend=planetVisitTrend(data);
+ $('standings-trend-caption').textContent=visitTrend.planet?'Rank change during the latest planet visit · '+visitTrend.planet:'Awaiting planet visit records';
+ $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge">${esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">TRACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td><td class="standings-trend">${trendMarkup(visitTrend.changes.get(p.pilot))}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">No results match these filters.</td></tr>';
  renderTelemetry(data);
  renderSectors();
  const records=new Map();rows.filter(r=>(!$('planet').value||r.planet===$('planet').value)&&r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
