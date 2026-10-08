@@ -1,0 +1,47 @@
+.sector[data-planet="Derven Akos"] .sector-orb{position:relative;background:radial-gradient(circle at 30% 25%,#fffdf3 0 12%,transparent 13%),radial-gradient(circle at 65% 60%,#c6c9bf 0 12%,transparent 13%),radial-gradient(circle at 25% 65%,#dadcd2 0 9%,transparent 10%),#eeeee4;box-shadow:inset -8px -4px 0 #7a8d8135,0 0 0 1px #b8c0b2}
+.sector[data-planet="Derven Akos"] .sector-orb:after{content:'';position:absolute;inset:-5px;border:2px solid #65e5ed;border-radius:50%;box-shadow:0 0 5px #45dce9,0 0 12px #36d0e09c,inset 0 0 5px #60e7ee75;pointer-events:none}
+#leaders tr[data-pilot]{cursor:pointer}#leaders tr[data-pilot]:hover{background:#e4d4b4}#leaders tr[data-pilot]:focus-within{outline:2px solid #a54b2c;outline-offset:-2px}
+#archive tr[data-race-id]{cursor:pointer}#archive tr[data-race-id]:hover{background:#e4d4b4}.race-open{border:0;padding:0;text-align:left;font:inherit;color:inherit}.race-open:hover{background:none;transform:none;box-shadow:none}.race-open .subline{color:#a54b2c}
+body:has(#race-dialog[open]){overflow:hidden}
+#race-dialog{padding:0;width:min(760px,calc(100vw - 32px));max-height:86dvh;color:var(--text);background:#f8f1e2;border:1px solid #b4a78d;border-top:4px solid #a54b2c;border-radius:6px;box-shadow:0 28px 100px #051d2455;overflow:auto}
+#race-dialog[open]{animation:race-popup-in .26s cubic-bezier(.2,.8,.2,1) both}
+#race-dialog::backdrop{background:#0b292ac4;backdrop-filter:blur(5px);animation:race-backdrop-in .26s ease both}
+#race-dialog.closing{animation:race-popup-out .18s ease both;pointer-events:none}
+#race-dialog.closing::backdrop{animation:race-backdrop-out .18s ease both}
+.race-modal-head{padding:28px 30px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;background:radial-gradient(ellipse at top right,#e1d5b7,transparent 70%)}
+.race-modal-head .eyebrow{color:#a54b2c}.race-modal-head h2{font-size:32px;line-height:1.3;margin-top:12px}.race-modal-head p{font-size:14px;color:var(--muted);margin:10px 0 0}.race-close{padding:8px 12px;font-size:18px;flex-shrink:0;border-color:#bcaf95}
+.race-modal-stats{display:grid;grid-template-columns:.8fr 1.2fr 1fr;gap:18px;padding:22px 30px;border-block:1px solid var(--line);background:#ede4d0}.race-modal-stats span{font-size:10px;letter-spacing:.5px;color:var(--muted);display:block}.race-modal-stats strong{font:500 27px Antonio,sans-serif;display:block;margin-top:9px}
+.race-modal-results th{position:sticky;top:0;z-index:1}.race-modal-results td,.race-modal-results th{padding:15px 30px}.race-modal-results td:last-child{font-variant-numeric:tabular-nums;color:#264e50;font-weight:500}.race-modal-results .you{font-size:10px;margin-left:10px}.race-modal-foot{display:flex;justify-content:space-between;gap:20px;padding:19px 30px;font-size:10px;letter-spacing:.5px;color:var(--muted);border-top:1px solid var(--line)}
+@keyframes race-popup-in{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}@keyframes race-popup-out{to{opacity:0;transform:translateY(12px) scale(.98)}}@keyframes race-backdrop-in{from{opacity:0}to{opacity:1}}@keyframes race-backdrop-out{to{opacity:0}}
+@media(max-width:520px){.race-modal-head{padding:24px 18px}.race-modal-head h2{font-size:27px}.race-modal-stats{padding:18px;gap:12px}.race-modal-stats span{font-size:9px}.race-modal-stats strong{font-size:22px}.race-modal-results td,.race-modal-results th{padding:14px 18px}.race-modal-results .you{display:block;margin:5px 0 0;font-size:9px}.race-modal-foot{padding:18px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){#race-dialog[open],#race-dialog.closing,#race-dialog::backdrop,#race-dialog.closing::backdrop{animation:none}}
+/* Shared geometry: original 9px pattern for cards, original 14px for the large display.
+   Planet definitions change colors only. Derven Akos retains its moon treatment. */
+.sector[data-planet="Jakku"],#planet-display[data-planet="Jakku"]{--planet-surface:#cb8951;--planet-stripe:#ad693e}
+.sector[data-planet="Lantaana"],#planet-display[data-planet="Lantaana"]{--planet-surface:#829d78;--planet-stripe:#5b7f6a}
+.sector[data-planet="Ando Prime"],#planet-display[data-planet="Ando Prime"]{--planet-surface:#bbc9c5;--planet-stripe:#95aaa8}
+#planet-display[data-planet="Ando Prime"]{--planet-surface:#c4d0cd;--planet-stripe:#97afac}
+.sector[data-planet="Sentinel One"],#planet-display[data-planet="Sentinel One"]{--planet-surface:#f6f5e7;--planet-stripe:#dfd49b}
+.sector[data-planet="Crait"],#planet-display[data-planet="Crait"]{--planet-surface:#f6f2e6;--planet-stripe:#b5483d}
+.sector[data-planet="Tatooine"],#planet-display[data-planet="Tatooine"]{--planet-surface:#dbb45d;--planet-stripe:#c9a14a}
+.sector[data-planet]:not([data-planet="Derven Akos"]) .sector-orb{background:repeating-linear-gradient(-25deg,var(--planet-surface,#cb8951) 0 6px,var(--planet-stripe,#ad693e) 7px 9px)}
+#planet-display:not([data-planet="Derven Akos"]) .orbit-core{background:repeating-linear-gradient(-25deg,var(--planet-surface,#cb8951) 0 10px,var(--planet-stripe,#ad693e) 11px 14px)}
+.sector[data-planet="Derven Akos"]{grid-column:span 2}
+#planet-display[data-planet="Derven Akos"] .orbit-core{position:relative;background:radial-gradient(circle at 30% 25%,#fffdf3 0 12%,transparent 13%),radial-gradient(circle at 65% 60%,#c6c9bf 0 12%,transparent 13%),radial-gradient(circle at 25% 65%,#dadcd2 0 9%,transparent 10%),#eeeee4;box-shadow:inset -15px -10px 0 #7a8d8135}
+#planet-display[data-planet="Derven Akos"] .orbit-core:after{content:'';position:absolute;inset:-8px;border:2px solid #65e5ed;border-radius:50%;box-shadow:0 0 7px #45dce9,0 0 20px #36d0e09c,inset 0 0 8px #60e7ee75}
+#planet-name{font-size:11px;max-width:170px;text-align:center;letter-spacing:.5px}
+.league-move{display:inline-block;font-size:15px;font-weight:600;white-space:nowrap}.league-move.gained{color:#287344}.league-move.lost{color:#b13c31}.league-move.neutral,.league-move.unchanged{color:#626e66;font-size:13px}.archive td:last-child .subline{font-weight:400}
+#race-dialog{width:min(860px,calc(100vw - 32px))}.race-modal-results{overflow-x:auto}.race-modal-results td:nth-child(3){font-variant-numeric:tabular-nums}.race-modal-results td.race-points{color:#a54b2c;font-weight:600;text-align:right}.race-modal-results th:last-child{text-align:right}
+#race-dialog{width:min(980px,calc(100vw - 32px))}.race-modal-results table{min-width:630px}.race-modal-results th:nth-child(4){text-align:right}.race-modal-results th:last-child,.race-modal-results td.race-league-change{text-align:left}.race-modal-results .race-league-change .subline{font-weight:400}
+@media(max-width:520px){.race-modal-results td,.race-modal-results th{padding:13px 12px}.race-modal-results th{font-size:10px}}
+.pilot-select{border:0;padding:0;display:inline-flex;align-items:center;gap:0;text-align:left;font-size:14px;white-space:nowrap}.pilot-select:hover{background:none;box-shadow:none;transform:none;color:#a54b2c}.pilot-select .you{font-size:9px;max-width:55px;white-space:normal;line-height:1.3}.pilot-selected{box-shadow:inset 3px 0 #ac522f;background:#eadbbd!important}.pilot-selected .pilot-select{color:#a54b2c}.chart-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 24px 16px;font-size:12px;color:#d0dcd0}.chart-toolbar label{display:flex;align-items:center;gap:8px;cursor:pointer}.chart-toolbar input{accent-color:#edbc70;width:16px;height:16px}.chart-toolbar>span{font-size:9px;letter-spacing:.5px}.chart-legend{display:flex;flex-wrap:wrap;gap:6px;padding:8px 23px 18px}.legend-pilot{padding:5px 8px;font-size:11px;border-color:#ffffff30;color:#d0dcd0}.legend-pilot:hover,.legend-pilot.selected{background:#efbd7020;color:#ffcf8a;border-color:#efbd70;box-shadow:none;transform:none}.standings{max-height:670px;overflow:auto}.standings .panel-head{position:sticky;top:0;background:#f9f3e6;z-index:2}.race-detail strong{font-size:22px}.rival-line{transition:opacity .2s}.chart-toolbar+ .trend{height:250px}@media(max-width:520px){.chart-toolbar{padding-inline:17px}.chart-toolbar>span{display:none}.chart-legend{padding-inline:17px}.pilot-select{font-size:13px}.race-detail strong{font-size:20px}}
+
+/* Podium finishes and non-finishes share one badge component. */
+.finish.medal-1{color:#825b12;background:#f2dfa6;border-color:#c8a34d}
+.finish.medal-2{color:#4e5b62;background:#e2e6e8;border-color:#a8b2b8}
+.finish.medal-3{color:#784728;background:#e6c6aa;border-color:#b98760}
+.finish.dq{color:#a52e27;background:#f6d9d4;border-color:#cf7368;font-weight:700}
+.signal-finish.signal-dq{color:#eb8f86}.chart-point.dq .dot{fill:#eb8f86;stroke:#9b3831}
+.metrics.dq-metrics{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:-6px;gap:22px}
+.dq-metrics article{padding:15px 10px;border-top-width:2px;border-top-color:#b55c4d}.dq-metrics strong{font-size:38px;margin:10px 0}.dq-metrics .eyebrow{color:#8b4138}
+@media(max-width:520px){.metrics.dq-metrics{gap:15px}.dq-metrics small{line-height:1.5}.dq-metrics strong{font-size:34px}}

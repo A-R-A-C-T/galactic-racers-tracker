@@ -1,0 +1,27 @@
+# Local verification scripts and mock fixtures
+verify*.cjs
+demo.js
+sample-races.csv
+tests/
+test-results/
+playwright-report/
+coverage/
+screenshots/
+
+# Personal logging context and temporary transcriptions
+data/active-tour.json
+data/last-logged-race.json
+data/pending-race.json
+pending-race.json
+/log-race.cjs
+
+# Local tooling and editor state
+node_modules/
+.env
+.env.*
+.codex/
+.agents/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db
