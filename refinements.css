@@ -75,4 +75,4 @@ body:has(#race-dialog[open]){overflow:hidden}
 /* Preserve page width when a race dialog locks background scrolling. */
 html{scrollbar-gutter:stable}
 
-html{background:var(--bg,#f1ead9);scrollbar-color:#626e66 #f1ead9}html:has(#race-dialog[open]){background:#354b43}
+html{background:var(--bg,#f1ead9);scrollbar-color:#626e66 #f1ead9}html:has(#race-dialog[open]){background:linear-gradient(#0b292ac4,#0b292ac4),var(--bg,#f1ead9)}
