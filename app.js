@@ -80,6 +80,8 @@ function renderFilterSummaries(){
 }
 function render(){
  renderFilterSummaries();
+ const latestRace=groupRaceResults(rows).at(-1);
+ $('dossier-tour').textContent=latestRace?'LATEST TOUR: '+latestRace.tour.replace(/^Tour\s*/i,''):'AWAITING TOUR RECORDS';
  const data=filtered(),groups=new Map();
  data.forEach(r=>{if(!groups.has(r.pilot))groups.set(r.pilot,newPilotStats(r.pilot));addResult(groups.get(r.pilot),r);});
  const leaders=[...groups.values()].sort(compareStandings);
