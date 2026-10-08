@@ -270,3 +270,18 @@ if(typeof ResizeObserver==='function'){
   for(const property of ['height','minHeight','maxHeight'])standingsPanel.style[property]=height+'px';
  }).observe(telemetryPanel);
 }
+
+// Keep sidebar location in sync with anchor navigation and normal scrolling.
+function setupSectionNavigation(){
+ const links=[...document.querySelectorAll('aside .nav[href^="#"]')];
+ const sections=links.map(link=>({link,section:document.getElementById(link.getAttribute('href').slice(1))})).filter(item=>item.section);
+ if(!sections.length)return;
+ function highlight(link){for(const item of sections){const active=item.link===link;item.link.classList.toggle('active',active);if(active)item.link.setAttribute('aria-current','location');else item.link.removeAttribute('aria-current');}}
+ function update(){const line=Math.min(180,window.innerHeight*.25);let current=sections[0];for(const item of sections)if(item.section.getBoundingClientRect().top<=line)current=item;highlight(current.link);}
+ let scheduled=false;function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;update();});}
+ for(const item of sections)item.link.addEventListener('click',()=>{highlight(item.link);schedule();});
+ window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);window.addEventListener('hashchange',schedule);
+ if(typeof ResizeObserver==='function')new ResizeObserver(schedule).observe(document.querySelector('main'));
+ update();
+}
+if(document.querySelectorAll)setupSectionNavigation();
