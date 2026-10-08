@@ -45,3 +45,5 @@ body:has(#race-dialog[open]){overflow:hidden}
 .metrics.dq-metrics{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:-6px;gap:22px}
 .dq-metrics article{padding:15px 10px;border-top-width:2px;border-top-color:#b55c4d}.dq-metrics strong{font-size:38px;margin:10px 0}.dq-metrics .eyebrow{color:#8b4138}
 @media(max-width:520px){.metrics.dq-metrics{gap:15px}.dq-metrics small{line-height:1.5}.dq-metrics strong{font-size:34px}}
+
+.race-modal-results .race-pilot-vehicle{display:block;margin-top:6px;color:#747873;font-size:13px;font-weight:400;line-height:1.4}
