@@ -299,3 +299,10 @@ function setupSectionNavigation(){
  update();
 }
 if(document.querySelectorAll)setupSectionNavigation();
+
+function setupStandingsStickyHeader(){
+ const panel=$('standings'),heading=panel?.querySelector?.('.panel-head');if(!heading)return;
+ const update=()=>panel.style.setProperty('--standings-header-height',heading.getBoundingClientRect().height+'px');
+ update();if(typeof ResizeObserver==='function')new ResizeObserver(update).observe(heading);
+}
+setupStandingsStickyHeader();

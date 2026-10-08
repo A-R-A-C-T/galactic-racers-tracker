@@ -129,3 +129,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 @media(max-width:800px){.metrics.detail-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-metrics .dnf-total{grid-area:3/1}.detail-metrics .dnf-rate{grid-area:3/2}.detail-metrics .dnf-total strong,.detail-metrics .dnf-rate strong{font-size:32px}}
 
 .detail-metrics .elimination-total{grid-area:2/3}.detail-metrics .elimination-rate{grid-area:2/4}.detail-metrics .elimination-total,.detail-metrics .elimination-rate{border-top-color:#b55c4d}@media(max-width:800px){.detail-metrics .elimination-total{grid-area:4/1}.detail-metrics .elimination-rate{grid-area:4/2}}
+
+.standings .table-wrap{overflow:visible}.standings thead th{position:sticky;top:var(--standings-header-height,100px);z-index:1;background:#f9f3e6;box-shadow:0 1px 0 var(--line)}
