@@ -83,7 +83,7 @@ function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.fi
 function renderFilterSummaries(){
  const labels={tour:'Tour',planet:'Planet',track:'Track',vehicle:'Vehicle',category:'Category',subcategory:'Subcategory'};
  let summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value)).join(' · ');
- if(recordLaps!==null)summary+=(summary?' · ':'')+(recordLaps?recordLaps+' laps':'Laps: Unspecified');
+ if(recordLaps)summary+=(summary?' · ':'')+recordLaps+' laps';
  for(const section of ['standings','telemetry','records','archive','dialog']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
 }
 function planetVisitTrend(data){
@@ -99,7 +99,7 @@ function planetVisitTrend(data){
 }
 function trendMarkup(delta){if(delta===null||delta===undefined)return '<span class="league-move neutral" title="No standing before this visit">—</span>';const label=delta>0?'gained':delta<0?'lost':'unchanged';return '<span class="league-move '+label+'" aria-label="'+(delta?Math.abs(delta)+' league positions '+label:'League position unchanged')+'">'+(delta>0?'↗ '+delta:delta<0?'↘ '+Math.abs(delta):'—')+'</span>';}
 function reserveDashboardSpace(){
- for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail')||[]){
+ for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail,.filter-summary')||[]){
   const height=node.getBoundingClientRect().height;
   node.style.minHeight=Math.max(parseFloat(node.style.minHeight)||0,height)+'px';
  }
@@ -243,7 +243,8 @@ options();render();
 function selectTrackRecord(e){
  const card=e.target.closest?.('.record[data-track]');if(!card)return;
  const sub=card.dataset.subcategory||'__unspecified__',laps=card.dataset.laps||'';
- const active=$('track').value===card.dataset.track&&$('category').value===card.dataset.category&&$('subcategory').value===sub&&recordLaps===laps;
+ const active=$('planet').value===card.dataset.planet&&$('track').value===card.dataset.track&&$('category').value===card.dataset.category&&$('subcategory').value===sub&&recordLaps===laps;
+ $('planet').value=active?'':card.dataset.planet;options();
  $('track').value=active?'':card.dataset.track;$('category').value=active?'':card.dataset.category;$('subcategory').value=active?'':sub;recordLaps=active?null:laps;
  page=0;render();
  const replacement=[...$('records').querySelectorAll('.record[data-track]')].find(n=>n.dataset.planet===card.dataset.planet&&n.dataset.track===card.dataset.track&&n.dataset.category===card.dataset.category&&n.dataset.subcategory===card.dataset.subcategory&&n.dataset.laps===card.dataset.laps);replacement?.focus();

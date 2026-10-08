@@ -105,3 +105,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .archive{display:flex;flex-direction:column}.archive>.pagination{margin-top:auto}
 
 .record-config{position:relative;top:2px}
+
+.panel-head .filter-summary,.race-modal-head .filter-summary{min-height:3.2em;line-height:1.6}
