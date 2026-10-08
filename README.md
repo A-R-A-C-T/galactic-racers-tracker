@@ -62,7 +62,7 @@ Average finish uses completed finishes only. Podium rate and DQ rate use all rec
 
 The tracker currently uses its own simple score: **12 points for first, 11 for second, down to 1 for twelfth**. Places beyond twelfth and DQs earn zero. The same scale applies to smaller grids. This is the tracker’s scoring convention, rather than an assertion about the game’s points system.
 
-Ties use wins, average completed finish, then pilot name. League-change arrows compare standings immediately before and after each race **across all tours**. They use the full recorded history and remain stable when filtering or searching. Only a pilot’s first recorded standing shows **Initial ranking**; starting a new tour does not reset the league. Events are ordered by logged date, then race ID, so keep same-day IDs sequential.
+Ties use wins, average completed finish, then pilot name. League-change arrows compare standings immediately before and after each race **across all tours**. They use the same active filters as the standings. Selecting a tour shows movement within that tour; All tours shows the cumulative league. Archive text search only hides rows and does not change rankings. Only a pilot’s first recorded standing shows **Initial ranking**; starting a new tour does not reset the league. Events are ordered by logged date, then race ID, so keep same-day IDs sequential.
 
 Track records compare results within the same planet, circuit, category, and subcategory; unidentified circuits are excluded. Time-gap telemetry compares a racer’s time with the fastest recorded finish in that event.
 

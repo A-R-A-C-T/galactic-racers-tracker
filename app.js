@@ -130,7 +130,7 @@ function leagueChangeMarkup(change){
  return `<span class="league-move ${kind}" aria-label="${label}"><span aria-hidden="true">${delta>0?'↗':delta<0?'↘':'—'}${delta?' '+Math.abs(delta):''}</span></span><span class="subline">P${change.before} → P${change.after}</span>`;
 }
 function renderArchive(data=filtered()){
- const q=$('search').value.trim().toLowerCase(),changes=computeLeagueChanges(rows);
+ const q=$('search').value.trim().toLowerCase(),changes=computeLeagueChanges(filtered());
  const list=groupRaceResults(data).filter(r=>r.results.some(result=>COLS.some(c=>String(result[c]).toLowerCase().includes(q)))||galacticDate(r.date).toLowerCase().includes(q)).sort((a,b)=>(ascending?1:-1)*(a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id)));
  const pages=Math.max(1,Math.ceil(list.length/10));page=Math.min(page,pages-1);
  $('archive-count').textContent=`/ ${list.length} RACES`;

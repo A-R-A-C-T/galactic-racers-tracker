@@ -4,7 +4,7 @@ function openRaceDialog(raceId){
  const results=rows.filter(r=>r.race_id===raceId).sort(resultOrder);
  if(!results.length)return;
  clearTimeout(raceCloseTimer);raceDialog.classList.remove('closing');
- const race=results[0],shade=results.find(r=>r.pilot==='Shade'),movement=computeLeagueChanges(rows).get(raceId)?.pilots,winner=results.find(r=>r.position===1&&!isDQ(r));
+ const race=results[0],shade=results.find(r=>r.pilot==='Shade'),movement=computeLeagueChanges(filtered()).get(raceId)?.pilots,winner=results.find(r=>r.position===1&&!isDQ(r));
  $('race-dialog-code').textContent=raceId+' / '+galacticDate(race.date);
  $('race-dialog-title').textContent=race.planet+' / '+(race.track||'Circuit uncharted');
  $('race-dialog-meta').textContent=race.tour+' · '+race.category+(race.subcategory?' · '+race.subcategory:'');
