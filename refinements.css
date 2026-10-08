@@ -58,12 +58,16 @@ body:has(#race-dialog[open]){overflow:hidden}
 
 .race-modal-head .filter-summary{margin:8px 0 0;color:#72776d;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0;overflow-wrap:anywhere}
 
-/* Subtle planet-specific rims on the track-record decoration. */
-.record[data-planet="Jakku"]{--record-rim:203,137,81}
-.record[data-planet="Lantaana"]{--record-rim:91,127,106}
-.record[data-planet="Ando Prime"]{--record-rim:149,170,168}
-.record[data-planet="Sentinel One"]{--record-rim:202,181,97}
-.record[data-planet="Crait"]{--record-rim:181,72,61}
-.record[data-planet="Tatooine"]{--record-rim:219,180,93}
-.record[data-planet="Derven Akos"]{--record-rim:69,190,200}
-.record:after{border-color:rgba(var(--record-rim,165,75,44),.55);box-shadow:0 0 0 14px rgba(var(--record-rim,165,75,44),.09),0 0 0 28px rgba(var(--record-rim,165,75,44),.045)}
+/* Quiet, distinct planet colors on track-record rims and fading rings. */
+.record[data-planet="Jakku"]{--record-rim:215,106,32}
+.record[data-planet="Lantaana"]{--record-rim:35,137,82}
+.record[data-planet="Ando Prime"]{--record-rim:93,159,182}
+.record[data-planet="Sentinel One"]{--record-rim:208,195,20}
+.record[data-planet="Crait"]{--record-rim:184,40,67}
+.record[data-planet="Tatooine"]{--record-rim:200,151,62}
+.record[data-planet="Derven Akos"]{--record-rim:29,179,194}
+.record:after{border-color:rgba(var(--record-rim,165,75,44),.46);box-shadow:0 0 0 14px rgba(var(--record-rim,165,75,44),.075),0 0 0 28px rgba(var(--record-rim,165,75,44),.03)}
+.record[data-planet="Derven Akos"]:after{border-color:rgba(var(--record-rim),.78)}
+.status-dot{animation:hololink-pulse 2.6s ease-in-out infinite;transform-origin:center}
+@keyframes hololink-pulse{0%,100%{opacity:.65;transform:scale(.9);box-shadow:0 0 0 3px #efba7115,0 0 3px #efba7130}50%{opacity:1;transform:scale(1.25);box-shadow:0 0 0 5px #efba7120,0 0 10px #efba7180}}
+@media(prefers-reduced-motion:reduce){.status-dot{animation:none}}
