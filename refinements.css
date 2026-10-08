@@ -114,3 +114,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .standings-notes{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 24px;padding:16px 24px}.standings-notes .footnote{margin:0;padding:0}.standings-notes #standings-trend-caption{margin:0 0 0 auto;text-align:right}
 
 #archive .race-open:hover{color:inherit;background:none;border-color:transparent;transform:none;box-shadow:none}.archive #sort-date:hover{color:var(--muted);background:none;border-color:transparent;transform:none;box-shadow:none}
+
+.finish.finish-eliminated{width:156px}.finish.finish-dnf{width:100px}.finish.finish-eliminated,.finish.finish-dnf{display:inline-flex;justify-content:center;align-items:center;white-space:nowrap;font-size:13px;line-height:1.4;font-variant-numeric:tabular-nums}
