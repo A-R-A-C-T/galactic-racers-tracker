@@ -110,3 +110,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 
 .records .panel-head>div:first-child{flex:1;min-width:0}.records .panel-head .filter-summary{max-width:none;word-break:normal;overflow-wrap:normal}.records .panel-head>.muted{flex-shrink:0}
 .record-planet-group .record-grid{background:#e6decb;gap:0}.record-planet-group .record{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+.standings-notes{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 24px;padding:16px 24px}.standings-notes .footnote{margin:0;padding:0}.standings-notes #standings-trend-caption{margin:0 0 0 auto;text-align:right}
