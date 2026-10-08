@@ -131,3 +131,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .detail-metrics .elimination-total{grid-area:2/3}.detail-metrics .elimination-rate{grid-area:2/4}.detail-metrics .elimination-total,.detail-metrics .elimination-rate{border-top-color:#b55c4d}@media(max-width:800px){.detail-metrics .elimination-total{grid-area:4/1}.detail-metrics .elimination-rate{grid-area:4/2}}
 
 .standings .table-wrap{overflow:visible}.standings thead th{position:sticky;top:var(--standings-header-height,100px);z-index:1;background:#f9f3e6;box-shadow:0 1px 0 var(--line)}
+
+.standings .standings-notes{position:sticky;bottom:0;z-index:2;background:#f9f3e6;border-top:1px solid var(--line)}
