@@ -23,7 +23,7 @@ const compareStandings=(a,b)=>b.points-a.points||b.wins-a.wins||(averageValue(a)
 // Archive convention: Gregorian year - 2016, plus actual UTC day of year.
 function galacticDate(date){const d=new Date(date+'T00:00:00Z');const year=d.getUTCFullYear();const day=Math.floor((d-Date.UTC(year,0,1))/86400000)+1;const era=year-2016;return Math.abs(era)+' '+(era>=0?'ABY':'BBY')+' · '+String(day).padStart(3,'0');}
 const time=ms=>{if(ms===null||ms===undefined||ms==='')return '—';const n=Math.round(ms);return `${Math.floor(n/60000)}:${String(Math.floor(n/1000)%60).padStart(2,'0')}.${String(n%1000).padStart(3,'0')}`;};
-let selectedPilot='Shade';
+let selectedPilot='Shade',recordLaps=null;
 let rows=window.DEMO_RESULTS.map(r=>({...r})),page=0,ascending=false;
 function validate(data){
  if(!data.length)throw Error('The CSV contains no results.');
@@ -79,10 +79,11 @@ function options(){
   $(key).value=values.includes(old)||(key==='subcategory'&&old==='__unspecified__')?old:'';
  }
 }
-function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(!vehicle||races.has(r.race_id))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
+function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(recordLaps===null||String(r.laps??'')===recordLaps)&&(!vehicle||races.has(r.race_id))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
 function renderFilterSummaries(){
  const labels={tour:'Tour',planet:'Planet',track:'Track',vehicle:'Vehicle',category:'Category',subcategory:'Subcategory'};
- const summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value)).join(' · ');
+ let summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value)).join(' · ');
+ if(recordLaps!==null)summary+=(summary?' · ':'')+(recordLaps?recordLaps+' laps':'Laps: Unspecified');
  for(const section of ['standings','telemetry','records','archive','dialog']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
 }
 function planetVisitTrend(data){
@@ -131,7 +132,14 @@ function render(){
  renderTelemetry(data);
  renderSectors();
  const records=new Map();rows.filter(r=>(!$('planet').value||r.planet===$('planet').value)&&r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
- $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record" role="button" tabindex="0" aria-label="Filter track: ${esc(r.track)}, ${esc(r.planet)}" aria-pressed="${(!$('planet').value||$('planet').value===r.planet)&&$('track').value===r.track}" data-planet="${esc(r.planet)}" data-track="${esc(r.track)}"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}${r.laps?' · '+r.laps+' laps':''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ const recordKey=r=>JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',String(r.laps??'')]);
+ const matchingRecords=new Set(data.map(recordKey));
+ $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>{
+  const match=matchingRecords.has(recordKey(r)),selected=match&&$('track').value===r.track;
+  const config=[r.category,r.subcategory,r.laps?r.laps+' laps':''].filter(Boolean).join(' · ');
+  return `<article class="record ${match?'':'record-muted'}" role="button" tabindex="0" aria-label="Select ${esc(r.track)}, ${esc(config)}, ${esc(r.planet)}" aria-pressed="${selected}" data-planet="${esc(r.planet)}" data-track="${esc(r.track)}" data-category="${esc(r.category)}" data-subcategory="${esc(r.subcategory||'')}" data-laps="${r.laps||''}"><div class="eyebrow">${esc(r.planet)}</div><h3>${esc(r.track)} <span class="record-config">${esc(config)}</span></h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`;
+ }).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+
  renderArchive(data);
 }
 function groupRaceResults(data){
@@ -166,13 +174,13 @@ function renderArchive(data=filtered()){
  $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),shade=r.results.find(result=>result.pilot==='Shade');return `<tr${i>0?(list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':list[page*10+i-1].planet!==r.planet?' class="planet-boundary"':''):''} data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)} ↗<span class="subline">${r.results.length} recorded racers</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</span></td><td>${esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td>${leagueChangeMarkup(changes.get(r.race_id))}</td></tr>`;}).join('')||'<tr><td colspan="6" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
  $('page-info').textContent=list.length?`${page*10+1}–${Math.min(page*10+10,list.length)} of ${list.length} races`:'0 races';$('prev').disabled=page===0;$('next').disabled=page>=pages-1;
 }
-for(const key of ['tour','planet','track','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{if(key==='planet')options();page=0;render();});
-$('clear').onclick=()=>{for(const k of ['tour','planet','track','category','subcategory','vehicle'])$(k).value='';$('search').value='';page=0;render();};
+for(const key of ['tour','planet','track','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{recordLaps=null;if(key==='planet')options();page=0;render();});
+$('clear').onclick=()=>{recordLaps=null;for(const k of ['tour','planet','track','category','subcategory','vehicle'])$(k).value='';$('search').value='';page=0;render();};
 $('search').oninput=()=>{page=0;renderArchive();};$('prev').onclick=()=>{page--;renderArchive();};$('next').onclick=()=>{page++;renderArchive();};
 $('sort-date').onclick=()=>{ascending=!ascending;page=0;$('sort-date').textContent='LOGGED '+(ascending?'↑':'↓');renderArchive();};
-$('import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>10000000)throw Error('CSV is too large. Please use a file below 10 MB.');const imported=parseCSV(await file.text());rows=imported;page=0;options();render();if(persist())$('message').textContent=`Imported ${rows.length} results from ${file.name}. Saved in this browser.`;}catch(err){$('message').textContent='Import failed: '+err.message;}finally{e.target.value='';}};
+$('import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>10000000)throw Error('CSV is too large. Please use a file below 10 MB.');const imported=parseCSV(await file.text());rows=imported;recordLaps=null;page=0;options();render();if(persist())$('message').textContent=`Imported ${rows.length} results from ${file.name}. Saved in this browser.`;}catch(err){$('message').textContent='Import failed: '+err.message;}finally{e.target.value='';}};
 $('export').onclick=()=>{const data=filtered();const cell=v=>{const s=String(v);return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};const csv=[COLS.join(','),...data.map(r=>COLS.map(k=>cell(r[k])).join(','))].join('\r\n');const url=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='galactic-racing-results.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('message').textContent=`Exported ${data.length} filtered results. Archive search does not affect export.`;};
-$('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CSV first if you want to keep it.'))return;rows=window.DEMO_RESULTS.map(r=>({...r}));page=0;for(const k of ['tour','planet','track','category','subcategory','vehicle'])$(k).value='';$('search').value='';options();render();if(persist())$('message').textContent='Initial archive restored.';};
+$('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CSV first if you want to keep it.'))return;rows=window.DEMO_RESULTS.map(r=>({...r}));recordLaps=null;page=0;for(const k of ['tour','planet','track','category','subcategory','vehicle'])$(k).value='';$('search').value='';options();render();if(persist())$('message').textContent='Initial archive restored.';};
 let telemetry=[],selectedRace='';
 $('import-trigger').onclick=()=>$('import').click();
 function renderSectors(){
@@ -212,9 +220,17 @@ $('leaders').onclick=selectRacer;$('chart-legend').onclick=selectRacer;
 function inspectSignal(e){const node=e.target.closest?.('[data-index]');if(node)showSignal(Number(node.dataset.index));}
 $('trend').onmouseover=inspectSignal;$('trend').onfocusin=inspectSignal;$('trend').onclick=inspectSignal;
 $('trend').onkeydown=e=>{const node=e.target.closest?.('[data-index]');if(!node)return;let index=Number(node.dataset.index);if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();index=Math.max(0,Math.min(telemetry.length-1,index+(e.key==='ArrowRight'?1:-1)));$('trend').querySelector(`[data-index="${index}"]`).focus();showSignal(index);}else if(e.key==='Enter'||e.key===' '){e.preventDefault();showSignal(index);}};
-$('sectors').onclick=e=>{const node=e.target.closest?.('[data-planet]');if(!node)return;$('planet').value=$('planet').value===node.dataset.planet?'':node.dataset.planet;options();page=0;render();};
+$('sectors').onclick=e=>{const node=e.target.closest?.('[data-planet]');if(!node)return;$('planet').value=$('planet').value===node.dataset.planet?'':node.dataset.planet;recordLaps=null;options();page=0;render();};
 options();render();
 
-function selectTrackRecord(e){const card=e.target.closest?.('.record[data-track]');if(!card)return;const active=$('track').value===card.dataset.track;$('track').value=active?'':card.dataset.track;page=0;render();const replacement=[...$('records').querySelectorAll('.record[data-track]')].find(n=>n.dataset.planet===card.dataset.planet&&n.dataset.track===card.dataset.track);replacement?.focus();}
+function selectTrackRecord(e){
+ const card=e.target.closest?.('.record[data-track]');if(!card)return;
+ const sub=card.dataset.subcategory||'__unspecified__',laps=card.dataset.laps||'';
+ const active=$('track').value===card.dataset.track&&$('category').value===card.dataset.category&&$('subcategory').value===sub&&recordLaps===laps;
+ $('track').value=active?'':card.dataset.track;$('category').value=active?'':card.dataset.category;$('subcategory').value=active?'':sub;recordLaps=active?null:laps;
+ page=0;render();
+ const replacement=[...$('records').querySelectorAll('.record[data-track]')].find(n=>n.dataset.planet===card.dataset.planet&&n.dataset.track===card.dataset.track&&n.dataset.category===card.dataset.category&&n.dataset.subcategory===card.dataset.subcategory&&n.dataset.laps===card.dataset.laps);replacement?.focus();
+}
+
 $('records').addEventListener('click',selectTrackRecord);
 $('records').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.record[data-track]')){e.preventDefault();selectTrackRecord(e);}});
