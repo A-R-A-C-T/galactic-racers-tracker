@@ -258,4 +258,15 @@ $('records').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e
 $('records').addEventListener('click',e=>{const heading=e.target.closest?.('[data-record-planet]');if(!heading)return;const planet=heading.dataset.recordPlanet;$('planet').value=$('planet').value===planet?'':planet;recordLaps=null;options();page=0;render();const replacement=[...$('records').querySelectorAll('[data-record-planet]')].find(n=>n.dataset.recordPlanet===planet);replacement?.focus();});
 
 let dashboardWidth=window.innerWidth;
-window.addEventListener?.('resize',()=>{if(window.innerWidth===dashboardWidth)return;dashboardWidth=window.innerWidth;for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail')||[]){node.style.minHeight='';if(node.id==='standings')node.style.maxHeight='';}reserveDashboardSpace();});
+window.addEventListener?.('resize',()=>{if(window.innerWidth===dashboardWidth)return;dashboardWidth=window.innerWidth;for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail')||[]){node.style.minHeight='';if(node.id==='standings'){node.style.maxHeight='';node.style.height='';}}reserveDashboardSpace();});
+
+// Follow the telemetry panel's settled border-box size, including late font/layout changes.
+if(typeof ResizeObserver==='function'){
+ const telemetryPanel=document.querySelector('.circuit'),standingsPanel=$('standings');
+ if(telemetryPanel&&standingsPanel)new ResizeObserver(entries=>{
+  if(window.innerWidth<=1250)return;
+  const size=entries[0].borderBoxSize,box=Array.isArray(size)?size[0]:size;
+  const height=box?.blockSize??telemetryPanel.getBoundingClientRect().height;
+  for(const property of ['height','minHeight','maxHeight'])standingsPanel.style[property]=height+'px';
+ }).observe(telemetryPanel);
+}
