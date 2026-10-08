@@ -48,7 +48,7 @@ body:has(#race-dialog[open]){overflow:hidden}
 
 .race-modal-results .race-pilot-vehicle{display:block;margin-top:6px;color:#747873;font-size:13px;font-weight:400;line-height:1.4}
 
-#archive tr.tour-boundary>td{box-shadow:inset 0 2px 0 rgba(181,96,48,.55)}
+#archive tr.tour-boundary>td{--archive-boundary:inset 0 2px 0 rgba(181,96,48,.55);box-shadow:var(--archive-boundary)}
 
 .filter-bar{flex-wrap:wrap}
 
@@ -79,7 +79,7 @@ html{background:var(--bg,#f1ead9);scrollbar-color:#626e66 #f1ead9}
 
 .record[role="button"]{cursor:pointer;transition:background .18s ease}.record[role="button"]:hover{background:#f0e6d2}.record[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}.record[aria-pressed="true"]{box-shadow:inset 0 2px 0 #a54b2c80}
 
-#archive tr.planet-boundary>td{box-shadow:inset 0 1px 0 rgba(181,96,48,.55)}
+#archive tr.planet-boundary>td{--archive-boundary:inset 0 1px 0 rgba(181,96,48,.55);box-shadow:var(--archive-boundary)}
 
 .standings-trend{white-space:nowrap}.standings-trend .league-move{font-size:13px}#standings-trend-caption{margin-bottom:0}
 
@@ -160,10 +160,26 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .record-times .record-equal strong{color:#52795d}.record-times .record-slower strong{color:#a66356}
 
 /* Galactic Gauntlet shares Derven’s bright cyan rim. */
-#archive tr[data-category="Galactic Gauntlet"] td{box-shadow:none}
-#archive tr[data-category="Galactic Gauntlet"] td:first-child{box-shadow:inset 3px 0 #65e5ed;background-image:linear-gradient(to right,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
-#archive tr[data-category="Galactic Gauntlet"] td:last-child{box-shadow:inset -3px 0 #65e5ed;background-image:linear-gradient(to left,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
+#archive tr[data-category="Galactic Gauntlet"] td{box-shadow:var(--archive-boundary,inset 0 0 transparent)}
+#archive tr[data-category="Galactic Gauntlet"] td:first-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset 3px 0 #65e5ed;background-image:linear-gradient(to right,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
+#archive tr[data-category="Galactic Gauntlet"] td:last-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset -3px 0 #65e5ed;background-image:linear-gradient(to left,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
 #archive tr[data-category="Galactic Gauntlet"] .gauntlet-planet{font-weight:400}
 #race-dialog.gauntlet{border:1px solid #65e5ed}
 #race-dialog.gauntlet .finish{width:auto;min-width:0}
 #race-dialog.gauntlet .finish::before{display:none}
+
+/* Gauntlet venue uses the same cyan edge as its result row. */
+.record[data-category="Galactic Gauntlet"]:before{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 3px 0 #65e5ed;background-image:linear-gradient(to right,#65e5ed55 3px,#65e5ed22 8px,transparent 18px);transition:opacity .38s ease}
+.record-muted[data-category="Galactic Gauntlet"]:before{opacity:.12}
+.record-muted[data-category="Galactic Gauntlet"]:hover:before,.record-muted[data-category="Galactic Gauntlet"]:focus-visible:before{opacity:.65}
+@media(prefers-reduced-motion:reduce){.record[data-category="Galactic Gauntlet"]:before{transition:none}}
+.record .record-times strong.record-no-telemetry{font-size:clamp(20px,1.6vw,24px);line-height:1.2;color:var(--muted)}
+
+.sidebar-clear{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin:20px 0 0;padding:14px 0 0;border:0;border-top:1px solid var(--muted);border-radius:0;background:transparent;color:var(--muted);font-family:inherit;font-size:12px;font-weight:400;line-height:1.4;letter-spacing:0;text-transform:none;cursor:pointer;transition:color .4s ease,border-color .4s ease}
+.sidebar-clear:hover,.sidebar-clear:focus-visible{color:#efbd70;border-top-color:#efbd70;background:transparent;transform:none;box-shadow:none}
+.sidebar-clear:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sidebar-clear span{font-size:13px;line-height:1}
+
+@media(min-width:801px){aside{--sidebar-inset:24px;padding-bottom:0}.sidebar-clear{flex-shrink:0;align-self:stretch;width:auto;margin:20px calc(-1 * var(--sidebar-inset)) 0;padding:14px var(--sidebar-inset)}}
+@media(min-width:801px) and (max-width:1250px){aside{--sidebar-inset:19px}}
+@media(max-width:800px){.sidebar-clear{display:none}}
