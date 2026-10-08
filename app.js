@@ -138,7 +138,7 @@ function render(){
  $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge">${esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td><td class="standings-trend">${trendMarkup(visitTrend.changes.get(p.pilot))}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">No results match these filters.</td></tr>';
  renderTelemetry(data);
  renderSectors();
- const records=new Map();rows.filter(r=>r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
+ const records=new Map();rows.filter(r=>r.track&&!isDQ(r)&&r.time_ms&&(r.category==='Eliminator'||r.subcategory)).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
  const recordKey=r=>JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',String(r.laps??'')]);
  const matchingRecords=new Set(data.map(recordKey));
  const renderRecord=r=>{
