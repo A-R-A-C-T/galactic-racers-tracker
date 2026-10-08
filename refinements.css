@@ -107,3 +107,6 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .record-config{position:relative;top:2px}
 
 .panel-head .filter-summary,.race-modal-head .filter-summary{min-height:3.2em;line-height:1.6}
+
+.records .panel-head>div:first-child{flex:1;min-width:0}.records .panel-head .filter-summary{max-width:none;word-break:normal;overflow-wrap:normal}.records .panel-head>.muted{flex-shrink:0}
+.record-planet-group .record-grid{background:#f9f3e6;gap:0}.record-planet-group .record{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
