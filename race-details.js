@@ -11,7 +11,11 @@ function openRaceDialog(raceId){
  $('race-dialog-meta').textContent=race.tour+' · '+race.category+(race.subcategory?' · '+race.subcategory:'')+(race.laps?' · '+race.laps+' lap'+(race.laps===1?'':'s'):'');
  $('race-dialog-stats').innerHTML=`<div><span>RECORDED RACERS</span><strong>${results.length}</strong></div><div><span>WINNER</span><strong>${winner?esc(winner.pilot):'Not recorded'}</strong></div><div><span>BACKED PILOT / SHADE</span><strong>${shade?positionLabel(shade):'Not recorded'}</strong></div>`;
  $('race-dialog-results').innerHTML=results.map(r=>`<tr class="${r.pilot==='Shade'?'self':''}"><td>${finishBadge(r)}</td><td>${esc(r.pilot)}${r.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}${r.pilot==='Shade'&&r.vehicle?'<span class="race-pilot-vehicle">'+esc(r.vehicle)+'</span>':''}</td><td>${isDQ(r)?(isEliminated(r)?'Eliminated':resultStatus(r)):time(r.time_ms)}</td><td class="race-points">+${resultPoints(r)}</td><td class="race-league-change">${leagueChangeMarkup(movement?.get(r.pilot))}</td></tr>`).join('');
- if(!raceDialog.open)raceDialog.showModal();
+ if(!raceDialog.open){
+  const root=document.documentElement;
+  if(root?.style)root.style.setProperty('--dialog-scrollbar-width',Math.max(0,window.innerWidth-root.clientWidth)+'px');
+  raceDialog.showModal();
+ }
 }
 function closeRaceDialog(){
  if(!raceDialog.open||raceDialog.classList.contains('closing'))return;
@@ -27,3 +31,5 @@ raceDialog.addEventListener('click',e=>{
  const box=raceDialog.getBoundingClientRect();
  if(e.clientX<box.left||e.clientX>box.right||e.clientY<box.top||e.clientY>box.bottom)closeRaceDialog();
 });
+
+raceDialog.addEventListener('close',()=>document.documentElement?.style.removeProperty('--dialog-scrollbar-width'));
