@@ -183,3 +183,59 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 @media(min-width:801px){aside{--sidebar-inset:24px;padding-bottom:0}.sidebar-clear{flex-shrink:0;align-self:stretch;width:auto;margin:20px calc(-1 * var(--sidebar-inset)) 0;padding:14px var(--sidebar-inset)}}
 @media(min-width:801px) and (max-width:1250px){aside{--sidebar-inset:19px}}
 @media(max-width:800px){.sidebar-clear{display:none}}
+
+.pilot-badge{overflow:hidden;flex-shrink:0}
+.pilot-badge img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 42%}
+
+/* Face framing uses the original portraits without altering the source files. */
+[data-portrait-pilot]{--portrait-zoom:1.65;--portrait-x:50%;--portrait-y:34%}
+[data-portrait-pilot="Shade"]{--portrait-zoom:2.1;--portrait-x:43%;--portrait-y:28%}
+[data-portrait-pilot="Malis Vazosk"]{--portrait-zoom:1.6;--portrait-x:50%;--portrait-y:34%}
+[data-portrait-pilot="Nik Skandaro"]{--portrait-zoom:1.85;--portrait-x:47%;--portrait-y:30%}
+[data-portrait-pilot="Goli & 02-R0"]{--portrait-zoom:1.1;--portrait-x:65%;--portrait-y:30%}
+.pilot-badge img{object-position:var(--portrait-x) var(--portrait-y);transform:scale(var(--portrait-zoom));transform-origin:var(--portrait-x) var(--portrait-y)}
+.pilot-portrait-preview{position:fixed;z-index:20;width:248px;max-width:calc(100vw - 24px);padding:0;overflow:hidden;border:1px solid var(--line);border-radius:4px;background:var(--panel);box-shadow:0 10px 30px #183d4033;pointer-events:none;animation:pilot-preview-reveal .46s cubic-bezier(.16,1,.3,1) both}
+.pilot-portrait-preview[hidden]{display:none}
+.pilot-preview-image{position:relative;aspect-ratio:4/3;overflow:hidden;background:#e6dfc8}
+.pilot-preview-image img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:var(--preview-position,50% 35%);transform:scale(var(--preview-zoom,1));transform-origin:var(--preview-position,50% 35%)}
+.pilot-portrait-preview>span{display:block;padding:9px 5px 5px;font:500 12px/1.4 'Space Grotesk',sans-serif;color:var(--text)}
+
+.pilot-preview-info{padding:14px 16px}
+.pilot-preview-info .eyebrow{font-size:9px;color:var(--accent);margin-bottom:5px}
+.pilot-preview-info>strong{display:block;font:500 25px/1.2 Antonio,sans-serif;color:var(--text)}
+.pilot-preview-stats{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin:14px 0 10px;padding-top:11px;border-top:1px solid var(--line)}
+.pilot-preview-stats span{display:block;font-size:10px;color:var(--muted)}
+.pilot-preview-stats b{display:block;margin-top:4px;font:500 24px/1.1 Antonio,sans-serif;color:var(--text)}
+.pilot-preview-info>small{font-size:10px;color:var(--muted)}
+@keyframes pilot-preview-reveal{from{opacity:0;transform:translateX(var(--preview-slide,-18px)) translateY(5px) scale(.97)}to{opacity:1;transform:translateX(0) translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.pilot-portrait-preview{animation:none}}
+
+.pilot-preview-image[data-preview-pilot="Shade"]{--preview-position:43% 25%;--preview-zoom:1.12}
+.pilot-preview-image[data-preview-pilot="Nik Skandaro"]{--preview-position:48% 28%}
+.pilot-preview-image[data-preview-pilot="Malis Vazosk"]{--preview-position:50% 30%}
+.pilot-preview-image[data-preview-pilot="Goli & 02-R0"]{--preview-position:60% 25%}
+
+.pilot-portrait-preview.closing{animation:pilot-preview-dismiss .22s ease-in both}
+@keyframes pilot-preview-dismiss{from{opacity:1;transform:translateX(0) scale(1)}to{opacity:0;transform:translateX(var(--preview-slide,-18px)) scale(.98)}}
+@media(prefers-reduced-motion:reduce){.pilot-portrait-preview,.pilot-portrait-preview.closing{animation:none}}
+
+/* Standings hover previews a rival's signal without changing selection. */
+.rival-line path{transition:stroke .28s ease,stroke-opacity .28s ease,stroke-width .28s ease}
+.rival-line circle{transition:r .28s ease,fill .28s ease,opacity .28s ease}
+.rival-line.pilot-hovered path{stroke:#cfa876;stroke-opacity:.85;stroke-width:2.2}
+.rival-line.pilot-hovered circle{r:3.5px;opacity:.9}
+.rival-line.pilot-hovered circle[data-nonfinish="false"]{fill:#cfa876}
+@media(prefers-reduced-motion:reduce){.rival-line path,.rival-line circle{transition:none}}
+
+.rival-point{cursor:pointer;pointer-events:all;outline:none}
+.pilot-graph-hovered:not(.pilot-selected){background:#eadbbd66}
+.pilot-graph-hovered .pilot-select{color:var(--accent)}
+.pilot-preview-initials{display:grid;place-items:center;height:100%;font:500 54px Antonio,sans-serif;color:var(--muted)}
+
+[data-portrait-pilot="Sen Fira"]{--portrait-zoom:1.85;--portrait-x:44%;--portrait-y:25%}
+.pilot-preview-image[data-preview-pilot="Sen Fira"]{--preview-position:44% 23%;--preview-zoom:1.08}
+
+[data-portrait-pilot="Ary Quill"]{--portrait-zoom:1.7;--portrait-x:43%;--portrait-y:27%}
+.pilot-preview-image[data-preview-pilot="Ary Quill"]{--preview-position:43% 25%;--preview-zoom:1.04}
+
+.pilot-badge[data-portrait-pilot="Sen Fira"] img{filter:brightness(1.4) contrast(.92)}

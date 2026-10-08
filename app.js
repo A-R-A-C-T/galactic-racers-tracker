@@ -2,6 +2,7 @@
 'use strict';
 const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory','laps','phase','direction'];
 const directionLabel=r=>r.direction==='Forward'?'D1':r.direction==='Reverse'?'D2':'';
+const PILOT_PORTRAITS={'Ary Quill':'assets/pilots/ary-quill.png','Sen Fira':'assets/pilots/sen-fira.png','Shade':'assets/pilots/shade.png','Malis Vazosk':'assets/pilots/malis-vazosk.png','Nik Skandaro':'assets/pilots/nik-skandaro.png','Goli & 02-R0':'assets/pilots/goli-02-r0.png'};
 const VEHICLES=['Land speeder','Speeder bike','Skim speeder','Podracer'];
 const PLANETS=['Jakku','Lantaana','Ando Prime','Sentinel One','Crait','Tatooine','Derven Akos'];
 const POINTS=[12,11,10,9,8,7,6,5,4,3,2,1],KEY='galactic-racing-v2';
@@ -20,11 +21,13 @@ const averageValue=p=>(p.finishes??p.races)?p.total/(p.finishes??p.races):Infini
 const averageFinish=p=>Number.isFinite(averageValue(p))?averageValue(p).toFixed(2):'—';
 const newPilotStats=pilot=>({pilot,races:0,finishes:0,dqs:0,wins:0,podiums:0,total:0,points:0});
 function addResult(p,r){p.races++;p.points+=resultPoints(r);if(isDNF(r))p.dqs++;if(isUnclassified(r))return;p.finishes++;p.wins+=r.position===1;p.podiums+=r.position<=3;p.total+=r.position;}
+// Kestar is a guest rival: retain heat results, but exclude him from the custom league.
+const isLeaguePilot=p=>p.pilot!=='Kestar Bool';
 const compareStandings=(a,b)=>b.points-a.points||b.wins-a.wins||(averageValue(a)===averageValue(b)?0:averageValue(a)-averageValue(b))||a.pilot.localeCompare(b.pilot);
 // Archive convention: Gregorian year - 2016, plus actual UTC day of year.
 function galacticDate(date){const d=new Date(date+'T00:00:00Z');const year=d.getUTCFullYear();const day=Math.floor((d-Date.UTC(year,0,1))/86400000)+1;const era=year-2016;return Math.abs(era)+' '+(era>=0?'ABY':'BBY')+' · '+String(day).padStart(3,'0');}
 const time=ms=>{if(ms===null||ms===undefined||ms==='')return '—';const n=Math.round(ms);return `${Math.floor(n/60000)}:${String(Math.floor(n/1000)%60).padStart(2,'0')}.${String(n%1000).padStart(3,'0')}`;};
-let selectedPilot='Shade',recordLaps=null;
+let selectedPilot='Shade',recordLaps=null,pilotPreviewTimer,pilotPreviewCloseTimer,hoveredGraphPilot=null;
 let rows=window.DEMO_RESULTS.map(r=>({...r})),page=0,ascending=false;
 function validate(data){
  if(!data.length)throw Error('The CSV contains no results.');
@@ -124,7 +127,7 @@ function planetVisitTrend(data){
  if(end<0)return {planet:null,changes:new Map()};
  let start=end;while(start>0&&events[start-1].planet===events[end].planet&&events[start-1].tour===events[end].tour)start--;
  const earlier=new Set(events.slice(0,start).map(r=>r.race_id));
- function ranks(results){const stats=new Map();for(const r of results){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}return new Map([...stats.values()].sort(compareStandings).map((p,i)=>[p.pilot,i+1]));}
+ function ranks(results){const stats=new Map();for(const r of results){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}return new Map([...stats.values()].filter(isLeaguePilot).sort(compareStandings).map((p,i)=>[p.pilot,i+1]));}
  const before=ranks(data.filter(r=>earlier.has(r.race_id))),after=ranks(data),changes=new Map();
  for(const [pilot,rank] of after)changes.set(pilot,before.has(pilot)?before.get(pilot)-rank:null);
  return {planet:events[end].planet,changes};
@@ -140,6 +143,7 @@ function reserveDashboardSpace(){
 }
 function render(){
  $('pilot').value=selectedPilot;
+ hidePilotPreview();
  saveFilters();
  reserveDashboardSpace();
  renderFilterSummaries();
@@ -147,7 +151,7 @@ function render(){
  $('dossier-tour').textContent=latestRace?'LATEST TOUR: '+latestRace.tour.replace(/^Tour\s*/i,''):'AWAITING TOUR RECORDS';
  const data=filtered(),groups=new Map();
  data.forEach(r=>{if(!groups.has(r.pilot))groups.set(r.pilot,newPilotStats(r.pilot));addResult(groups.get(r.pilot),r);});
- const leaders=[...groups.values()].sort(compareStandings);
+ const leaders=[...groups.values()].filter(isLeaguePilot).sort(compareStandings);
  const own=groups.get(selectedPilot);
  $('race-count').textContent=new Set(data.map(r=>r.race_id)).size;
  $('result-count').textContent=`${data.length} results · ${groups.size} pilots`;
@@ -185,7 +189,7 @@ function render(){
  if(typeof syncPlanetDisplay==='function')syncPlanetDisplay();
  const visitTrend=planetVisitTrend(data);
  $('standings-trend-caption').textContent=visitTrend.planet?'Rank change during the latest planet visit · '+visitTrend.planet:'Awaiting planet visit records';
- $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge">${p.pilot==='Shade'?'SH':esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td><td class="standings-trend">${trendMarkup(visitTrend.changes.get(p.pilot))}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">No results match these filters.</td></tr>';
+ $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge" data-portrait-pilot="${esc(p.pilot)}">${PILOT_PORTRAITS[p.pilot]?'<img src="'+esc(PILOT_PORTRAITS[p.pilot])+'" alt="" loading="lazy" decoding="async">':p.pilot==='Shade'?'SH':esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td><td class="standings-trend">${trendMarkup(visitTrend.changes.get(p.pilot))}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">No results match these filters.</td></tr>';
  renderTelemetry(data);
  renderSectors();
  const isGauntlet=r=>r.category==='Galactic Gauntlet';
@@ -222,7 +226,7 @@ function groupRaceResults(data){
 }
 function computeLeagueChanges(data){
  const standings=new Map(),changes=new Map();
- const rankSnapshot=standings=>new Map([...standings.values()].sort(compareStandings).map((p,i)=>[p.pilot,i+1]));
+ const rankSnapshot=standings=>new Map([...standings.values()].filter(isLeaguePilot).sort(compareStandings).map((p,i)=>[p.pilot,i+1]));
  for(const race of groupRaceResults(data)){
   const beforeRanks=rankSnapshot(standings);
   const incomplete=race.results.every(r=>r.category!=='Galactic Gauntlet'&&isDQ(r)&&!Number.isInteger(r.position));
@@ -276,8 +280,9 @@ function renderTelemetry(data){
  const x=r=>48+order.get(r.race_id)*420/Math.max(events.length-1,1),y=v=>v===null?195:gap?30+v/max*140:30+(v-1)/(max-1)*140;
  const ticks=gap?[0,max/2,max]:[1,Math.ceil(max/2),max];
  function path(results){let previous=-2;return results.map(r=>{const i=order.get(r.race_id);if(chartMissing(r)){previous=-2;return '';}const command=i===previous+1?'L':'M';previous=i;return `${command}${x(r)},${y(val(r))}`;}).join(' ');}
- const rivals=$('compare-grid').checked?pilots.filter(p=>p!==selectedPilot).map(p=>{const results=recent.filter(r=>r.pilot===p).sort((a,b)=>order.get(a.race_id)-order.get(b.race_id));return `<g class="rival-line" data-pilot="${esc(p)}"><path d="${path(results)}" fill="none" stroke="#99b7b0" stroke-opacity=".35" stroke-width="1.5"/>${results.map(r=>`<circle cx="${x(r)}" cy="${y(val(r))}" r="2" fill="${isDQ(r)?'#eb8f86':'#99b7b0'}" opacity=".5"/>`).join('')}</g>`;}).join(''):'';
+ const rivals=$('compare-grid').checked?pilots.filter(p=>p!==selectedPilot).map(p=>{const results=recent.filter(r=>r.pilot===p).sort((a,b)=>order.get(a.race_id)-order.get(b.race_id));return `<g class="rival-line" data-pilot="${esc(p)}"><path d="${path(results)}" fill="none" stroke="${p==='Shade'?'#c89453':'#99b7b0'}" stroke-opacity="${p==='Shade'?'.65':'.35'}" stroke-width="1.5"/>${results.map(r=>`<circle class="rival-point" data-pilot="${esc(p)}" data-race-id="${esc(r.race_id)}" tabindex="0" role="button" aria-label="Select ${esc(p)}, ${esc(r.race_id)}, ${esc(positionLabel(r))}" stroke="transparent" stroke-width="12" data-nonfinish="${isDQ(r)}" cx="${x(r)}" cy="${y(val(r))}" r="2" fill="${isDQ(r)?'#eb8f86':p==='Shade'?'#c89453':'#99b7b0'}" opacity="${p==='Shade'?'.7':'.5'}"/>`).join('')}</g>`;}).join(''):'';
  $('trend').innerHTML=events.length?`<svg viewBox="0 0 510 240" aria-label="Telemetry for ${esc(selectedPilot)}; ${gap?'time gap':'finish positions'} across the last ${events.length} heats">${ticks.map(p=>`<line x1="40" y1="${y(p)}" x2="485" y2="${y(p)}" stroke="#778a8740" stroke-dasharray="3 5"/><text x="2" y="${y(p)+5}" fill="#b8cbc7" font-size="13">${gap?p.toFixed(1)+'%':'P'+p}</text>`).join('')}<line x1="40" y1="183" x2="485" y2="183" stroke="#778a8740"/><text x="2" y="200" fill="#eb8f86" font-size="12">DNF</text>${rivals}<path class="chart-line" d="${path(telemetry)}" fill="none" stroke="#efbd70" stroke-width="3"/>${telemetry.map((r,i)=>`<g class="chart-point ${isDQ(r)?'dq':''} ${r.race_id===selectedRace?'selected':''}" tabindex="0" role="button" aria-label="Inspect ${esc(selectedPilot)}, ${esc(r.race_id)}, ${esc(r.planet)}, ${positionLabel(r)}" data-index="${i}"><circle class="hit" cx="${x(r)}" cy="${y(val(r))}" r="15" fill="transparent"/><circle class="dot" cx="${x(r)}" cy="${y(val(r))}" r="5" fill="${isDQ(r)?'#eb8f86':'#efbd70'}" stroke="#153e43" stroke-width="2"/></g>`).join('')}${events.map(r=>`<text x="${x(r)}" y="230" text-anchor="middle" font-size="12" fill="#b8cbc7">${esc(r.race_id.slice(-3))}</text>`).join('')}</svg>`:'<div class="empty">No signals in this sector.</div>';
+ highlightGraphPilot(hoveredGraphPilot);
  const selected=telemetry.findIndex(r=>r.race_id===selectedRace);showSignal(selected>=0?selected:telemetry.length-1);
  if(events.length&&!telemetry.length)$('race-detail').innerHTML=`No recorded finishes for ${esc(selectedPilot)} in these heats. Select another racer or clear your filters.`;
 }
@@ -361,3 +366,57 @@ if(typeof requestAnimationFrame==='function'){
  if(document.readyState==='complete')Promise.resolve(document.fonts?.ready).then(center);
  else window.addEventListener?.('load',()=>Promise.resolve(document.fonts?.ready).then(center),{once:true});
 }
+
+function hidePilotPreview(){clearTimeout(pilotPreviewTimer);const preview=$('pilot-portrait-preview');if(preview&&!preview.hidden&&!preview.classList.contains('closing')){preview.classList.add('closing');clearTimeout(pilotPreviewCloseTimer);pilotPreviewCloseTimer=setTimeout(()=>{preview.hidden=true;preview.classList.remove('closing');},220);}for(const button of [...($('leaders').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[]),...($('trend').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[])])button.removeAttribute('aria-describedby');}
+function showPilotPreview(button){
+ const preview=$('pilot-portrait-preview');if(!preview||!button.getBoundingClientRect)return;clearTimeout(pilotPreviewCloseTimer);preview.classList.remove('closing');const pilot=button.dataset.pilot,path=PILOT_PORTRAITS[pilot];const rect=button.getBoundingClientRect();if(rect.bottom<0||rect.top>window.innerHeight)return;
+ const data=filtered(),stats=new Map();for(const r of data){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}const personal=stats.get(pilot)||newPilotStats(pilot),rank=[...stats.values()].filter(isLeaguePilot).sort(compareStandings).findIndex(p=>p.pilot===pilot),role=pilot==='Shade'?'BACKED PILOT':isLeaguePilot({pilot})?'LEAGUE PILOT':'GUEST RIVAL';
+ preview.innerHTML='<div class="pilot-preview-image" data-preview-pilot="'+esc(pilot)+'">'+(path?'<img src="'+esc(path)+'" alt="">':'<span class="pilot-preview-initials">'+esc(pilot==='Shade'?'SH':pilot.split(' ').map(part=>part[0]).join(''))+'</span>')+'</div><div class="pilot-preview-info"><div class="eyebrow">'+role+'</div><strong>'+esc(pilot)+'</strong><div class="pilot-preview-stats"><div><span>League position</span><b>'+(rank>=0?'P'+(rank+1):'—')+'</b></div><div><span>Points</span><b>'+personal.points+'</b></div><div><span>Podiums</span><b>'+personal.podiums+'</b></div></div><small>'+personal.races+' recorded starts · Current filters</small></div>';
+ preview.style.animation='none';preview.hidden=false;const box=preview.getBoundingClientRect(),left=rect.right+12+box.width<=window.innerWidth-12?rect.right+12:Math.max(12,rect.left-box.width-12);preview.style.left=left+'px';preview.style.top=Math.max(12,Math.min(rect.top-24,window.innerHeight-box.height-12))+'px';preview.style.setProperty('--preview-slide',left>=rect.right?' -18px':'18px');void preview.offsetWidth;preview.style.animation='';button.setAttribute('aria-describedby','pilot-portrait-preview');}
+
+function setupPilotPreview(){
+ if(!document.querySelector)return;
+ const leaders=$('leaders'),preview=$('pilot-portrait-preview');if(!preview)return;
+ leaders.addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const button=e.target.closest?.('.pilot-select');if(!button||button.contains(e.relatedTarget))return;hidePilotPreview();pilotPreviewTimer=setTimeout(()=>showPilotPreview(button),180);});
+ leaders.addEventListener('pointerout',e=>{const button=e.target.closest?.('.pilot-select');if(button&&!button.contains(e.relatedTarget))hidePilotPreview();});
+ leaders.addEventListener('focusin',e=>{const button=e.target.closest?.('.pilot-select');if(button){hidePilotPreview();showPilotPreview(button);}});
+ leaders.addEventListener('focusout',hidePilotPreview);document.addEventListener('scroll',hidePilotPreview,true);window.addEventListener('resize',hidePilotPreview);document.addEventListener('keydown',e=>{if(e.key==='Escape')hidePilotPreview();});
+}
+setupPilotPreview();
+
+function highlightGraphPilot(pilot){
+ hoveredGraphPilot=pilot;
+ for(const row of $('leaders').querySelectorAll?.('tr[data-pilot]')||[])row.classList.toggle('pilot-graph-hovered',row.dataset.pilot===pilot&&pilot!==selectedPilot);
+ for(const line of $('trend').querySelectorAll?.('.rival-line')||[])line.classList.toggle('pilot-hovered',line.dataset.pilot===pilot);
+}
+function setupStandingsGraphHover(){
+ const leaders=$('leaders');
+ leaders.addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const row=e.target.closest?.('tr[data-pilot]');if(row&&!row.contains(e.relatedTarget))highlightGraphPilot(row.dataset.pilot);});
+ leaders.addEventListener('pointerout',e=>{const row=e.target.closest?.('tr[data-pilot]');if(row&&!row.contains(e.relatedTarget))highlightGraphPilot(null);});
+ leaders.addEventListener('focusin',e=>{const row=e.target.closest?.('tr[data-pilot]');if(row)highlightGraphPilot(row.dataset.pilot);});
+ leaders.addEventListener('focusout',e=>{const row=e.relatedTarget?.closest?.('tr[data-pilot]');highlightGraphPilot(row?.dataset.pilot||null);});
+}
+setupStandingsGraphHover();
+
+function setupGraphPilotInteraction(){
+ const graph=$('trend'),point=e=>e.target.closest?.('.rival-point');
+ function preview(dot){highlightGraphPilot(dot.dataset.pilot);}
+ function leave(){highlightGraphPilot(null);}
+ function select(dot){selectedPilot=dot.dataset.pilot;selectedRace=dot.dataset.raceId;hoveredGraphPilot=null;render();const button=[...($('leaders').querySelectorAll?.('.pilot-select')||[])].find(n=>n.dataset.pilot===selectedPilot);button?.scrollIntoView({block:'nearest',inline:'nearest'});}
+ graph.addEventListener('pointerover',e=>{const dot=point(e);if(dot&&e.pointerType!=='touch')preview(dot);});
+ graph.addEventListener('pointerout',e=>{if(point(e))leave();});
+ graph.addEventListener('focusin',e=>{const dot=point(e);if(dot)highlightGraphPilot(dot.dataset.pilot);});
+ graph.addEventListener('focusout',e=>{if(point(e))leave();});
+ graph.addEventListener('click',e=>{const dot=point(e);if(dot)select(dot);});
+ graph.addEventListener('keydown',e=>{const dot=point(e);if(!dot)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();select(dot);}else if(e.key==='Escape')leave();});
+}
+setupGraphPilotInteraction();
+
+function setupLegendGraphHover(){
+ const legend=$('chart-legend');
+ legend.addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const button=e.target.closest?.('[data-pilot]');if(button&&!button.contains(e.relatedTarget))highlightGraphPilot(button.dataset.pilot);});
+ legend.addEventListener('pointerout',e=>{const button=e.target.closest?.('[data-pilot]');if(button&&!button.contains(e.relatedTarget))highlightGraphPilot(null);});
+ legend.addEventListener('focusin',e=>{const button=e.target.closest?.('[data-pilot]');if(button)highlightGraphPilot(button.dataset.pilot);});
+ legend.addEventListener('focusout',e=>{const button=e.relatedTarget?.closest?.('[data-pilot]');highlightGraphPilot(button?.dataset.pilot||null);});
+}
+setupLegendGraphHover();
