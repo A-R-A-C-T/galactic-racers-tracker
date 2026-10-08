@@ -13,11 +13,11 @@ context.csv=fs.readFileSync(file('data/races.csv'),'utf8');const existing=vm.run
 const next=1+Math.max(0,...existing.map(r=>Number(r.race_id.match(/^GR-(\d+)$/)?.[1]||0))),id='GR-'+String(next).padStart(3,'0');
 context.added=incoming.results.map(r=>({race_id:id,date:incoming.date,tour:incoming.tour,category:incoming.category,planet:incoming.planet,track:incoming.track??'',...r,vehicle:r.pilot==='Shade'?incoming.vehicle??'':''}));
 const added=vm.runInContext('validate(added)',context);
-assert.ok(!existing.some(r=>r.tour===incoming.tour&&r.planet===incoming.planet&&r.track===(incoming.track??'')&&r.category===incoming.category&&added.every(v=>existing.some(other=>other.race_id===r.race_id&&other.pilot===v.pilot&&other.position===v.position&&other.time_ms===v.time_ms))),'This race is already logged.');
+assert.ok(!existing.some(r=>r.tour===incoming.tour&&r.planet===incoming.planet&&r.track===(incoming.track??'')&&r.category===incoming.category&&added.every(v=>existing.some(other=>other.race_id===r.race_id&&other.pilot===v.pilot&&other.position===v.position&&other.time_ms===v.time_ms&&other.status===v.status))),'This race is already logged.');
 context.combined=[...existing,...added];const combined=vm.runInContext('validate(combined)',context),cols=vm.runInContext('COLS',context);
 const cell=v=>/[",\r\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':String(v);
 const csv=[cols.join(','),...combined.map(r=>cols.map(c=>cell(r[c])).join(','))].join('\n')+'\n';
 context.output=csv;assert.equal(vm.runInContext('parseCSV(output).length',context),combined.length);
 fs.writeFileSync(file('data/races.csv'),csv);fs.writeFileSync(file('data/races.js'),'window.DEMO_RESULTS = '+JSON.stringify(combined)+';\n');
 fs.writeFileSync(file('data/last-logged-race.json'),JSON.stringify({race_id:id,...incoming},null,2)+'\n');
-const shade=added.find(r=>r.pilot==='Shade');console.log('Logged '+id+': '+added.length+' racers'+(shade?', Shade '+(shade.position==='DQ'?'DQ':'P'+shade.position):'')+'.');
+const shade=added.find(r=>r.pilot==='Shade');console.log('Logged '+id+': '+added.length+' racers'+(shade?', Shade '+vm.runInContext('positionLabel(added.find(r=>r.pilot==="Shade"))',context):'')+'.');

@@ -1,13 +1,25 @@
-race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Fola Kanjen,1,147820,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Goli & 02-R0,2,148140,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Nik Skandaro,3,148270,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Soren Zaks,4,148470,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Ary Quill,5,148550,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Biddy Blas,6,149420,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Malis Vazosk,7,149890,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Lyren Shok,8,152530,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim speeder
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Sen Fira,10,158310,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Katja Mox,11,159890,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Griff Halloran,12,160390,
+race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle,status
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Fola Kanjen,1,147820,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Goli & 02-R0,2,148140,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Nik Skandaro,3,148270,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Soren Zaks,4,148470,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Ary Quill,5,148550,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Biddy Blas,6,149420,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Malis Vazosk,7,149890,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Lyren Shok,8,152530,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim speeder,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Sen Fira,10,158310,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Katja Mox,11,159890,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Griff Halloran,12,160390,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Fola Kanjen,1,165530,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Goli & 02-R0,2,166580,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Sen Fira,3,167220,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Nik Skandaro,4,,,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Lyren Shok,5,,,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Shade,6,,Skim speeder,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Malis Vazosk,7,,,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Griff Halloran,8,,,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Soren Zaks,9,,,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Ary Quill,10,,,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Katja Mox,11,,,DQ
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Biddy Blas,12,,,DQ

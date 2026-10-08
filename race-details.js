@@ -1,15 +1,15 @@
 'use strict';
 const raceDialog=$('race-dialog');let raceCloseTimer;
 function openRaceDialog(raceId){
- const results=rows.filter(r=>r.race_id===raceId).sort((a,b)=>Number(isDQ(a))-Number(isDQ(b))||(isDQ(a)?a.pilot.localeCompare(b.pilot):a.position-b.position));
+ const results=rows.filter(r=>r.race_id===raceId).sort(resultOrder);
  if(!results.length)return;
  clearTimeout(raceCloseTimer);raceDialog.classList.remove('closing');
- const race=results[0],shade=results.find(r=>r.pilot==='Shade'),movement=computeLeagueChanges(rows).get(raceId)?.pilots,winner=results.find(r=>r.position===1);
+ const race=results[0],shade=results.find(r=>r.pilot==='Shade'),movement=computeLeagueChanges(rows).get(raceId)?.pilots,winner=results.find(r=>r.position===1&&!isDQ(r));
  $('race-dialog-code').textContent=raceId+' / '+galacticDate(race.date);
  $('race-dialog-title').textContent=race.planet+' / '+(race.track||'Circuit uncharted');
  $('race-dialog-meta').textContent=race.tour+' · '+race.category;
  $('race-dialog-stats').innerHTML=`<div><span>RECORDED RACERS</span><strong>${results.length}</strong></div><div><span>WINNER</span><strong>${winner?esc(winner.pilot):'Not recorded'}</strong></div><div><span>TRACKED PILOT / SHADE</span><strong>${shade?positionLabel(shade):'Not recorded'}</strong></div>`;
- $('race-dialog-results').innerHTML=results.map(r=>`<tr class="${r.pilot==='Shade'?'self':''}"><td>${finishBadge(r)}</td><td>${esc(r.pilot)}${r.pilot==='Shade'?'<span class="you">TRACKED PILOT</span>':''}</td><td>${time(r.time_ms)}</td><td class="race-points">+${points(r.position)}</td><td class="race-league-change">${leagueChangeMarkup(movement?.get(r.pilot))}</td></tr>`).join('');
+ $('race-dialog-results').innerHTML=results.map(r=>`<tr class="${r.pilot==='Shade'?'self':''}"><td>${finishBadge(r)}</td><td>${esc(r.pilot)}${r.pilot==='Shade'?'<span class="you">TRACKED PILOT</span>':''}</td><td>${isDQ(r)&&Number.isInteger(r.position)?'Eliminated':time(r.time_ms)}</td><td class="race-points">+${resultPoints(r)}</td><td class="race-league-change">${leagueChangeMarkup(movement?.get(r.pilot))}</td></tr>`).join('');
  if(!raceDialog.open)raceDialog.showModal();
 }
 function closeRaceDialog(){

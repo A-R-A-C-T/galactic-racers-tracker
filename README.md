@@ -8,7 +8,7 @@ Welcome to the Galactic League leaderboards! A homemade HTML dashboard for track
 
 1. Clone or download this repository.
 2. Open `index.html` in a browser. No installation, build step, or account is required.
-3. Choose **Import CSV** to load your results. [data/races.csv](data/races.csv) contains a first recorded race and provides the column format.
+3. Choose **Import CSV** to load your results. [data/races.csv](data/races.csv) contains recorded races and provides the column format.
 
 The dashboard also works on static hosting such as GitHub Pages or GitLab Pages. Its core functionality works offline; optional Google Fonts load when connected, with system-font fallbacks.
 
@@ -47,12 +47,13 @@ GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim s
 | position | Positive integer, or DQ for a non-finish. |
 | time_ms | Total race time in milliseconds; may be blank for DQ. |
 | vehicle | Shade’s vehicle; blank for other racers. |
+| status | Optional: DQ for a ranked Eliminator elimination; otherwise blank. |
 
 Shade’s supported vehicles are Land speeder, Speeder bike, Skim speeder, and Podracer. A vehicle filter retains the full recorded grid from events in which Shade used that vehicle. Pilot names and numeric finishing positions must be unique within a race. Multiple racers may have DQ. Imports validate the complete file before replacing the browser dataset.
 
 ### DQ and incomplete results
 
-DQ covers elimination, crashing out, or not starting. It earns **zero points** and appears below classified finishers. If only Shade’s DQ is available, log only that row; unknown rival results and times are never invented.
+DQ covers elimination, crashing out, or not starting. It earns **zero points**. In Eliminator events, keep the displayed numeric position and set `status` to `DQ`: the popup preserves that order and shows a red badge such as **P6 · DQ**. Unranked DQs use `position=DQ` and appear below ranked racers. Older CSV files without a status column remain supported. If only Shade’s DQ is available, log only that row; unknown rival results and times are never invented.
 
 Average finish uses completed finishes only. Podium rate and DQ rate use all recorded starts. DQs are excluded from track records and time-gap calculations and appear in a separate telemetry lane. After a DQ-only event, that tour’s league movement reads **Incomplete results** until the missing results are supplied. Standings otherwise reflect recorded results only.
 
