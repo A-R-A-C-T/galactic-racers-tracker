@@ -97,3 +97,9 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .filter-summary{min-height:21px}.filter-summary[hidden]{display:block;visibility:hidden}
 .record-planet-heading{padding:18px 23px;background:#f9f3e6}
 @media(prefers-reduced-motion:reduce){.record>*,.record:after{transition:none}}
+
+/* Planet selectors share the site's bordered control language. */
+.record-planet-heading button{padding:9px 15px;border:1px solid var(--line);border-radius:4px;background:var(--panel);font:500 16px 'Space Grotesk','Segoe UI',sans-serif;color:var(--text);transition:background .18s ease,border-color .18s ease,color .18s ease}
+.record-planet-heading button:hover{background:#eddfc7;border-color:#b5603080}
+.record-planet-heading button[aria-pressed="true"]{background:#eddfc7;border-color:var(--accent);color:var(--accent)}
+.archive{display:flex;flex-direction:column}.archive>.pagination{margin-top:auto}
