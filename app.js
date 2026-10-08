@@ -28,7 +28,7 @@ const compareStandings=(a,b)=>b.points-a.points||b.wins-a.wins||(averageValue(a)
 function galacticDate(date){const d=new Date(date+'T00:00:00Z');const year=d.getUTCFullYear();const day=Math.floor((d-Date.UTC(year,0,1))/86400000)+1;const era=year-2016;return Math.abs(era)+' '+(era>=0?'ABY':'BBY')+' · '+String(day).padStart(3,'0');}
 const time=ms=>{if(ms===null||ms===undefined||ms==='')return '—';const n=Math.round(ms);return `${Math.floor(n/60000)}:${String(Math.floor(n/1000)%60).padStart(2,'0')}.${String(n%1000).padStart(3,'0')}`;};
 let selectedPilot='Shade',recordLaps=null,pilotPreviewTimer,pilotPreviewCloseTimer,hoveredGraphPilot=null;
-let rows=window.DEMO_RESULTS.map(r=>({...r})),page=0,ascending=false;
+let rows=window.DEMO_RESULTS.map(r=>({...r})),page=0,ascending=false,archiveSort='date';
 function validate(data){
  if(!data.length)throw Error('The CSV contains no results.');
  const events=new Map();
@@ -49,6 +49,7 @@ function validate(data){
   else if(['DQ','DNF'].includes(r.position.toUpperCase()))r.position=r.position.toUpperCase();
   else {if(!/^\d+$/.test(r.position)||!Number.isSafeInteger(Number(r.position))||Number(r.position)<1)throw Error(`Row ${i+2}: position must be a positive integer, DNF or DQ.`);r.position=Number(r.position);}
   if(r.status==='DQ'&&Number.isInteger(r.position)&&r.category==='Eliminator')r.status='ELIMINATED';
+  if(r.position==='DQ'&&(!r.status||r.status==='DQ')){r.position='DNF';r.status='DNF';}
   if(r.status==='ELIMINATED'&&r.category!=='Galactic Gauntlet'&&(r.category!=='Eliminator'||!Number.isInteger(r.position)))throw Error(`Row ${i+2}: elimination requires an Eliminator position.`);
   if(r.status==='CLEARED'&&r.category!=='Galactic Gauntlet')throw Error(`Row ${i+2}: CLEARED is only supported for Galactic Gauntlet.`);
   if(r.time_ms===''&&(isDQ(r)||r.category==='Galactic Gauntlet'))r.time_ms='';
@@ -238,25 +239,49 @@ function computeLeagueChanges(data){
  return changes;
 }
 function leagueChangeMarkup(change){
- if(change?.incomplete)return '<span class="league-move neutral">Incomplete results</span>'; 
+ if(change?.incomplete)return '<span class="league-move neutral">No telemetry</span>';
  if(!change||change.after===null)return '<span class="league-move neutral">Not ranked</span>';
  if(change.before===null)return `<span class="league-move neutral">Initial ranking</span><span class="subline">League P${change.after}</span>`;
  const delta=change.delta,kind=delta>0?'gained':delta<0?'lost':'unchanged',label=delta?`${Math.abs(delta)} league position${Math.abs(delta)===1?'':'s'} ${kind}`:'League position unchanged';
  return `<span class="league-move ${kind}" aria-label="${label}"><span aria-hidden="true">${delta>0?'↗':delta<0?'↘':'—'}${delta?' '+Math.abs(delta):''}</span></span><span class="subline">P${change.before} → P${change.after}</span>`;
 }
+const archiveSortLabels={heat:'HEAT',date:'DATE',tour:'TOUR / CATEGORY',track:'PLANET / TRACK',winner:'WINNER',position:'POSITION'};
+function compareArchive(a,b){
+ const text=(x,y)=>String(x||'').localeCompare(String(y||''),undefined,{numeric:true,sensitivity:'base'}),direction=ascending?1:-1;
+ const value=r=>{if(archiveSort==='winner')return r.results.find(x=>x.position===1&&!isDQ(x))?.pilot;const x=r.results.find(x=>x.pilot===selectedPilot);return x?.category!=='Galactic Gauntlet'&&Number.isInteger(x?.position)?x.position:null;};
+ let difference=0;
+ if(archiveSort==='date')difference=text(a.date,b.date);
+ else if(archiveSort==='heat')difference=text(a.race_id,b.race_id);
+ else if(archiveSort==='tour')difference=text(a.tour,b.tour)||text(a.category,b.category)||text(a.subcategory,b.subcategory);
+ else if(archiveSort==='track')difference=text(a.planet,b.planet)||text(a.track,b.track)||text(a.direction,b.direction);
+ else {const x=value(a),y=value(b);if(x==null||y==null)return x==null&&y!=null?1:y==null&&x!=null?-1:direction*text(a.race_id,b.race_id);difference=archiveSort==='winner'?text(x,y):x-y;}
+ return direction*(difference||text(a.race_id,b.race_id));
+}
 function renderArchive(data=filtered()){
  const q=$('search').value.trim().toLowerCase(),changes=computeLeagueChanges(filtered());
- const list=groupRaceResults(data).filter(r=>r.results.some(result=>COLS.some(c=>String(result[c]).toLowerCase().includes(q)))||galacticDate(r.date).toLowerCase().includes(q)).sort((a,b)=>(ascending?1:-1)*(a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id)));
+ const list=groupRaceResults(data).filter(r=>r.results.some(result=>COLS.some(c=>String(result[c]).toLowerCase().includes(q)))||galacticDate(r.date).toLowerCase().includes(q)).sort(compareArchive);
  const pages=Math.max(1,Math.ceil(list.length/10));page=Math.min(page,pages-1);
  $('archive-count').textContent=`/ ${list.length} HEATS`;
- $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),selectedResult=r.results.find(result=>result.pilot===selectedPilot);return `<tr${i>0?(list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':list[page*10+i-1].planet!==r.planet?' class="planet-boundary"':''):''} data-category="${esc(r.category)}" data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)}<span class="subline">${r.category==='Galactic Gauntlet'?(selectedResult?esc(positionLabel(selectedResult)):'No telemetry'):r.results.length+' recorded racers'}</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</span></td><td>${r.category==='Galactic Gauntlet'?'<span class="gauntlet-planet">'+esc(r.planet)+'</span>':esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}${directionLabel(r)?' · '+directionLabel(r):''}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td>${leagueChangeMarkup(changes.get(r.race_id))}</td></tr>`;}).join('')||'<tr><td colspan="6" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
+ $('archive-league-heading').textContent='LEAGUE CHANGE';
+ $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),selectedResult=r.results.find(result=>result.pilot===selectedPilot);return `<tr${i>0?(list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':list[page*10+i-1].planet!==r.planet?' class="planet-boundary"':''):''} data-category="${esc(r.category)}" data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)}<span class="subline">${r.category==='Galactic Gauntlet'?(selectedResult?esc(positionLabel(selectedResult)):'No telemetry'):r.results.length+' recorded racers'}</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</span></td><td>${r.category==='Galactic Gauntlet'?'<span class="gauntlet-planet">'+esc(r.planet)+'</span>':esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}${directionLabel(r)?' · '+directionLabel(r):''}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td class="archive-pilot-position">${selectedResult?(selectedResult.category==='Galactic Gauntlet'?'<span class="muted" title="'+esc(positionLabel(selectedResult))+'">—</span>':Number.isInteger(selectedResult.position)?'<span class="archive-position '+(isDQ(selectedResult)?'archive-position-outcome':'')+'" title="'+esc(positionLabel(selectedResult))+'">P'+selectedResult.position+'</span>':'<span class="archive-position archive-position-outcome">'+esc(resultStatus(selectedResult))+'</span>'):'<span class="muted" title="No telemetry" aria-label="No telemetry">—</span>'}</td><td>${leagueChangeMarkup(changes.get(r.race_id)?.pilots.get(selectedPilot))}</td></tr>`;}).join('')||'<tr><td colspan="7" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
  $('page-info').textContent=list.length?`${page*10+1}–${Math.min(page*10+10,list.length)} of ${list.length} heats`:'0 heats';$('prev').disabled=page===0;$('next').disabled=page>=pages-1;
 }
 for(const key of ['tour','planet','track','direction','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{recordLaps=null;if(key==='planet')options();page=0;render();});
 $('clear').onclick=()=>{selectedPilot='Shade';$('pilot').value='Shade';recordLaps=null;for(const k of ['tour','planet','track','direction','category','subcategory','vehicle'])$(k).value='';$('search').value='';page=0;render();};
 $('sidebar-clear').onclick=()=>$('clear').onclick();
+function handleFilterShortcut(event){
+ if(event.defaultPrevented||event.repeat||event.isComposing||event.ctrlKey||event.metaKey||event.altKey||event.shiftKey||event.key?.toLowerCase()!=='r')return;
+ const target=event.target;
+ if(target?.isContentEditable||target?.closest?.('input,textarea,select,[contenteditable="true"],[role="textbox"]')||$('race-dialog')?.open)return;
+ event.preventDefault();$('clear').onclick();
+}
+document.addEventListener?.('keydown',handleFilterShortcut);
 $('search').oninput=()=>{page=0;renderArchive();};$('prev').onclick=()=>{page--;renderArchive();};$('next').onclick=()=>{page++;renderArchive();};
-$('sort-date').onclick=()=>{ascending=!ascending;page=0;$('sort-date').textContent='LOGGED '+(ascending?'↑':'↓');renderArchive();};
+for(const [key,label] of Object.entries(archiveSortLabels))$('sort-'+key).onclick=()=>{
+ ascending=archiveSort===key?!ascending:false;archiveSort=key;page=0;
+ for(const [column,title] of Object.entries(archiveSortLabels)){const button=$('sort-'+column);button.textContent=title;button.parentElement?.setAttribute('aria-sort',column===key?(ascending?'ascending':'descending'):'none');}
+ renderArchive();
+};
 $('import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>10000000)throw Error('CSV is too large. Please use a file below 10 MB.');const imported=parseCSV(await file.text());rows=imported;recordLaps=null;page=0;options();render();if(persist())$('message').textContent=`Imported ${rows.length} results from ${file.name}. Saved in this browser.`;}catch(err){$('message').textContent='Import failed: '+err.message;}finally{e.target.value='';}};
 $('export').onclick=()=>{const data=filtered();const cell=v=>{const s=String(v);return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};const csv=[COLS.join(','),...data.map(r=>COLS.map(k=>cell(r[k])).join(','))].join('\r\n');const url=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='galactic-racing-results.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('message').textContent=`Exported ${data.length} filtered results. Archive search does not affect export.`;};
 $('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CSV first if you want to keep it.'))return;rows=window.DEMO_RESULTS.map(r=>({...r}));recordLaps=null;page=0;for(const k of ['tour','planet','track','direction','category','subcategory','vehicle'])$(k).value='';$('search').value='';options();render();if(persist())$('message').textContent='Initial archive restored.';};

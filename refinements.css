@@ -113,7 +113,7 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 
 .standings-notes{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 24px;padding:16px 24px}.standings-notes .footnote{margin:0;padding:0}.standings-notes #standings-trend-caption{margin:0 0 0 auto;text-align:right}
 
-#archive .race-open:hover{color:inherit;background:none;border-color:transparent;transform:none;box-shadow:none}.archive #sort-date:hover{color:var(--muted);background:none;border-color:transparent;transform:none;box-shadow:none}
+#archive .race-open:hover{color:inherit;background:none;border-color:transparent;transform:none;box-shadow:none}
 
 .finish.finish-eliminated,.finish.finish-dnf{display:inline-grid;width:max-content;text-align:left;white-space:nowrap;font-size:13px;line-height:1.4;font-variant-numeric:tabular-nums}
 .finish.finish-eliminated:before{content:"P12 · Eliminated"}.finish.finish-dnf:before{content:"P12 · DNF"}
@@ -247,3 +247,28 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .result-pilot-name{transition:color .28s ease}
 .result-pilot-name:hover,.result-pilot-name:focus-visible{color:var(--accent)}
 @media(prefers-reduced-motion:reduce){.result-pilot-name{transition:none}}
+
+.race-modal-results .pilot-selected .result-pilot-name{color:var(--accent)}
+
+.archive-position-heading,.archive-pilot-position{width:1%;white-space:nowrap}
+.archive-phase,.archive-position-outcome{color:#a66356}
+.archive-pilot-position{font-variant-numeric:tabular-nums}
+
+.archive-position-heading,.archive-pilot-position{text-align:center}
+
+/* Keep result columns stable across pages, including text-only league changes. */
+.archive table{table-layout:fixed;width:100%;min-width:1050px}
+.archive th:nth-child(1){width:16%}
+.archive th:nth-child(2){width:12%}
+.archive th:nth-child(3){width:17%}
+.archive th:nth-child(4){width:20%}
+.archive th:nth-child(5){width:16%}
+.archive th:nth-child(6){width:6%}
+.archive th:nth-child(7){width:13%}
+.archive th button{padding:0;border:0;font:inherit;color:inherit;white-space:nowrap}
+.archive th button:hover{color:var(--accent);background:none;transform:none;box-shadow:none}
+
+.archive th button{position:relative;padding-inline-end:14px}
+.archive th button::after{position:absolute;right:0;width:10px;text-align:center;content:'•';color:var(--muted)}
+.archive th[aria-sort="ascending"] button::after{content:'↑';color:inherit}
+.archive th[aria-sort="descending"] button::after{content:'↓';color:inherit}
