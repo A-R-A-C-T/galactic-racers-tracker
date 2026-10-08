@@ -1,6 +1,6 @@
 /* Offline-first CSV racing archive. No build step or server required. */
 'use strict';
-const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory'];
+const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory','laps'];
 const VEHICLES=['Land speeder','Speeder bike','Skim speeder','Podracer'];
 const PLANETS=['Jakku','Lantaana','Ando Prime','Sentinel One','Crait','Tatooine','Derven Akos'];
 const POINTS=[12,11,10,9,8,7,6,5,4,3,2,1],KEY='galactic-racing-v2';
@@ -25,8 +25,9 @@ function validate(data){
  if(!data.length)throw Error('The CSV contains no results.');
  const events=new Map();
  data.forEach((r,i)=>{
-  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status','subcategory'].includes(c)))if(r[c]===undefined||String(r[c]).trim()==='')throw Error(`Row ${i+2}: missing ${c}.`);
+  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status','subcategory','laps'].includes(c)))if(r[c]===undefined||String(r[c]).trim()==='')throw Error(`Row ${i+2}: missing ${c}.`);
   for(const c of COLS)r[c]=String(r[c]??'').trim();
+  if(r.laps!==''){if(!/^\d+$/.test(r.laps)||!Number.isSafeInteger(Number(r.laps))||Number(r.laps)<1)throw Error(`Row ${i+2}: laps must be a positive integer or blank.`);r.laps=Number(r.laps);}
   if(r.category==='Sprint')r.category='Race';else if(r.category==='Circuit race')r.category='Eliminator';
   if(r.vehicle&&r.pilot!=='Shade')throw Error(`Row ${i+2}: vehicle is recorded only for Shade.`);
   if(r.vehicle&&!VEHICLES.includes(r.vehicle))throw Error(`Row ${i+2}: unknown vehicle type.`);
@@ -38,7 +39,7 @@ function validate(data){
   else {if(!/^\d+$/.test(r.position)||!Number.isSafeInteger(Number(r.position))||Number(r.position)<1)throw Error(`Row ${i+2}: position must be a positive integer or DQ.`);r.position=Number(r.position);}
   if(r.time_ms===''&&isDQ(r))r.time_ms='';
   else {if(!/^\d+$/.test(r.time_ms)||!Number.isSafeInteger(Number(r.time_ms))||Number(r.time_ms)<1)throw Error(`Row ${i+2}: time_ms must be a positive integer, or blank for DQ.`);r.time_ms=Number(r.time_ms);}
-  const meta=JSON.stringify([r.date,r.tour,r.category,r.planet,r.track,r.subcategory]);
+  const meta=JSON.stringify([r.date,r.tour,r.category,r.planet,r.track,r.subcategory,r.laps]);
   if(!events.has(r.race_id))events.set(r.race_id,{meta,pilots:new Set(),positions:new Set()});
   const e=events.get(r.race_id);
   if(e.meta!==meta)throw Error(`Row ${i+2}: inconsistent details for race ${r.race_id}.`);
@@ -58,7 +59,7 @@ function parseCSV(text){
  }
  if(quoted)throw Error('Unclosed quoted field.');row.push(field);if(row.some(v=>v.trim()))result.push(row);
  const headers=(result.shift()||[]).map(v=>v.trim());
- if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status','subcategory'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
+ if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status','subcategory','laps'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
  return validate(result.map((cells,i)=>{if(cells.length!==headers.length)throw Error(`Row ${i+2}: incorrect number of columns.`);return Object.fromEntries(COLS.map(c=>[c,headers.includes(c)?cells[headers.indexOf(c)]:'']));}));
 }
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(rows));return true;}catch{$('message').textContent='Loaded for this session. Browser storage unavailable; export CSV to keep your data.';return false;}}
@@ -109,8 +110,8 @@ function render(){
  $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge">${esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">TRACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No results match these filters.</td></tr>';
  renderTelemetry(data);
  renderSectors();
- const records=new Map();data.filter(r=>r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
- $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record" data-planet="${esc(r.planet)}"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ const records=new Map();data.filter(r=>r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
+ $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record" data-planet="${esc(r.planet)}"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}${r.laps?' · '+r.laps+' laps':''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
  renderArchive(data);
 }
 function groupRaceResults(data){

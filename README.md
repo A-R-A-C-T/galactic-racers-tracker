@@ -42,6 +42,7 @@ GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim s
 | tour | Tour identifier, for example Tour 01. |
 | category | Event category, initially Race or Eliminator. |
 | subcategory | Optional course description, such as Point-to-point. Missing columns and blank values are supported. |
+| laps | Optional positive lap count for a circuit; shown in race details, with no lap filter. Track records separate different lap counts. |
 | planet | Planet name. |
 | track | Circuit name; may be blank until known. |
 | pilot | Racer name, spelled consistently across events. |
