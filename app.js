@@ -74,9 +74,9 @@ function options(){
  $('vehicle').innerHTML='<option value="">All vehicles</option>'+VEHICLES.map(v=>`<option value="${v}">${v}</option>`).join('');
  for(const key of ['tour','planet','track','category','subcategory']){
   const old=$(key).value;
-  const values=key==='planet'?[...PLANETS.slice(0,-1),...new Set(rows.map(r=>r.planet).filter(p=>!PLANETS.includes(p))),PLANETS.at(-1)]:[...new Set((key==='category'?['Race','Eliminator',...rows.map(r=>r.category)]:rows.map(r=>r[key])).filter(Boolean))].sort();
+  const values=key==='planet'?[...PLANETS.slice(0,-1),...new Set(rows.map(r=>r.planet).filter(p=>!PLANETS.includes(p))),PLANETS.at(-1)]:[...new Set((key==='category'?['Race','Eliminator',...rows.map(r=>r.category)]:(key==='track'&&$('planet').value?rows.filter(r=>r.planet===$('planet').value):rows).map(r=>r[key])).filter(Boolean))].sort();
   $(key).innerHTML=`<option value="">All ${key==='category'?'categories':key==='subcategory'?'subcategories':key+'s'}</option>`+(key==='subcategory'?'<option value="__unspecified__">Unspecified</option>':'')+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
-  $(key).value=[...$(key).options].some(o=>o.value===old)?old:'';
+  $(key).value=values.includes(old)||(key==='subcategory'&&old==='__unspecified__')?old:'';
  }
 }
 function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(!vehicle||races.has(r.race_id))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
@@ -152,7 +152,7 @@ function renderArchive(data=filtered()){
  $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),shade=r.results.find(result=>result.pilot==='Shade');return `<tr${i>0&&list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':''} data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)} ↗<span class="subline">${r.results.length} recorded racers</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</span></td><td>${esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td>${leagueChangeMarkup(changes.get(r.race_id))}</td></tr>`;}).join('')||'<tr><td colspan="6" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
  $('page-info').textContent=list.length?`${page*10+1}–${Math.min(page*10+10,list.length)} of ${list.length} races`:'0 races';$('prev').disabled=page===0;$('next').disabled=page>=pages-1;
 }
-for(const key of ['tour','planet','track','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{page=0;render();});
+for(const key of ['tour','planet','track','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{if(key==='planet')options();page=0;render();});
 $('clear').onclick=()=>{for(const k of ['tour','planet','track','category','subcategory','vehicle'])$(k).value='';$('search').value='';page=0;render();};
 $('search').oninput=()=>{page=0;renderArchive();};$('prev').onclick=()=>{page--;renderArchive();};$('next').onclick=()=>{page++;renderArchive();};
 $('sort-date').onclick=()=>{ascending=!ascending;page=0;$('sort-date').textContent='LOGGED '+(ascending?'↑':'↓');renderArchive();};
@@ -198,9 +198,9 @@ $('leaders').onclick=selectRacer;$('chart-legend').onclick=selectRacer;
 function inspectSignal(e){const node=e.target.closest?.('[data-index]');if(node)showSignal(Number(node.dataset.index));}
 $('trend').onmouseover=inspectSignal;$('trend').onfocusin=inspectSignal;$('trend').onclick=inspectSignal;
 $('trend').onkeydown=e=>{const node=e.target.closest?.('[data-index]');if(!node)return;let index=Number(node.dataset.index);if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();index=Math.max(0,Math.min(telemetry.length-1,index+(e.key==='ArrowRight'?1:-1)));$('trend').querySelector(`[data-index="${index}"]`).focus();showSignal(index);}else if(e.key==='Enter'||e.key===' '){e.preventDefault();showSignal(index);}};
-$('sectors').onclick=e=>{const node=e.target.closest?.('[data-planet]');if(!node)return;$('planet').value=$('planet').value===node.dataset.planet?'':node.dataset.planet;page=0;render();};
+$('sectors').onclick=e=>{const node=e.target.closest?.('[data-planet]');if(!node)return;$('planet').value=$('planet').value===node.dataset.planet?'':node.dataset.planet;options();page=0;render();};
 options();render();
 
-function selectTrackRecord(e){const card=e.target.closest?.('.record[data-track]');if(!card)return;const active=$('planet').value===card.dataset.planet&&$('track').value===card.dataset.track;$('planet').value=active?'':card.dataset.planet;$('track').value=active?'':card.dataset.track;page=0;render();const replacement=[...$('records').querySelectorAll('.record[data-track]')].find(n=>n.dataset.planet===card.dataset.planet&&n.dataset.track===card.dataset.track);replacement?.focus();}
+function selectTrackRecord(e){const card=e.target.closest?.('.record[data-track]');if(!card)return;const active=$('planet').value===card.dataset.planet&&$('track').value===card.dataset.track;$('planet').value=active?'':card.dataset.planet;options();$('track').value=active?'':card.dataset.track;page=0;render();const replacement=[...$('records').querySelectorAll('.record[data-track]')].find(n=>n.dataset.planet===card.dataset.planet&&n.dataset.track===card.dataset.track);replacement?.focus();}
 $('records').addEventListener('click',selectTrackRecord);
 $('records').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.record[data-track]')){e.preventDefault();selectTrackRecord(e);}});
