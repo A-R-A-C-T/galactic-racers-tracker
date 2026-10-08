@@ -88,6 +88,15 @@ function render(){
  $('dq-count-label').textContent=selectedPilot.toUpperCase()+' / TOTAL DQ';$('dq-rate-label').textContent=selectedPilot.toUpperCase()+' / DQ RATE';
  $('dq-count').textContent=own?own.dqs:0;$('dq-rate').textContent=own?Math.round(own.dqs/own.races*100)+'%':'—';
  $('dq-detail').textContent=own?own.dqs+' DQs from '+own.races+' starts':'No recorded starts';
+ const vehicleUsage=new Map();
+ if(selectedPilot==='Shade')for(const r of data.filter(r=>r.pilot==='Shade'&&r.vehicle))vehicleUsage.set(r.vehicle,(vehicleUsage.get(r.vehicle)||0)+1);
+ for(const kind of ['least','most']){
+  $('vehicle-'+kind+'-label').textContent=selectedPilot.toUpperCase()+' / '+(kind==='least'?'LEAST':'MOST')+' COMMON VEHICLE';
+  const counts=[...vehicleUsage.values()],count=counts.length?(kind==='least'?Math.min(...counts):Math.max(...counts)):0;
+  const vehicles=[...vehicleUsage].filter(([,n])=>n===count).map(([v])=>v).sort();
+  $('vehicle-'+kind).textContent=vehicles.length?vehicles.join(' / '):'No telemetry';
+  $('vehicle-'+kind+'-count').textContent=vehicles.length?count+' recorded start'+(count===1?'':'s')+(vehicles.length>1?' each · tied':''):selectedPilot==='Shade'?'No vehicle records in this selection':'Vehicle data unavailable';
+ }
  if(typeof syncPlanetDisplay==='function')syncPlanetDisplay();
  $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge">${esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">TRACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No results match these filters.</td></tr>';
  renderTelemetry(data);
