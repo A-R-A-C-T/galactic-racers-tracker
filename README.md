@@ -49,15 +49,15 @@ GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim s
 | position | Positive integer, or DQ for a non-finish. |
 | time_ms | Total race time in milliseconds; may be blank for DQ. |
 | vehicle | Shade’s vehicle; blank for other racers. |
-| status | Optional: DQ for a ranked Eliminator elimination; otherwise blank. |
+| status | Optional: DNF or ELIMINATED; blank for a timed finish. Legacy DQ is supported. |
 
 Shade’s supported vehicles are Land speeder, Speeder bike, Skim speeder, and Podracer. A vehicle filter retains the full recorded grid from events in which Shade used that vehicle. Pilot names and numeric finishing positions must be unique within a race. Multiple racers may have DQ. Imports validate the complete file before replacing the browser dataset.
 
-### DQ and incomplete results
+### Result outcomes
 
-DQ covers elimination, crashing out, or not starting. It earns **zero points**. In Eliminator events, keep the displayed numeric position and set `status` to `DQ`: the popup preserves that order and shows a red badge such as **P6 · DQ**. Unranked DQs use `position=DQ` and appear below ranked racers. Older CSV files without a status column remain supported. If only Shade’s DQ is available, log only that row; unknown rival results and times are never invented.
+DNF and ELIMINATED are separate statuses. Both earn zero points and may have blank times. Keep the displayed numeric position where known. Eliminated racers retain classified positions, which count toward average finish; DNFs do not. The DNF total and rate count only explicit DNFs, with all recorded starts as the rate denominator. Legacy DQ data remains readable; ranked Eliminator DQs are interpreted as eliminations, while unclassified DQs remain unspecified non-finishes and are not counted as confirmed DNFs.
 
-Average finish uses completed finishes only. Podium rate and DQ rate use all recorded starts. DQs are excluded from track records and time-gap calculations and appear in a separate telemetry lane. A DQ-only event displays **Incomplete results** for that event alone. Later races show league movement based on all recorded points; unknown rival results are not invented. Standings otherwise reflect recorded results only.
+A race with only an unranked non-finish can be logged without inventing rival results. Rival points stay unchanged, and subsequent races continue the recorded league. Only the affected event shows incomplete results. Track records and time-gap calculations exclude all non-finish statuses; position telemetry retains classified eliminations.
 
 ## Scoring and league movement
 

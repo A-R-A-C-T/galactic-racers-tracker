@@ -5,16 +5,20 @@ const VEHICLES=['Land speeder','Speeder bike','Skim speeder','Podracer'];
 const PLANETS=['Jakku','Lantaana','Ando Prime','Sentinel One','Crait','Tatooine','Derven Akos'];
 const POINTS=[12,11,10,9,8,7,6,5,4,3,2,1],KEY='galactic-racing-v2';
 const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const isDQ=r=>String(r.position).toUpperCase()==='DQ'||r.status==='DQ';
+const resultStatus=r=>r.status==='DQ'&&Number.isInteger(r.position)&&r.category==='Eliminator'?'ELIMINATED':r.status||(['DQ','DNF'].includes(String(r.position).toUpperCase())?String(r.position).toUpperCase():'');
+const isDNF=r=>resultStatus(r)==='DNF';
+const isEliminated=r=>resultStatus(r)==='ELIMINATED';
+const isDQ=r=>['DQ','DNF','ELIMINATED'].includes(resultStatus(r));
+const isUnclassified=r=>isDNF(r)||resultStatus(r)==='DQ';
 const points=p=>p==='DQ'?0:POINTS[p-1]||0;
 const resultPoints=r=>isDQ(r)?0:points(r.position);
 const resultOrder=(a,b)=>(Number.isInteger(a.position)?a.position:Infinity)-(Number.isInteger(b.position)?b.position:Infinity)||a.pilot.localeCompare(b.pilot);
-const positionLabel=r=>isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · DQ':'DQ'):'P'+r.position;
+const positionLabel=r=>isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · ':'')+(isEliminated(r)?'Eliminated':resultStatus(r)):'P'+r.position;
 const finishBadge=r=>'<span class="finish '+(isDQ(r)?'dq':r.position<=3?'podium medal-'+r.position:'')+'">'+positionLabel(r)+'</span>';
 const averageValue=p=>(p.finishes??p.races)?p.total/(p.finishes??p.races):Infinity;
 const averageFinish=p=>Number.isFinite(averageValue(p))?averageValue(p).toFixed(2):'—';
 const newPilotStats=pilot=>({pilot,races:0,finishes:0,dqs:0,wins:0,podiums:0,total:0,points:0});
-function addResult(p,r){p.races++;p.points+=resultPoints(r);if(isDQ(r)){p.dqs++;return;}p.finishes++;p.wins+=r.position===1;p.podiums+=r.position<=3;p.total+=r.position;}
+function addResult(p,r){p.races++;p.points+=resultPoints(r);if(isDNF(r))p.dqs++;if(isUnclassified(r))return;p.finishes++;p.wins+=r.position===1;p.podiums+=r.position<=3;p.total+=r.position;}
 const compareStandings=(a,b)=>b.points-a.points||b.wins-a.wins||(averageValue(a)===averageValue(b)?0:averageValue(a)-averageValue(b))||a.pilot.localeCompare(b.pilot);
 // Archive convention: Gregorian year - 2016, plus actual UTC day of year.
 function galacticDate(date){const d=new Date(date+'T00:00:00Z');const year=d.getUTCFullYear();const day=Math.floor((d-Date.UTC(year,0,1))/86400000)+1;const era=year-2016;return Math.abs(era)+' '+(era>=0?'ABY':'BBY')+' · '+String(day).padStart(3,'0');}
@@ -33,10 +37,12 @@ function validate(data){
   if(r.vehicle&&!VEHICLES.includes(r.vehicle))throw Error(`Row ${i+2}: unknown vehicle type.`);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!Number.isFinite(Date.parse(r.date+'T00:00:00Z'))||new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)!==r.date)throw Error(`Row ${i+2}: use a valid YYYY-MM-DD date.`);
   r.status=r.status.toUpperCase();
-  if(r.status&&!['DQ'].includes(r.status))throw Error(`Row ${i+2}: status must be blank or DQ.`);
+  if(r.status&&!['DQ','DNF','ELIMINATED'].includes(r.status))throw Error(`Row ${i+2}: status must be blank, DNF, ELIMINATED or legacy DQ.`);
   if(r.status==='DQ'&&r.category!=='Eliminator'&&r.position.toUpperCase()!=='DQ')throw Error(`Row ${i+2}: ranked DQ is supported only for Eliminator events.`);
-  if(r.position.toUpperCase()==='DQ')r.position='DQ';
-  else {if(!/^\d+$/.test(r.position)||!Number.isSafeInteger(Number(r.position))||Number(r.position)<1)throw Error(`Row ${i+2}: position must be a positive integer or DQ.`);r.position=Number(r.position);}
+  if(['DQ','DNF'].includes(r.position.toUpperCase()))r.position=r.position.toUpperCase();
+  else {if(!/^\d+$/.test(r.position)||!Number.isSafeInteger(Number(r.position))||Number(r.position)<1)throw Error(`Row ${i+2}: position must be a positive integer, DNF or DQ.`);r.position=Number(r.position);}
+  if(r.status==='DQ'&&Number.isInteger(r.position)&&r.category==='Eliminator')r.status='ELIMINATED';
+  if(r.status==='ELIMINATED'&&(r.category!=='Eliminator'||!Number.isInteger(r.position)))throw Error(`Row ${i+2}: elimination requires an Eliminator position.`);
   if(r.time_ms===''&&isDQ(r))r.time_ms='';
   else {if(!/^\d+$/.test(r.time_ms)||!Number.isSafeInteger(Number(r.time_ms))||Number(r.time_ms)<1)throw Error(`Row ${i+2}: time_ms must be a positive integer, or blank for DQ.`);r.time_ms=Number(r.time_ms);}
   const meta=JSON.stringify([r.date,r.tour,r.category,r.planet,r.track,r.subcategory,r.laps]);
@@ -94,9 +100,9 @@ function render(){
  $('average').textContent=own?averageFinish(own):'—';$('podium').textContent=own?`${Math.round(own.podiums/own.races*100)}%`:'—';$('podium-detail').textContent=own?`${own.podiums} podiums from ${own.races} races`:`No races for ${selectedPilot}`;
  $('average-label').textContent=selectedPilot.toUpperCase()+' / AVG. FINISH';$('podium-label').textContent=selectedPilot.toUpperCase()+' / PODIUM RATE';
  $('average-caption').textContent='Completed finishes only · lower is better';
- $('dq-count-label').textContent=selectedPilot.toUpperCase()+' / TOTAL DQ';$('dq-rate-label').textContent=selectedPilot.toUpperCase()+' / DQ RATE';
+ $('dq-count-label').textContent=selectedPilot.toUpperCase()+' / TOTAL DNF';$('dq-rate-label').textContent=selectedPilot.toUpperCase()+' / DNF RATE';
  $('dq-count').textContent=own?own.dqs:0;$('dq-rate').textContent=own?Math.round(own.dqs/own.races*100)+'%':'—';
- $('dq-detail').textContent=own?own.dqs+' DQs from '+own.races+' starts':'No recorded starts';
+ $('dq-detail').textContent=own?own.dqs+' DNFs from '+own.races+' starts':'No recorded starts';
  const vehicleUsage=new Map();
  if(selectedPilot==='Shade')for(const r of data.filter(r=>r.pilot==='Shade'&&r.vehicle))vehicleUsage.set(r.vehicle,(vehicleUsage.get(r.vehicle)||0)+1);
  for(const kind of ['least','most']){
@@ -167,13 +173,14 @@ function renderTelemetry(data){
  $('chart-legend').innerHTML=pilots.map(p=>`<button class="legend-pilot ${p===selectedPilot?'selected':''}" data-pilot="${esc(p)}" aria-pressed="${p===selectedPilot}">${esc(p)}</button>`).join('');
  const gap=$('chart-mode').value==='gap',fastest=new Map();
  for(const r of recent.filter(r=>!isDQ(r)&&r.time_ms))fastest.set(r.race_id,Math.min(fastest.get(r.race_id)??Infinity,r.time_ms));
- const val=r=>isDQ(r)?null:gap?(r.time_ms/fastest.get(r.race_id)-1)*100:r.position;
- const max=gap?Math.max(1,Math.ceil(Math.max(0,...recent.filter(r=>!isDQ(r)).map(val)))):Math.max(8,...recent.filter(r=>!isDQ(r)).map(r=>r.position));
+ const chartMissing=r=>gap?(isDQ(r)||!r.time_ms):isUnclassified(r);
+ const val=r=>chartMissing(r)?null:gap?(r.time_ms/fastest.get(r.race_id)-1)*100:r.position;
+ const max=gap?Math.max(1,Math.ceil(Math.max(0,...recent.filter(r=>!chartMissing(r)).map(val)))):Math.max(8,...recent.filter(r=>!chartMissing(r)).map(r=>r.position));
  const x=r=>48+order.get(r.race_id)*420/Math.max(events.length-1,1),y=v=>v===null?195:gap?30+v/max*140:30+(v-1)/(max-1)*140;
  const ticks=gap?[0,max/2,max]:[1,Math.ceil(max/2),max];
- function path(results){let previous=-2;return results.map(r=>{const i=order.get(r.race_id);if(isDQ(r)){previous=-2;return '';}const command=i===previous+1?'L':'M';previous=i;return `${command}${x(r)},${y(val(r))}`;}).join(' ');}
+ function path(results){let previous=-2;return results.map(r=>{const i=order.get(r.race_id);if(chartMissing(r)){previous=-2;return '';}const command=i===previous+1?'L':'M';previous=i;return `${command}${x(r)},${y(val(r))}`;}).join(' ');}
  const rivals=$('compare-grid').checked?pilots.filter(p=>p!==selectedPilot).map(p=>{const results=recent.filter(r=>r.pilot===p).sort((a,b)=>order.get(a.race_id)-order.get(b.race_id));return `<g class="rival-line" data-pilot="${esc(p)}"><path d="${path(results)}" fill="none" stroke="#99b7b0" stroke-opacity=".35" stroke-width="1.5"/>${results.map(r=>`<circle cx="${x(r)}" cy="${y(val(r))}" r="2" fill="${isDQ(r)?'#eb8f86':'#99b7b0'}" opacity=".5"/>`).join('')}</g>`;}).join(''):'';
- $('trend').innerHTML=events.length?`<svg viewBox="0 0 510 240" aria-label="Race telemetry for ${esc(selectedPilot)}; ${gap?'time gap':'finish positions'} across the last ${events.length} races">${ticks.map(p=>`<line x1="40" y1="${y(p)}" x2="485" y2="${y(p)}" stroke="#778a8740" stroke-dasharray="3 5"/><text x="2" y="${y(p)+5}" fill="#b8cbc7" font-size="13">${gap?p.toFixed(1)+'%':'P'+p}</text>`).join('')}<line x1="40" y1="183" x2="485" y2="183" stroke="#778a8740"/><text x="2" y="200" fill="#eb8f86" font-size="12">DQ</text>${rivals}<path class="chart-line" d="${path(telemetry)}" fill="none" stroke="#efbd70" stroke-width="3"/>${telemetry.map((r,i)=>`<g class="chart-point ${isDQ(r)?'dq':''} ${r.race_id===selectedRace?'selected':''}" tabindex="0" role="button" aria-label="Inspect ${esc(selectedPilot)}, ${esc(r.race_id)}, ${esc(r.planet)}, ${positionLabel(r)}" data-index="${i}"><circle class="hit" cx="${x(r)}" cy="${y(val(r))}" r="15" fill="transparent"/><circle class="dot" cx="${x(r)}" cy="${y(val(r))}" r="5" fill="${isDQ(r)?'#eb8f86':'#efbd70'}" stroke="#153e43" stroke-width="2"/></g>`).join('')}${events.map(r=>`<text x="${x(r)}" y="230" text-anchor="middle" font-size="12" fill="#b8cbc7">${esc(r.race_id.slice(-3))}</text>`).join('')}</svg>`:'<div class="empty">No signals in this sector.</div>';
+ $('trend').innerHTML=events.length?`<svg viewBox="0 0 510 240" aria-label="Race telemetry for ${esc(selectedPilot)}; ${gap?'time gap':'finish positions'} across the last ${events.length} races">${ticks.map(p=>`<line x1="40" y1="${y(p)}" x2="485" y2="${y(p)}" stroke="#778a8740" stroke-dasharray="3 5"/><text x="2" y="${y(p)+5}" fill="#b8cbc7" font-size="13">${gap?p.toFixed(1)+'%':'P'+p}</text>`).join('')}<line x1="40" y1="183" x2="485" y2="183" stroke="#778a8740"/><text x="2" y="200" fill="#eb8f86" font-size="12">DNF</text>${rivals}<path class="chart-line" d="${path(telemetry)}" fill="none" stroke="#efbd70" stroke-width="3"/>${telemetry.map((r,i)=>`<g class="chart-point ${isDQ(r)?'dq':''} ${r.race_id===selectedRace?'selected':''}" tabindex="0" role="button" aria-label="Inspect ${esc(selectedPilot)}, ${esc(r.race_id)}, ${esc(r.planet)}, ${positionLabel(r)}" data-index="${i}"><circle class="hit" cx="${x(r)}" cy="${y(val(r))}" r="15" fill="transparent"/><circle class="dot" cx="${x(r)}" cy="${y(val(r))}" r="5" fill="${isDQ(r)?'#eb8f86':'#efbd70'}" stroke="#153e43" stroke-width="2"/></g>`).join('')}${events.map(r=>`<text x="${x(r)}" y="230" text-anchor="middle" font-size="12" fill="#b8cbc7">${esc(r.race_id.slice(-3))}</text>`).join('')}</svg>`:'<div class="empty">No signals in this sector.</div>';
  const selected=telemetry.findIndex(r=>r.race_id===selectedRace);showSignal(selected>=0?selected:telemetry.length-1);
  if(events.length&&!telemetry.length)$('race-detail').innerHTML=`No recorded finishes for ${esc(selectedPilot)} in these races. Select another racer or clear your filters.`;
 }
