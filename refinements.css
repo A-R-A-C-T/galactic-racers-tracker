@@ -122,3 +122,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .finish.podium{display:inline-grid;width:max-content;text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums}.finish.podium:before{content:"P3";visibility:hidden;grid-area:1/1;pointer-events:none}
 
 .finish:not(.dq){display:inline-grid;width:max-content;text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums}.finish:not(.dq):before{content:"P12";visibility:hidden;grid-area:1/1;pointer-events:none}
+
+.finish.finish-single:before{content:"P9"}.finish.finish-double:before{content:"P12"}

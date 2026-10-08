@@ -14,7 +14,7 @@ const points=p=>p==='DQ'?0:POINTS[p-1]||0;
 const resultPoints=r=>isDQ(r)?0:points(r.position);
 const resultOrder=(a,b)=>(Number.isInteger(a.position)?a.position:Infinity)-(Number.isInteger(b.position)?b.position:Infinity)||a.pilot.localeCompare(b.pilot);
 const positionLabel=r=>isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · ':'')+(isEliminated(r)?'Eliminated':resultStatus(r)):'P'+r.position;
-const finishBadge=r=>'<span class="finish '+(isDQ(r)?'dq '+(isEliminated(r)?'finish-eliminated':isDNF(r)?'finish-dnf':'finish-legacy'):r.position<=3?'podium medal-'+r.position:'')+'"><span class="finish-label">'+positionLabel(r)+'</span></span>';
+const finishBadge=r=>'<span class="finish '+(isDQ(r)?'dq '+(isEliminated(r)?'finish-eliminated':isDNF(r)?'finish-dnf':'finish-legacy'):(r.position<=3?'podium medal-'+r.position:'')+(r.position>=10?' finish-double':' finish-single'))+'"><span class="finish-label">'+positionLabel(r)+'</span></span>';
 const averageValue=p=>(p.finishes??p.races)?p.total/(p.finishes??p.races):Infinity;
 const averageFinish=p=>Number.isFinite(averageValue(p))?averageValue(p).toFixed(2):'—';
 const newPilotStats=pilot=>({pilot,races:0,finishes:0,dqs:0,wins:0,podiums:0,total:0,points:0});
