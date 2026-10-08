@@ -134,11 +134,13 @@ function render(){
  const records=new Map();rows.filter(r=>(!$('planet').value||r.planet===$('planet').value)&&r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
  const recordKey=r=>JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',String(r.laps??'')]);
  const matchingRecords=new Set(data.map(recordKey));
- $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>{
+ const renderRecord=r=>{
   const match=matchingRecords.has(recordKey(r)),selected=match&&$('track').value===r.track;
   const config=[r.category,r.subcategory,r.laps?r.laps+' laps':''].filter(Boolean).join(' · ');
   return `<article class="record ${match?'':'record-muted'}" role="button" tabindex="0" aria-label="Select ${esc(r.track)}, ${esc(config)}, ${esc(r.planet)}" aria-pressed="${selected}" data-planet="${esc(r.planet)}" data-track="${esc(r.track)}" data-category="${esc(r.category)}" data-subcategory="${esc(r.subcategory||'')}" data-laps="${r.laps||''}"><div class="eyebrow">${esc(r.planet)}</div><h3>${esc(r.track)} <span class="record-config">${esc(config)}</span></h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`;
- }).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ };
+ const recordPlanets=[...PLANETS,...new Set([...records.values()].map(r=>r.planet).filter(p=>!PLANETS.includes(p)))];
+ $('records').innerHTML=recordPlanets.map(planet=>{const cards=[...records.values()].filter(r=>r.planet===planet).sort((a,b)=>a.track.localeCompare(b.track)||a.category.localeCompare(b.category)||Number(a.laps)-Number(b.laps));if(!cards.length)return '';return `<section class="record-planet-group" aria-label="${esc(planet)} track records"><h3 class="record-planet-heading"><button type="button" data-record-planet="${esc(planet)}" aria-pressed="${$('planet').value===planet}">${esc(planet)} <span aria-hidden="true">↗</span></button></h3><div class="record-grid">${cards.map(renderRecord).join('')}</div></section>`;}).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
 
  renderArchive(data);
 }
@@ -234,3 +236,5 @@ function selectTrackRecord(e){
 
 $('records').addEventListener('click',selectTrackRecord);
 $('records').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.record[data-track]')){e.preventDefault();selectTrackRecord(e);}});
+
+$('records').addEventListener('click',e=>{const heading=e.target.closest?.('[data-record-planet]');if(!heading)return;const planet=heading.dataset.recordPlanet;$('planet').value=$('planet').value===planet?'':planet;recordLaps=null;options();page=0;render();const replacement=[...$('records').querySelectorAll('[data-record-planet]')].find(n=>n.dataset.recordPlanet===planet);replacement?.focus();});
