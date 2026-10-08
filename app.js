@@ -110,7 +110,7 @@ function render(){
  renderTelemetry(data);
  renderSectors();
  const records=new Map();data.filter(r=>r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
- $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record" data-planet="${esc(r.planet)}"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
  renderArchive(data);
 }
 function groupRaceResults(data){

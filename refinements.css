@@ -57,3 +57,13 @@ body:has(#race-dialog[open]){overflow:hidden}
 .panel-head .filter-summary{margin:8px 0 0;color:#72776d;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0;max-width:65ch;overflow-wrap:anywhere}.filter-summary[hidden]{display:none}
 
 .race-modal-head .filter-summary{margin:8px 0 0;color:#72776d;font-size:13px;font-weight:400;line-height:1.6;letter-spacing:0;overflow-wrap:anywhere}
+
+/* Quiet planet rim accents; preserve the existing pale artwork and shading. */
+.record[data-planet="Jakku"]{--record-rim:#cb895138}
+.record[data-planet="Lantaana"]{--record-rim:#5b7f6a38}
+.record[data-planet="Ando Prime"]{--record-rim:#95aaa838}
+.record[data-planet="Sentinel One"]{--record-rim:#dfd49b45}
+.record[data-planet="Crait"]{--record-rim:#b5483d32}
+.record[data-planet="Tatooine"]{--record-rim:#dbb45d40}
+.record[data-planet="Derven Akos"]{--record-rim:#45dce938}
+.record:after{border-color:var(--record-rim,#a54b2c20)}
