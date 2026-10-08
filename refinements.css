@@ -103,3 +103,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .record-planet-heading button:hover{background:#eddfc7;border-color:#b5603080}
 .record-planet-heading button[aria-pressed="true"]{background:#eddfc7;border-color:var(--accent);color:var(--accent)}
 .archive{display:flex;flex-direction:column}.archive>.pagination{margin-top:auto}
+
+.record-config{position:relative;top:2px}
