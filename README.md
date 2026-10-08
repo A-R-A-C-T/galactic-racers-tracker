@@ -23,7 +23,7 @@ The dashboard also works on static hosting such as GitHub Pages or GitLab Pages.
 - In-universe date displays, rotating planet artwork, keyboard controls, and reduced-motion support.
 - CSV import/export and browser storage to retain imported results between visits.
 
-Shade is the tracked pilot by default. This is a manually maintained race tracker: enter results yourself or transcribe screenshots. It does not read game saves or connect to game servers.
+Shade is the backed pilot by default. This is a manually maintained race tracker: enter results yourself or transcribe screenshots. It does not read game saves or connect to game servers.
 
 ## CSV format
 
