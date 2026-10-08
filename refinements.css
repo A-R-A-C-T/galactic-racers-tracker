@@ -71,3 +71,6 @@ body:has(#race-dialog[open]){overflow:hidden}
 .status-dot{animation:hololink-pulse 2.6s ease-in-out infinite;transform-origin:center}
 @keyframes hololink-pulse{0%,100%{opacity:.65;transform:scale(.9);box-shadow:0 0 0 3px #efba7115,0 0 3px #efba7130}50%{opacity:1;transform:scale(1.25);box-shadow:0 0 0 5px #efba7120,0 0 10px #efba7180}}
 @media(prefers-reduced-motion:reduce){.status-dot{animation:none}}
+
+/* Preserve page width when a race dialog locks background scrolling. */
+html{scrollbar-gutter:stable}
