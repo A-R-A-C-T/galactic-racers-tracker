@@ -78,3 +78,5 @@ html{scrollbar-gutter:stable}
 html{background:var(--bg,#f1ead9);scrollbar-color:#626e66 #f1ead9}html:has(#race-dialog[open]){background:linear-gradient(#0b292ac4,#0b292ac4),var(--bg,#f1ead9)}
 
 .record[role="button"]{cursor:pointer;transition:background .18s ease}.record[role="button"]:hover{background:#f0e6d2}.record[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}.record[aria-pressed="true"]{box-shadow:inset 0 2px 0 #a54b2c80}
+
+#archive tr.planet-boundary>td{box-shadow:inset 0 1px 0 rgba(181,96,48,.55)}
