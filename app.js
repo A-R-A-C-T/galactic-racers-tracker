@@ -117,7 +117,7 @@ function render(){
  renderTelemetry(data);
  renderSectors();
  const records=new Map();data.filter(r=>r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
- $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record" data-planet="${esc(r.planet)}"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}${r.laps?' · '+r.laps+' laps':''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record" role="button" tabindex="0" aria-label="Filter track: ${esc(r.track)}, ${esc(r.planet)}" aria-pressed="${$('planet').value===r.planet&&$('track').value===r.track}" data-planet="${esc(r.planet)}" data-track="${esc(r.track)}"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}${r.laps?' · '+r.laps+' laps':''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
  renderArchive(data);
 }
 function groupRaceResults(data){
@@ -200,3 +200,7 @@ $('trend').onmouseover=inspectSignal;$('trend').onfocusin=inspectSignal;$('trend
 $('trend').onkeydown=e=>{const node=e.target.closest?.('[data-index]');if(!node)return;let index=Number(node.dataset.index);if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();index=Math.max(0,Math.min(telemetry.length-1,index+(e.key==='ArrowRight'?1:-1)));$('trend').querySelector(`[data-index="${index}"]`).focus();showSignal(index);}else if(e.key==='Enter'||e.key===' '){e.preventDefault();showSignal(index);}};
 $('sectors').onclick=e=>{const node=e.target.closest?.('[data-planet]');if(!node)return;$('planet').value=$('planet').value===node.dataset.planet?'':node.dataset.planet;page=0;render();};
 options();render();
+
+function selectTrackRecord(e){const card=e.target.closest?.('.record[data-track]');if(!card)return;const active=$('planet').value===card.dataset.planet&&$('track').value===card.dataset.track;$('planet').value=active?'':card.dataset.planet;$('track').value=active?'':card.dataset.track;page=0;render();const replacement=[...$('records').querySelectorAll('.record[data-track]')].find(n=>n.dataset.planet===card.dataset.planet&&n.dataset.track===card.dataset.track);replacement?.focus();}
+$('records').addEventListener('click',selectTrackRecord);
+$('records').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.record[data-track]')){e.preventDefault();selectTrackRecord(e);}});
