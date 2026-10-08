@@ -98,7 +98,14 @@ function planetVisitTrend(data){
  return {planet:events[end].planet,changes};
 }
 function trendMarkup(delta){if(delta===null||delta===undefined)return '<span class="league-move neutral" title="No standing before this visit">—</span>';const label=delta>0?'gained':delta<0?'lost':'unchanged';return '<span class="league-move '+label+'" aria-label="'+(delta?Math.abs(delta)+' league positions '+label:'League position unchanged')+'">'+(delta>0?'↗ '+delta:delta<0?'↘ '+Math.abs(delta):'—')+'</span>';}
+function reserveDashboardSpace(){
+ for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail')||[]){
+  const height=node.getBoundingClientRect().height;
+  node.style.minHeight=Math.max(parseFloat(node.style.minHeight)||0,height)+'px';
+ }
+}
 function render(){
+ reserveDashboardSpace();
  renderFilterSummaries();
  const latestRace=groupRaceResults(rows).at(-1);
  $('dossier-tour').textContent=latestRace?'LATEST TOUR: '+latestRace.tour.replace(/^Tour\s*/i,''):'AWAITING TOUR RECORDS';
@@ -140,9 +147,16 @@ function render(){
   return `<article class="record ${match?'':'record-muted'}" role="button" tabindex="0" aria-label="Select ${esc(r.track)}, ${esc(config)}, ${esc(r.planet)}" aria-pressed="${selected}" data-planet="${esc(r.planet)}" data-track="${esc(r.track)}" data-category="${esc(r.category)}" data-subcategory="${esc(r.subcategory||'')}" data-laps="${r.laps||''}"><div class="eyebrow">${esc(r.planet)}</div><h3>${esc(r.track)} <span class="record-config">${esc(config)}</span></h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`;
  };
  const recordPlanets=[...PLANETS,...new Set([...records.values()].map(r=>r.planet).filter(p=>!PLANETS.includes(p)))];
- $('records').innerHTML=recordPlanets.map(planet=>{const cards=[...records.values()].filter(r=>r.planet===planet).sort((a,b)=>a.track.localeCompare(b.track)||a.category.localeCompare(b.category)||Number(a.laps)-Number(b.laps));if(!cards.length)return '';return `<section class="record-planet-group" aria-label="${esc(planet)} track records"><h3 class="record-planet-heading"><button type="button" data-record-planet="${esc(planet)}" aria-pressed="${$('planet').value===planet}">${esc(planet)} <span aria-hidden="true">↗</span></button></h3><div class="record-grid">${cards.map(renderRecord).join('')}</div></section>`;}).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ const recordMarkup=recordPlanets.map(planet=>{const cards=[...records.values()].filter(r=>r.planet===planet).sort((a,b)=>a.track.localeCompare(b.track)||a.category.localeCompare(b.category)||Number(a.laps)-Number(b.laps));if(!cards.length)return '';return `<section class="record-planet-group" aria-label="${esc(planet)} track records"><h3 class="record-planet-heading"><button type="button" data-record-planet="${esc(planet)}" aria-pressed="${$('planet').value===planet}">${esc(planet)}</button></h3><div class="record-grid">${cards.map(renderRecord).join('')}</div></section>`;}).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ const recordStructure=JSON.stringify([...records.values()].map(recordKey));
+ const container=$('records'),existingCards=container.querySelectorAll('.record[data-track]');
+ if(container.dataset?.structure===recordStructure&&existingCards.length){
+  for(const card of existingCards){const key=recordKey({planet:card.dataset.planet,track:card.dataset.track,category:card.dataset.category,subcategory:card.dataset.subcategory,laps:card.dataset.laps});const match=matchingRecords.has(key);card.classList.toggle('record-muted',!match);card.setAttribute('aria-pressed',String(match&&$('track').value===card.dataset.track));}
+ }else{container.innerHTML=recordMarkup;if(container.dataset)container.dataset.structure=recordStructure;}
+
 
  renderArchive(data);
+ reserveDashboardSpace();
 }
 function groupRaceResults(data){
  const events=new Map();for(const r of data){if(!events.has(r.race_id))events.set(r.race_id,{...r,results:[]});events.get(r.race_id).results.push(r);}
@@ -238,3 +252,6 @@ $('records').addEventListener('click',selectTrackRecord);
 $('records').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.record[data-track]')){e.preventDefault();selectTrackRecord(e);}});
 
 $('records').addEventListener('click',e=>{const heading=e.target.closest?.('[data-record-planet]');if(!heading)return;const planet=heading.dataset.recordPlanet;$('planet').value=$('planet').value===planet?'':planet;recordLaps=null;options();page=0;render();const replacement=[...$('records').querySelectorAll('[data-record-planet]')].find(n=>n.dataset.recordPlanet===planet);replacement?.focus();});
+
+let dashboardWidth=window.innerWidth;
+window.addEventListener?.('resize',()=>{if(window.innerWidth===dashboardWidth)return;dashboardWidth=window.innerWidth;for(const node of document.querySelectorAll?.('.metrics,.standings,.circuit,.archive,#chart-legend,#race-detail')||[])node.style.minHeight='';reserveDashboardSpace();});
