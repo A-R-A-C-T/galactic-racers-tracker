@@ -92,4 +92,4 @@ Publish the repository root on your preferred static host. All asset paths are r
 
 ## Make it yours
 
-Change the colors, add planets, adjust the score in app.js, or adapt the pilot conventions for your own group. Contributions and personal forks are welcome. Star Wars and game names belong to their respective owners; the MIT license covers this project’s original code.
+Change the colors, add planets, adjust the score in app.js, or adapt the pilot conventions for your own group. Contributions and personal forks are welcome. The MIT license applies to this project’s original code only. Star Wars names, game names, and game imagery—including pilot portraits captured from the game—belong to their respective rights holders and are not covered by this license.
