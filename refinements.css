@@ -115,4 +115,4 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 
 #archive .race-open:hover{color:inherit;background:none;border-color:transparent;transform:none;box-shadow:none}.archive #sort-date:hover{color:var(--muted);background:none;border-color:transparent;transform:none;box-shadow:none}
 
-.finish.finish-eliminated{width:156px}.finish.finish-dnf{width:100px}.finish.finish-eliminated,.finish.finish-dnf{display:inline-flex;justify-content:center;align-items:center;white-space:nowrap;font-size:13px;line-height:1.4;font-variant-numeric:tabular-nums}
+.finish.finish-eliminated{width:132px}.finish.finish-dnf{width:84px}.finish.finish-eliminated,.finish.finish-dnf{display:inline-block;text-align:left;white-space:nowrap;font-size:13px;line-height:1.4;font-variant-numeric:tabular-nums}
