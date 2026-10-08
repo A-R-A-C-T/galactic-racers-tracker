@@ -125,6 +125,14 @@ function render(){
  $('dq-count-label').textContent=selectedPilot.toUpperCase()+' / TOTAL DNF';$('dq-rate-label').textContent=selectedPilot.toUpperCase()+' / DNF RATE';
  $('dq-count').textContent=own?own.dqs:0;$('dq-rate').textContent=own?Math.round(own.dqs/own.races*100)+'%':'—';
  $('dq-detail').textContent=own?own.dqs+' DNFs from '+own.races+' starts':'No recorded starts';
+ const categoryUsage=new Map();for(const r of data.filter(r=>r.pilot===selectedPilot))categoryUsage.set(r.category,(categoryUsage.get(r.category)||0)+1);
+ for(const kind of ['least','most']){
+  $('category-'+kind+'-label').textContent=selectedPilot.toUpperCase()+' / '+(kind==='least'?'LEAST':'MOST')+' COMMON CATEGORY';
+  const counts=[...categoryUsage.values()],count=counts.length?(kind==='least'?Math.min(...counts):Math.max(...counts)):0;
+  const categories=[...categoryUsage].filter(([,n])=>n===count).map(([name])=>name).sort();
+  $('category-'+kind).textContent=categories.length?categories.join(' / '):'No telemetry';
+  $('category-'+kind+'-count').textContent=categories.length?count+' recorded start'+(count===1?'':'s')+(categories.length>1?' each · tied':''):'No recorded starts';
+ }
  const vehicleUsage=new Map();
  if(selectedPilot==='Shade')for(const r of data.filter(r=>r.pilot==='Shade'&&r.vehicle))vehicleUsage.set(r.vehicle,(vehicleUsage.get(r.vehicle)||0)+1);
  for(const kind of ['least','most']){
