@@ -56,7 +56,7 @@ Shade’s supported vehicles are Land speeder, Speeder bike, Skim speeder, and P
 
 DQ covers elimination, crashing out, or not starting. It earns **zero points**. In Eliminator events, keep the displayed numeric position and set `status` to `DQ`: the popup preserves that order and shows a red badge such as **P6 · DQ**. Unranked DQs use `position=DQ` and appear below ranked racers. Older CSV files without a status column remain supported. If only Shade’s DQ is available, log only that row; unknown rival results and times are never invented.
 
-Average finish uses completed finishes only. Podium rate and DQ rate use all recorded starts. DQs are excluded from track records and time-gap calculations and appear in a separate telemetry lane. After a DQ-only event, subsequent league movement reads **Incomplete results** until the missing results are supplied. Standings otherwise reflect recorded results only.
+Average finish uses completed finishes only. Podium rate and DQ rate use all recorded starts. DQs are excluded from track records and time-gap calculations and appear in a separate telemetry lane. A DQ-only event displays **Incomplete results** for that event alone. Later races show league movement based on all recorded points; unknown rival results are not invented. Standings otherwise reflect recorded results only.
 
 ## Scoring and league movement
 

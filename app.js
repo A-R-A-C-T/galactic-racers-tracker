@@ -110,11 +110,11 @@ function groupRaceResults(data){
  return [...events.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id));
 }
 function computeLeagueChanges(data){
- const standings=new Map(),changes=new Map();let incomplete=false;
+ const standings=new Map(),changes=new Map();
  const rankSnapshot=standings=>new Map([...standings.values()].sort(compareStandings).map((p,i)=>[p.pilot,i+1]));
  for(const race of groupRaceResults(data)){
   const beforeRanks=rankSnapshot(standings);
-  if(race.results.every(r=>isDQ(r)&&!Number.isInteger(r.position)))incomplete=true;
+  const incomplete=race.results.every(r=>isDQ(r)&&!Number.isInteger(r.position));
   for(const r of race.results){if(!standings.has(r.pilot))standings.set(r.pilot,newPilotStats(r.pilot));addResult(standings.get(r.pilot),r);}
   const afterRanks=rankSnapshot(standings),pilots=new Map();
   for(const [pilot,after] of afterRanks){const before=beforeRanks.get(pilot)??null;pilots.set(pilot,{before,after,delta:before!==null?before-after:null,incomplete});}
