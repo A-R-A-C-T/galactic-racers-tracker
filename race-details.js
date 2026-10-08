@@ -11,7 +11,7 @@ function openRaceDialog(raceId){
  $('race-dialog-title').textContent=race.planet+' / '+(race.track||'Circuit uncharted')+(directionLabel(race)?' · '+directionLabel(race):'');
  $('race-dialog-meta').textContent=race.tour+' · '+race.category+(race.subcategory?' · '+race.subcategory:'')+(race.laps?' · '+race.laps+' lap'+(race.laps===1?'':'s'):'');
  $('race-dialog-stats').innerHTML=`<div><span>RECORDED RACERS</span><strong>${results.length}</strong></div><div><span>WINNER</span><strong>${winner?esc(winner.pilot):'Not recorded'}</strong></div><div><span>BACKED PILOT / SHADE</span><strong>${shade?positionLabel(shade):'Not recorded'}</strong></div>`;
- $('race-dialog-results').innerHTML=results.map(r=>`<tr class="${r.pilot==='Shade'?'self':''}"><td>${finishBadge(r)}</td><td>${esc(r.pilot)}${r.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}${r.pilot==='Shade'&&r.vehicle?'<span class="race-pilot-vehicle">'+esc(r.vehicle)+'</span>':''}</td><td>${isDQ(r)?(isEliminated(r)?'Eliminated':resultStatus(r)):time(r.time_ms)}</td><td class="race-points">+${resultPoints(r)}</td><td class="race-league-change">${leagueChangeMarkup(movement?.get(r.pilot))}</td></tr>`).join('');
+ $('race-dialog-results').innerHTML=results.map(r=>`<tr class="${r.pilot==='Shade'?'self':''}"><td>${finishBadge(r)}</td><td><span class="result-pilot-name" data-pilot="${esc(r.pilot)}" tabindex="0">${esc(r.pilot)}</span>${r.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}${r.pilot==='Shade'&&r.vehicle?'<span class="race-pilot-vehicle">'+esc(r.vehicle)+'</span>':''}</td><td>${isDQ(r)?(isEliminated(r)?'Eliminated':resultStatus(r)):time(r.time_ms)}</td><td class="race-points">+${resultPoints(r)}</td><td class="race-league-change">${leagueChangeMarkup(movement?.get(r.pilot))}</td></tr>`).join('');
  if(!raceDialog.open){
   const root=document.documentElement;
   if(root?.style)root.style.setProperty('--dialog-scrollbar-width',Math.max(0,window.innerWidth-root.clientWidth)+'px');
@@ -34,3 +34,10 @@ raceDialog.addEventListener('click',e=>{
 });
 
 raceDialog.addEventListener('close',()=>document.documentElement?.style.removeProperty('--dialog-scrollbar-width'));
+
+const resultPilots=$('race-dialog-results');
+resultPilots.addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const name=e.target.closest?.('.result-pilot-name');if(!name||name.contains(e.relatedTarget))return;hidePilotPreview();pilotPreviewTimer=setTimeout(()=>showPilotPreview(name),180);});
+resultPilots.addEventListener('pointerout',e=>{const name=e.target.closest?.('.result-pilot-name');if(name&&!name.contains(e.relatedTarget))hidePilotPreview();});
+resultPilots.addEventListener('focusin',e=>{const name=e.target.closest?.('.result-pilot-name');if(name){hidePilotPreview();showPilotPreview(name);}});
+resultPilots.addEventListener('focusout',hidePilotPreview);
+raceDialog.addEventListener('close',hidePilotPreview);

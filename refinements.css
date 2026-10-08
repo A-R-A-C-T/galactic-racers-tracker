@@ -239,3 +239,11 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .pilot-preview-image[data-preview-pilot="Ary Quill"]{--preview-position:43% 25%;--preview-zoom:1.04}
 
 .pilot-badge[data-portrait-pilot="Sen Fira"] img{filter:brightness(1.4) contrast(.92)}
+
+.pilot-portrait-preview{margin:0;inset:auto}
+.result-pilot-name{cursor:pointer}
+.result-pilot-name:focus-visible{outline:1px solid var(--accent);outline-offset:4px;border-radius:2px}
+
+.result-pilot-name{transition:color .28s ease}
+.result-pilot-name:hover,.result-pilot-name:focus-visible{color:var(--accent)}
+@media(prefers-reduced-motion:reduce){.result-pilot-name{transition:none}}
