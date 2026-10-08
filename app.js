@@ -125,6 +125,12 @@ function render(){
  $('dq-count-label').textContent=selectedPilot.toUpperCase()+' / TOTAL DNF';$('dq-rate-label').textContent=selectedPilot.toUpperCase()+' / DNF RATE';
  $('dq-count').textContent=own?own.dqs:0;$('dq-rate').textContent=own?Math.round(own.dqs/own.races*100)+'%':'—';
  $('dq-detail').textContent=own?own.dqs+' DNFs from '+own.races+' starts':'No recorded starts';
+ const eliminatorStarts=data.filter(r=>r.pilot===selectedPilot&&r.category==='Eliminator'),eliminations=eliminatorStarts.filter(isEliminated).length;
+ $('elimination-total-label').textContent=selectedPilot.toUpperCase()+' / TOTAL ELIMINATIONS';
+ $('elimination-rate-label').textContent=selectedPilot.toUpperCase()+' / ELIMINATION RATE';
+ $('elimination-total').textContent=eliminations;
+ $('elimination-rate').textContent=eliminatorStarts.length?Math.round(eliminations/eliminatorStarts.length*100)+'%':'—';
+ $('elimination-detail').textContent=eliminatorStarts.length?eliminations+' eliminations from '+eliminatorStarts.length+' Eliminator starts':'No Eliminator starts';
  const categoryUsage=new Map();for(const r of data.filter(r=>r.pilot===selectedPilot))categoryUsage.set(r.category,(categoryUsage.get(r.category)||0)+1);
  for(const kind of ['least','most']){
   $('category-'+kind+'-label').textContent=selectedPilot.toUpperCase()+' / '+(kind==='least'?'LEAST':'MOST')+' COMMON CATEGORY';
