@@ -17,7 +17,7 @@ The dashboard also works on static hosting such as GitHub Pages or GitLab Pages.
 - League standings with accumulated points, wins, and average finish.
 - Select any racer to inspect their average finish, podium rate, DQ count, and DQ rate.
 - Interactive race telemetry with optional rival overlays and finish-position/time-gap views.
-- Filters for tour, planet, track, category, and Shade’s vehicle.
+- Filters for tour, planet, track, category, subcategory, and Shade’s vehicle.
 - One archive row per race; open it for every recorded racer’s position, time, points, and league movement.
 - Track records, gold/silver/bronze podium badges, and red DQ badges.
 - In-universe date displays, rotating planet artwork, keyboard controls, and reduced-motion support.
@@ -41,6 +41,7 @@ GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim s
 | date | Actual date logged, in YYYY-MM-DD format. |
 | tour | Tour identifier, for example Tour 01. |
 | category | Event category, initially Race or Eliminator. |
+| subcategory | Optional course description, such as Point-to-point. Missing columns and blank values are supported. |
 | planet | Planet name. |
 | track | Circuit name; may be blank until known. |
 | pilot | Racer name, spelled consistently across events. |
@@ -63,7 +64,7 @@ The tracker currently uses its own simple score: **12 points for first, 11 for s
 
 Ties use wins, average completed finish, then pilot name. League-change arrows compare standings immediately before and after each race **within its tour**. They use the full recorded history and remain stable when filtering or searching. The first recorded standing shows **Initial ranking**. Events are ordered by logged date, then race ID, so keep same-day IDs sequential.
 
-Track records compare results within the same planet, circuit, and category; unidentified circuits are excluded. Time-gap telemetry compares a racer’s time with the fastest recorded finish in that event.
+Track records compare results within the same planet, circuit, category, and subcategory; unidentified circuits are excluded. Time-gap telemetry compares a racer’s time with the fastest recorded finish in that event.
 
 ### Dates
 

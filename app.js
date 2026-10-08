@@ -1,6 +1,6 @@
 /* Offline-first CSV racing archive. No build step or server required. */
 'use strict';
-const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status'];
+const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory'];
 const VEHICLES=['Land speeder','Speeder bike','Skim speeder','Podracer'];
 const PLANETS=['Jakku','Lantaana','Ando Prime','Sentinel One','Crait','Tatooine','Derven Akos'];
 const POINTS=[12,11,10,9,8,7,6,5,4,3,2,1],KEY='galactic-racing-v2';
@@ -25,7 +25,7 @@ function validate(data){
  if(!data.length)throw Error('The CSV contains no results.');
  const events=new Map();
  data.forEach((r,i)=>{
-  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status'].includes(c)))if(r[c]===undefined||String(r[c]).trim()==='')throw Error(`Row ${i+2}: missing ${c}.`);
+  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status','subcategory'].includes(c)))if(r[c]===undefined||String(r[c]).trim()==='')throw Error(`Row ${i+2}: missing ${c}.`);
   for(const c of COLS)r[c]=String(r[c]??'').trim();
   if(r.category==='Sprint')r.category='Race';else if(r.category==='Circuit race')r.category='Eliminator';
   if(r.vehicle&&r.pilot!=='Shade')throw Error(`Row ${i+2}: vehicle is recorded only for Shade.`);
@@ -38,7 +38,7 @@ function validate(data){
   else {if(!/^\d+$/.test(r.position)||!Number.isSafeInteger(Number(r.position))||Number(r.position)<1)throw Error(`Row ${i+2}: position must be a positive integer or DQ.`);r.position=Number(r.position);}
   if(r.time_ms===''&&isDQ(r))r.time_ms='';
   else {if(!/^\d+$/.test(r.time_ms)||!Number.isSafeInteger(Number(r.time_ms))||Number(r.time_ms)<1)throw Error(`Row ${i+2}: time_ms must be a positive integer, or blank for DQ.`);r.time_ms=Number(r.time_ms);}
-  const meta=JSON.stringify([r.date,r.tour,r.category,r.planet,r.track]);
+  const meta=JSON.stringify([r.date,r.tour,r.category,r.planet,r.track,r.subcategory]);
   if(!events.has(r.race_id))events.set(r.race_id,{meta,pilots:new Set(),positions:new Set()});
   const e=events.get(r.race_id);
   if(e.meta!==meta)throw Error(`Row ${i+2}: inconsistent details for race ${r.race_id}.`);
@@ -58,21 +58,21 @@ function parseCSV(text){
  }
  if(quoted)throw Error('Unclosed quoted field.');row.push(field);if(row.some(v=>v.trim()))result.push(row);
  const headers=(result.shift()||[]).map(v=>v.trim());
- if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
+ if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status','subcategory'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
  return validate(result.map((cells,i)=>{if(cells.length!==headers.length)throw Error(`Row ${i+2}: incorrect number of columns.`);return Object.fromEntries(COLS.map(c=>[c,headers.includes(c)?cells[headers.indexOf(c)]:'']));}));
 }
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(rows));return true;}catch{$('message').textContent='Loaded for this session. Browser storage unavailable; export CSV to keep your data.';return false;}}
 try{const saved=localStorage.getItem(KEY);if(saved)rows=validate(JSON.parse(saved));}catch{$('message').textContent='Saved data unavailable. Opening the initial archive.';}
 function options(){
  $('vehicle').innerHTML='<option value="">All vehicles</option>'+VEHICLES.map(v=>`<option value="${v}">${v}</option>`).join('');
- for(const key of ['tour','planet','track','category']){
+ for(const key of ['tour','planet','track','category','subcategory']){
   const old=$(key).value;
   const values=key==='planet'?[...PLANETS.slice(0,-1),...new Set(rows.map(r=>r.planet).filter(p=>!PLANETS.includes(p))),PLANETS.at(-1)]:[...new Set((key==='category'?['Race','Eliminator',...rows.map(r=>r.category)]:rows.map(r=>r[key])).filter(Boolean))].sort();
-  $(key).innerHTML=`<option value="">All ${key==='category'?'categories':key+'s'}</option>`+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  $(key).innerHTML=`<option value="">All ${key==='category'?'categories':key==='subcategory'?'subcategories':key+'s'}</option>`+(key==='subcategory'?'<option value="__unspecified__">Unspecified</option>':'')+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
   $(key).value=[...$(key).options].some(o=>o.value===old)?old:'';
  }
 }
-function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(!vehicle||races.has(r.race_id))&&['tour','planet','track','category'].every(k=>!$(k).value||r[k]===$(k).value));}
+function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(!vehicle||races.has(r.race_id))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
 function render(){
  const data=filtered(),groups=new Map();
  data.forEach(r=>{if(!groups.has(r.pilot))groups.set(r.pilot,newPilotStats(r.pilot));addResult(groups.get(r.pilot),r);});
@@ -92,8 +92,8 @@ function render(){
  $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge">${esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">TRACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No results match these filters.</td></tr>';
  renderTelemetry(data);
  renderSectors();
- const records=new Map();data.filter(r=>r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category]);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
- $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
+ const records=new Map();data.filter(r=>r.track&&!isDQ(r)&&r.time_ms).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'']);if(!records.has(key)||r.time_ms<records.get(key).time_ms)records.set(key,r);});
+ $('records').innerHTML=[...records.values()].sort((a,b)=>a.planet.localeCompare(b.planet)||a.track.localeCompare(b.track)||a.category.localeCompare(b.category)).map(r=>`<article class="record"><div class="eyebrow">${esc(r.planet)} / ${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</div><h3>${esc(r.track)}</h3><strong>${time(r.time_ms)}</strong><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
  renderArchive(data);
 }
 function groupRaceResults(data){
@@ -125,16 +125,16 @@ function renderArchive(data=filtered()){
  const list=groupRaceResults(data).filter(r=>r.results.some(result=>COLS.some(c=>String(result[c]).toLowerCase().includes(q)))||galacticDate(r.date).toLowerCase().includes(q)).sort((a,b)=>(ascending?1:-1)*(a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id)));
  const pages=Math.max(1,Math.ceil(list.length/10));page=Math.min(page,pages-1);
  $('archive-count').textContent=`/ ${list.length} RACES`;
- $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),shade=r.results.find(result=>result.pilot==='Shade');return `<tr${i>0&&list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':''} data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)} ↗<span class="subline">${r.results.length} recorded racers</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${shade?.vehicle?' · '+esc(shade.vehicle):''}</span></td><td>${esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td>${leagueChangeMarkup(changes.get(r.race_id))}</td></tr>`;}).join('')||'<tr><td colspan="6" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
+ $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),shade=r.results.find(result=>result.pilot==='Shade');return `<tr${i>0&&list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':''} data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)} ↗<span class="subline">${r.results.length} recorded racers</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}${shade?.vehicle?' · '+esc(shade.vehicle):''}</span></td><td>${esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td>${leagueChangeMarkup(changes.get(r.race_id))}</td></tr>`;}).join('')||'<tr><td colspan="6" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
  $('page-info').textContent=list.length?`${page*10+1}–${Math.min(page*10+10,list.length)} of ${list.length} races`:'0 races';$('prev').disabled=page===0;$('next').disabled=page>=pages-1;
 }
-for(const key of ['tour','planet','track','category','vehicle'])$(key).addEventListener('change',()=>{page=0;render();});
-$('clear').onclick=()=>{for(const k of ['tour','planet','track','category','vehicle'])$(k).value='';$('search').value='';page=0;render();};
+for(const key of ['tour','planet','track','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{page=0;render();});
+$('clear').onclick=()=>{for(const k of ['tour','planet','track','category','subcategory','vehicle'])$(k).value='';$('search').value='';page=0;render();};
 $('search').oninput=()=>{page=0;renderArchive();};$('prev').onclick=()=>{page--;renderArchive();};$('next').onclick=()=>{page++;renderArchive();};
 $('sort-date').onclick=()=>{ascending=!ascending;page=0;$('sort-date').textContent='LOGGED '+(ascending?'↑':'↓');renderArchive();};
 $('import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>10000000)throw Error('CSV is too large. Please use a file below 10 MB.');const imported=parseCSV(await file.text());rows=imported;page=0;options();render();if(persist())$('message').textContent=`Imported ${rows.length} results from ${file.name}. Saved in this browser.`;}catch(err){$('message').textContent='Import failed: '+err.message;}finally{e.target.value='';}};
 $('export').onclick=()=>{const data=filtered();const cell=v=>{const s=String(v);return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};const csv=[COLS.join(','),...data.map(r=>COLS.map(k=>cell(r[k])).join(','))].join('\r\n');const url=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='galactic-racing-results.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('message').textContent=`Exported ${data.length} filtered results. Archive search does not affect export.`;};
-$('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CSV first if you want to keep it.'))return;rows=window.DEMO_RESULTS.map(r=>({...r}));page=0;for(const k of ['tour','planet','track','category','vehicle'])$(k).value='';$('search').value='';options();render();if(persist())$('message').textContent='Initial archive restored.';};
+$('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CSV first if you want to keep it.'))return;rows=window.DEMO_RESULTS.map(r=>({...r}));page=0;for(const k of ['tour','planet','track','category','subcategory','vehicle'])$(k).value='';$('search').value='';options();render();if(persist())$('message').textContent='Initial archive restored.';};
 let telemetry=[],selectedRace='';
 $('import-trigger').onclick=()=>$('import').click();
 function renderSectors(){
@@ -163,7 +163,7 @@ function renderTelemetry(data){
 function showSignal(index){
  const r=telemetry[index];if(!r){$('race-detail').innerHTML='Awaiting race telemetry.';return;}
  selectedRace=r.race_id;
- $('race-detail').innerHTML=`<div><span class="eyebrow">${esc(r.race_id)} / ${esc(galacticDate(r.date))}</span><strong>${esc(selectedPilot)} / ${esc(r.planet)}</strong><small>${esc(r.track||'Circuit uncharted')}${r.vehicle?' · '+esc(r.vehicle):''}</small></div><div class="signal-finish ${isDQ(r)?'signal-dq':''}">${positionLabel(r)}<small>${time(r.time_ms)}</small></div>`;
+ $('race-detail').innerHTML=`<div><span class="eyebrow">${esc(r.race_id)} / ${esc(galacticDate(r.date))}</span><strong>${esc(selectedPilot)} / ${esc(r.planet)}</strong><small>${esc(r.track||'Circuit uncharted')}${r.subcategory?' · '+esc(r.subcategory):''}${r.vehicle?' · '+esc(r.vehicle):''}</small></div><div class="signal-finish ${isDQ(r)?'signal-dq':''}">${positionLabel(r)}<small>${time(r.time_ms)}</small></div>`;
  for(const node of $('trend').querySelectorAll?.('.chart-point')||[])node.classList.toggle('selected',Number(node.dataset.index)===index);
 }
 $('chart-mode').onchange=()=>renderTelemetry(filtered());
