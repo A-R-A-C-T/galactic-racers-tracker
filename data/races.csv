@@ -1,206 +1,207 @@
-race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle,status,subcategory,laps
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Fola Kanjen,1,147820,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Goli & 02-R0,2,148140,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Nik Skandaro,3,148270,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Soren Zaks,4,148470,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Ary Quill,5,148550,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Biddy Blas,6,149420,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Malis Vazosk,7,149890,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Lyren Shok,8,152530,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim speeder,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Sen Fira,10,158310,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Katja Mox,11,159890,,,,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Griff Halloran,12,160390,,,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Fola Kanjen,1,165530,,,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Goli & 02-R0,2,166580,,,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Sen Fira,3,167220,,,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Nik Skandaro,4,,,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Lyren Shok,5,,,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Shade,6,,Skim speeder,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Malis Vazosk,7,,,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Griff Halloran,8,,,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Soren Zaks,9,,,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Ary Quill,10,,,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Katja Mox,11,,,ELIMINATED,,
-GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Biddy Blas,12,,,ELIMINATED,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Fola Kanjen,1,136990,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Goli & 02-R0,2,137190,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Nik Skandaro,3,137390,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Ary Quill,4,137910,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Soren Zaks,5,137970,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Griff Halloran,6,138860,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Biddy Blas,7,139430,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Malis Vazosk,8,140050,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Katja Mox,9,140870,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Lyren Shok,10,141820,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Sen Fira,11,142210,,,,
-GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Shade,12,144010,Skim speeder,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Goli & 02-R0,1,132940,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Lyren Shok,2,133220,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Sen Fira,3,133630,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Ary Quill,4,134010,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Fola Kanjen,5,134040,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Soren Zaks,6,134550,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Griff Halloran,7,135000,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Katja Mox,8,135820,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Biddy Blas,9,136150,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Nik Skandaro,10,136450,,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Shade,11,139270,Skim speeder,,,
-GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Malis Vazosk,12,145100,,,,
-GR-005,2026-10-08,Tour 01,Eliminator,Jakku,Fallen Empire,Shade,DQ,,Skim speeder,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Lyren Shok,1,137060,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Griff Halloran,2,137850,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Goli & 02-R0,3,138620,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Fola Kanjen,4,138840,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Soren Zaks,5,141130,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Shade,6,141870,Skim speeder,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Biddy Blas,7,145540,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Katja Mox,8,146810,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Nik Skandaro,9,148350,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Ary Quill,10,149270,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Malis Vazosk,11,153330,,,,
-GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Sen Fira,12,154650,,,,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Fola Kanjen,1,130180,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Griff Halloran,2,132290,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Biddy Blas,3,132330,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Sen Fira,4,133150,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Shade,5,133790,Skim speeder,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Katja Mox,6,134340,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Goli & 02-R0,7,135040,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Nik Skandaro,8,137050,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Lyren Shok,9,138180,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Ary Quill,10,141250,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Soren Zaks,11,142440,,,Point-to-point,
-GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Malis Vazosk,12,149170,,,Point-to-point,
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Griff Halloran,1,84850,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Biddy Blas,2,88390,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Soren Zaks,3,88480,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Lyren Shok,4,88920,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Fola Kanjen,5,89340,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Shade,6,90880,Skim speeder,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Goli & 02-R0,7,91100,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Malis Vazosk,8,92240,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Katja Mox,9,94960,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Sen Fira,10,95410,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Ary Quill,11,97060,,,Circuit,5
-GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Nik Skandaro,12,102570,,,Circuit,5
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Shade,1,129550,Skim speeder,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Sen Fira,2,129600,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Soren Zaks,3,129750,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Lyren Shok,4,130380,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Ary Quill,5,131440,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Malis Vazosk,6,134990,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Fola Kanjen,7,136040,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Griff Halloran,8,138040,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Goli & 02-R0,9,138290,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Katja Mox,10,139920,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Nik Skandaro,11,140530,,,Circuit,2
-GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Biddy Blas,12,147150,,,Circuit,2
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Griff Halloran,1,113730,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Sen Fira,2,116250,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Biddy Blas,3,117040,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Lyren Shok,4,117100,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Shade,5,117700,Skim speeder,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Fola Kanjen,6,117930,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Nik Skandaro,7,121020,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Malis Vazosk,8,124550,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Katja Mox,9,125290,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Ary Quill,10,130010,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Soren Zaks,11,132670,,,Point-to-point,
-GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Goli & 02-R0,12,136560,,,Point-to-point,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Griff Halloran,1,155910,,,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Lyren Shok,2,159300,,,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Ary Quill,3,160480,,,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Goli & 02-R0,4,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Biddy Blas,5,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Katja Mox,6,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Malis Vazosk,7,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Nik Skandaro,8,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Sen Fira,9,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Soren Zaks,10,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Fola Kanjen,11,,,ELIMINATED,,
-GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Shade,12,,Skim speeder,DNF,,
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Griff Halloran,1,110190,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Fola Kanjen,2,113950,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Shade,3,115390,Skim speeder,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Goli & 02-R0,4,115460,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Sen Fira,5,117820,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Nik Skandaro,6,118620,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Katja Mox,7,119710,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Soren Zaks,8,120230,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Biddy Blas,9,122670,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Malis Vazosk,10,123790,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Ary Quill,11,125930,,,Circuit,2
-GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Lyren Shok,12,134040,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Biddy Blas,1,168090,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Griff Halloran,2,168530,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Katja Mox,3,170110,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Shade,4,172420,Skim speeder,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Soren Zaks,5,178890,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Malis Vazosk,6,179000,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Nik Skandaro,7,179670,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Sen Fira,8,180720,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Goli & 02-R0,9,180850,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Fola Kanjen,10,183890,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Lyren Shok,11,188080,,,Circuit,2
-GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Ary Quill,12,195910,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Griff Halloran,1,171290,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Lyren Shok,2,171390,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Biddy Blas,3,171710,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Katja Mox,4,172180,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Nik Skandaro,5,172210,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Ary Quill,6,173120,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Sen Fira,7,173510,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Goli & 02-R0,8,173910,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Fola Kanjen,9,175720,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Soren Zaks,10,175790,,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Shade,11,177980,Skim speeder,,Circuit,2
-GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Malis Vazosk,12,178320,,,Circuit,2
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Sen Fira,1,117530,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Fola Kanjen,2,119480,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Griff Halloran,3,119720,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Shade,4,120210,Skim speeder,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Ary Quill,5,121070,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Lyren Shok,6,122250,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Nik Skandaro,7,122530,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Goli & 02-R0,8,132980,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Katja Mox,9,133900,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Soren Zaks,10,135850,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Biddy Blas,11,136470,,,Circuit,5
-GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Malis Vazosk,12,156690,,,Circuit,5
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Griff Halloran,1,97470,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Biddy Blas,2,98090,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Ary Quill,3,99110,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Sen Fira,4,100050,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Katja Mox,5,100250,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Goli & 02-R0,6,100660,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Soren Zaks,7,101310,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Malis Vazosk,8,101650,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Shade,9,101960,Skim speeder,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Nik Skandaro,10,102010,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Lyren Shok,11,102570,,,Point-to-point,
-GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Fola Kanjen,12,102630,,,Point-to-point,
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Griff Halloran,1,109680,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Ary Quill,2,111880,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Katja Mox,3,114640,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Shade,4,114990,Skim speeder,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Fola Kanjen,5,115770,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Goli & 02-R0,6,118980,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Biddy Blas,7,119250,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Nik Skandaro,8,119910,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Sen Fira,9,122740,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Lyren Shok,10,123710,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Soren Zaks,11,124050,,,Circuit,4
-GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Malis Vazosk,12,130580,,,Circuit,4
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Griff Halloran,1,181360,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Lyren Shok,2,182160,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Ary Quill,3,184040,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Sen Fira,4,184650,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Fola Kanjen,5,186130,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Shade,6,187620,Skim speeder,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Nik Skandaro,7,193080,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Malis Vazosk,8,194680,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Biddy Blas,9,194920,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Goli & 02-R0,10,202140,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Soren Zaks,11,203860,,,Circuit,3
-GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Katja Mox,12,204050,,,Circuit,3
+race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle,status,subcategory,laps,phase
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Fola Kanjen,1,147820,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Goli & 02-R0,2,148140,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Nik Skandaro,3,148270,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Soren Zaks,4,148470,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Ary Quill,5,148550,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Biddy Blas,6,149420,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Malis Vazosk,7,149890,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Lyren Shok,8,152530,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim speeder,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Sen Fira,10,158310,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Katja Mox,11,159890,,,,,
+GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Griff Halloran,12,160390,,,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Fola Kanjen,1,165530,,,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Goli & 02-R0,2,166580,,,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Sen Fira,3,167220,,,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Nik Skandaro,4,,,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Lyren Shok,5,,,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Shade,6,,Skim speeder,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Malis Vazosk,7,,,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Griff Halloran,8,,,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Soren Zaks,9,,,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Ary Quill,10,,,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Katja Mox,11,,,ELIMINATED,,,
+GR-002,2026-10-08,Tour 01,Eliminator,Sentinel One,The Acid Ring,Biddy Blas,12,,,ELIMINATED,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Fola Kanjen,1,136990,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Goli & 02-R0,2,137190,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Nik Skandaro,3,137390,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Ary Quill,4,137910,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Soren Zaks,5,137970,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Griff Halloran,6,138860,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Biddy Blas,7,139430,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Malis Vazosk,8,140050,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Katja Mox,9,140870,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Lyren Shok,10,141820,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Sen Fira,11,142210,,,,,
+GR-003,2026-10-08,Tour 01,Race,Jakku,Fallen Empire,Shade,12,144010,Skim speeder,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Goli & 02-R0,1,132940,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Lyren Shok,2,133220,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Sen Fira,3,133630,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Ary Quill,4,134010,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Fola Kanjen,5,134040,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Soren Zaks,6,134550,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Griff Halloran,7,135000,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Katja Mox,8,135820,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Biddy Blas,9,136150,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Nik Skandaro,10,136450,,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Shade,11,139270,Skim speeder,,,,
+GR-004,2026-10-08,Tour 01,Race,Jakku,The War Fields,Malis Vazosk,12,145100,,,,,
+GR-005,2026-10-08,Tour 01,Eliminator,Jakku,Fallen Empire,Shade,DQ,,Skim speeder,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Lyren Shok,1,137060,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Griff Halloran,2,137850,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Goli & 02-R0,3,138620,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Fola Kanjen,4,138840,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Soren Zaks,5,141130,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Shade,6,141870,Skim speeder,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Biddy Blas,7,145540,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Katja Mox,8,146810,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Nik Skandaro,9,148350,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Ary Quill,10,149270,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Malis Vazosk,11,153330,,,,,
+GR-006,2026-10-08,Tour 02,Race,Sentinel One,Caustic Fields,Sen Fira,12,154650,,,,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Fola Kanjen,1,130180,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Griff Halloran,2,132290,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Biddy Blas,3,132330,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Sen Fira,4,133150,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Shade,5,133790,Skim speeder,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Katja Mox,6,134340,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Goli & 02-R0,7,135040,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Nik Skandaro,8,137050,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Lyren Shok,9,138180,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Ary Quill,10,141250,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Soren Zaks,11,142440,,,Point-to-point,,
+GR-007,2026-10-08,Tour 02,Race,Sentinel One,Bool River Run,Malis Vazosk,12,149170,,,Point-to-point,,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Griff Halloran,1,84850,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Biddy Blas,2,88390,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Soren Zaks,3,88480,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Lyren Shok,4,88920,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Fola Kanjen,5,89340,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Shade,6,90880,Skim speeder,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Goli & 02-R0,7,91100,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Malis Vazosk,8,92240,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Katja Mox,9,94960,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Sen Fira,10,95410,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Ary Quill,11,97060,,,Circuit,5,
+GR-008,2026-10-08,Tour 02,Race,Sentinel One,The Acid Ring,Nik Skandaro,12,102570,,,Circuit,5,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Shade,1,129550,Skim speeder,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Sen Fira,2,129600,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Soren Zaks,3,129750,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Lyren Shok,4,130380,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Ary Quill,5,131440,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Malis Vazosk,6,134990,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Fola Kanjen,7,136040,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Griff Halloran,8,138040,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Goli & 02-R0,9,138290,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Katja Mox,10,139920,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Nik Skandaro,11,140530,,,Circuit,2,
+GR-009,2026-10-08,Tour 02,Race,Sentinel One,Sentinel Lakes,Biddy Blas,12,147150,,,Circuit,2,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Griff Halloran,1,113730,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Sen Fira,2,116250,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Biddy Blas,3,117040,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Lyren Shok,4,117100,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Shade,5,117700,Skim speeder,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Fola Kanjen,6,117930,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Nik Skandaro,7,121020,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Malis Vazosk,8,124550,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Katja Mox,9,125290,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Ary Quill,10,130010,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Soren Zaks,11,132670,,,Point-to-point,,
+GR-010,2026-10-08,Tour 02,Race,Jakku,The Giants' Graveyard,Goli & 02-R0,12,136560,,,Point-to-point,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Griff Halloran,1,155910,,,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Lyren Shok,2,159300,,,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Ary Quill,3,160480,,,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Goli & 02-R0,4,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Biddy Blas,5,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Katja Mox,6,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Malis Vazosk,7,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Nik Skandaro,8,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Sen Fira,9,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Soren Zaks,10,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Fola Kanjen,11,,,ELIMINATED,,,
+GR-011,2026-10-08,Tour 02,Eliminator,Jakku,Scrap Spiral,Shade,12,,Skim speeder,DNF,,,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Griff Halloran,1,110190,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Fola Kanjen,2,113950,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Shade,3,115390,Skim speeder,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Goli & 02-R0,4,115460,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Sen Fira,5,117820,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Nik Skandaro,6,118620,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Katja Mox,7,119710,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Soren Zaks,8,120230,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Biddy Blas,9,122670,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Malis Vazosk,10,123790,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Ary Quill,11,125930,,,Circuit,2,
+GR-012,2026-10-08,Tour 02,Race,Jakku,Debris Dunes,Lyren Shok,12,134040,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Biddy Blas,1,168090,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Griff Halloran,2,168530,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Katja Mox,3,170110,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Shade,4,172420,Skim speeder,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Soren Zaks,5,178890,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Malis Vazosk,6,179000,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Nik Skandaro,7,179670,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Sen Fira,8,180720,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Goli & 02-R0,9,180850,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Fola Kanjen,10,183890,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Lyren Shok,11,188080,,,Circuit,2,
+GR-013,2026-10-08,Tour 02,Race,Crait,Forgil Canyon,Ary Quill,12,195910,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Griff Halloran,1,171290,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Lyren Shok,2,171390,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Biddy Blas,3,171710,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Katja Mox,4,172180,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Nik Skandaro,5,172210,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Ary Quill,6,173120,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Sen Fira,7,173510,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Goli & 02-R0,8,173910,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Fola Kanjen,9,175720,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Soren Zaks,10,175790,,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Shade,11,177980,Skim speeder,,Circuit,2,
+GR-014,2026-10-08,Tour 02,Race,Crait,Crimson Mines,Malis Vazosk,12,178320,,,Circuit,2,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Sen Fira,1,117530,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Fola Kanjen,2,119480,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Griff Halloran,3,119720,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Shade,4,120210,Skim speeder,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Ary Quill,5,121070,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Lyren Shok,6,122250,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Nik Skandaro,7,122530,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Goli & 02-R0,8,132980,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Katja Mox,9,133900,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Soren Zaks,10,135850,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Biddy Blas,11,136470,,,Circuit,5,
+GR-015,2026-10-08,Tour 02,Race,Crait,Crystal Caverns,Malis Vazosk,12,156690,,,Circuit,5,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Griff Halloran,1,97470,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Biddy Blas,2,98090,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Ary Quill,3,99110,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Sen Fira,4,100050,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Katja Mox,5,100250,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Goli & 02-R0,6,100660,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Soren Zaks,7,101310,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Malis Vazosk,8,101650,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Shade,9,101960,Skim speeder,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Nik Skandaro,10,102010,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Lyren Shok,11,102570,,,Point-to-point,,
+GR-016,2026-10-08,Tour 02,Race,Crait,Rhodochrosite Run,Fola Kanjen,12,102630,,,Point-to-point,,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Griff Halloran,1,109680,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Ary Quill,2,111880,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Katja Mox,3,114640,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Shade,4,114990,Skim speeder,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Fola Kanjen,5,115770,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Goli & 02-R0,6,118980,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Biddy Blas,7,119250,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Nik Skandaro,8,119910,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Sen Fira,9,122740,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Lyren Shok,10,123710,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Soren Zaks,11,124050,,,Circuit,4,
+GR-017,2026-10-08,Tour 02,Race,Ando Prime,Andobi Edge,Malis Vazosk,12,130580,,,Circuit,4,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Griff Halloran,1,181360,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Lyren Shok,2,182160,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Ary Quill,3,184040,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Sen Fira,4,184650,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Fola Kanjen,5,186130,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Shade,6,187620,Skim speeder,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Nik Skandaro,7,193080,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Malis Vazosk,8,194680,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Biddy Blas,9,194920,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Goli & 02-R0,10,202140,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Soren Zaks,11,203860,,,Circuit,3,
+GR-018,2026-10-08,Tour 02,Race,Ando Prime,Monastery Mountains,Katja Mox,12,204050,,,Circuit,3,
+GR-019,2026-10-08,Tour 02,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Shade,,,Skim speeder,ELIMINATED,,,2

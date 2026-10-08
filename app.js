@@ -1,6 +1,6 @@
 /* Offline-first CSV racing archive. No build step or server required. */
 'use strict';
-const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory','laps'];
+const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory','laps','phase'];
 const VEHICLES=['Land speeder','Speeder bike','Skim speeder','Podracer'];
 const PLANETS=['Jakku','Lantaana','Ando Prime','Sentinel One','Crait','Tatooine','Derven Akos'];
 const POINTS=[12,11,10,9,8,7,6,5,4,3,2,1],KEY='galactic-racing-v2';
@@ -9,11 +9,11 @@ const resultStatus=r=>r.status==='DQ'&&Number.isInteger(r.position)&&r.category=
 const isDNF=r=>resultStatus(r)==='DNF';
 const isEliminated=r=>resultStatus(r)==='ELIMINATED';
 const isDQ=r=>['DQ','DNF','ELIMINATED'].includes(resultStatus(r));
-const isUnclassified=r=>isDNF(r)||resultStatus(r)==='DQ';
+const isUnclassified=r=>r.category==='Galactic Gauntlet'||isDNF(r)||resultStatus(r)==='DQ';
 const points=p=>p==='DQ'?0:POINTS[p-1]||0;
-const resultPoints=r=>isDQ(r)?0:points(r.position);
+const resultPoints=r=>r.category==='Galactic Gauntlet'?(resultStatus(r)==='CLEARED'?12:isEliminated(r)?(Number(r.phase)-1)*4:0):isDQ(r)?0:points(r.position);
 const resultOrder=(a,b)=>(Number.isInteger(a.position)?a.position:Infinity)-(Number.isInteger(b.position)?b.position:Infinity)||a.pilot.localeCompare(b.pilot);
-const positionLabel=r=>isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · ':'')+(isEliminated(r)?'Eliminated':resultStatus(r)):'P'+r.position;
+const positionLabel=r=>r.category==='Galactic Gauntlet'?'Phase '+r.phase+' · '+(resultStatus(r)==='CLEARED'?'Cleared':isEliminated(r)?'Eliminated':resultStatus(r)):isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · ':'')+(isEliminated(r)?'Eliminated':resultStatus(r)):'P'+r.position;
 const finishBadge=r=>'<span class="finish '+(isDQ(r)?'dq '+(isEliminated(r)?'finish-eliminated':isDNF(r)?'finish-dnf':'finish-legacy'):(r.position<=3?'podium medal-'+r.position:'')+(r.position>=10?' finish-double':' finish-single'))+'"><span class="finish-label">'+positionLabel(r)+'</span></span>';
 const averageValue=p=>(p.finishes??p.races)?p.total/(p.finishes??p.races):Infinity;
 const averageFinish=p=>Number.isFinite(averageValue(p))?averageValue(p).toFixed(2):'—';
@@ -29,21 +29,24 @@ function validate(data){
  if(!data.length)throw Error('The CSV contains no results.');
  const events=new Map();
  data.forEach((r,i)=>{
-  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status','subcategory','laps'].includes(c)))if(r[c]===undefined||String(r[c]).trim()==='')throw Error(`Row ${i+2}: missing ${c}.`);
+  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status','subcategory','laps','phase'].includes(c)))if((r[c]===undefined||String(r[c]).trim()==='')&&!(c==='position'&&r.category==='Galactic Gauntlet'))throw Error(`Row ${i+2}: missing ${c}.`);
   for(const c of COLS)r[c]=String(r[c]??'').trim();
+  if(r.category==='Galactic Gauntlet'){if(!/^[123]$/.test(r.phase)||!['ELIMINATED','CLEARED','DNF'].includes(r.status.toUpperCase())||(r.status.toUpperCase()==='CLEARED'&&r.phase!=='3')||r.position!=='')throw Error(`Row ${i+2}: Gauntlet requires phase 1–3, no finishing position, and ELIMINATED, DNF or final-phase CLEARED status.`);r.phase=Number(r.phase);}else if(r.phase!=='')throw Error(`Row ${i+2}: phase is only supported for Galactic Gauntlet.`);
   if(r.laps!==''){if(!/^\d+$/.test(r.laps)||!Number.isSafeInteger(Number(r.laps))||Number(r.laps)<1)throw Error(`Row ${i+2}: laps must be a positive integer or blank.`);r.laps=Number(r.laps);}
   if(r.category==='Sprint')r.category='Race';else if(r.category==='Circuit race')r.category='Eliminator';
   if(r.vehicle&&r.pilot!=='Shade')throw Error(`Row ${i+2}: vehicle is recorded only for Shade.`);
   if(r.vehicle&&!VEHICLES.includes(r.vehicle))throw Error(`Row ${i+2}: unknown vehicle type.`);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!Number.isFinite(Date.parse(r.date+'T00:00:00Z'))||new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)!==r.date)throw Error(`Row ${i+2}: use a valid YYYY-MM-DD date.`);
   r.status=r.status.toUpperCase();
-  if(r.status&&!['DQ','DNF','ELIMINATED'].includes(r.status))throw Error(`Row ${i+2}: status must be blank, DNF, ELIMINATED or legacy DQ.`);
+  if(r.status&&!['DQ','DNF','ELIMINATED','CLEARED'].includes(r.status))throw Error(`Row ${i+2}: status must be blank, DNF, ELIMINATED or legacy DQ.`);
   if(r.status==='DQ'&&r.category!=='Eliminator'&&r.position.toUpperCase()!=='DQ')throw Error(`Row ${i+2}: ranked DQ is supported only for Eliminator events.`);
-  if(['DQ','DNF'].includes(r.position.toUpperCase()))r.position=r.position.toUpperCase();
+  if(r.category==='Galactic Gauntlet')r.position='';
+  else if(['DQ','DNF'].includes(r.position.toUpperCase()))r.position=r.position.toUpperCase();
   else {if(!/^\d+$/.test(r.position)||!Number.isSafeInteger(Number(r.position))||Number(r.position)<1)throw Error(`Row ${i+2}: position must be a positive integer, DNF or DQ.`);r.position=Number(r.position);}
   if(r.status==='DQ'&&Number.isInteger(r.position)&&r.category==='Eliminator')r.status='ELIMINATED';
-  if(r.status==='ELIMINATED'&&(r.category!=='Eliminator'||!Number.isInteger(r.position)))throw Error(`Row ${i+2}: elimination requires an Eliminator position.`);
-  if(r.time_ms===''&&isDQ(r))r.time_ms='';
+  if(r.status==='ELIMINATED'&&r.category!=='Galactic Gauntlet'&&(r.category!=='Eliminator'||!Number.isInteger(r.position)))throw Error(`Row ${i+2}: elimination requires an Eliminator position.`);
+  if(r.status==='CLEARED'&&r.category!=='Galactic Gauntlet')throw Error(`Row ${i+2}: CLEARED is only supported for Galactic Gauntlet.`);
+  if(r.time_ms===''&&(isDQ(r)||r.category==='Galactic Gauntlet'))r.time_ms='';
   else {if(!/^\d+$/.test(r.time_ms)||!Number.isSafeInteger(Number(r.time_ms))||Number(r.time_ms)<1)throw Error(`Row ${i+2}: time_ms must be a positive integer, or blank for DQ.`);r.time_ms=Number(r.time_ms);}
   const meta=JSON.stringify([r.date,r.tour,r.category,r.planet,r.track,r.subcategory,r.laps]);
   if(!events.has(r.race_id))events.set(r.race_id,{meta,pilots:new Set(),positions:new Set()});
@@ -65,7 +68,7 @@ function parseCSV(text){
  }
  if(quoted)throw Error('Unclosed quoted field.');row.push(field);if(row.some(v=>v.trim()))result.push(row);
  const headers=(result.shift()||[]).map(v=>v.trim());
- if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status','subcategory','laps'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
+ if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status','subcategory','laps','phase'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
  return validate(result.map((cells,i)=>{if(cells.length!==headers.length)throw Error(`Row ${i+2}: incorrect number of columns.`);return Object.fromEntries(COLS.map(c=>[c,headers.includes(c)?cells[headers.indexOf(c)]:'']));}));
 }
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(rows));return true;}catch{$('message').textContent='Loaded for this session. Browser storage unavailable; export CSV to keep your data.';return false;}}
@@ -83,7 +86,7 @@ function options(){
 }
 function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(recordLaps===null||String(r.laps??'')===recordLaps)&&(!vehicle||races.has(r.race_id))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
 function renderFilterSummaries(){
- const labels={tour:'Tour',planet:'Planet',track:'Track',vehicle:'Vehicle',category:'Category',subcategory:'Subcategory'};
+ const labels={pilot:'Pilot',tour:'Tour',planet:'Planet',track:'Track',vehicle:'Vehicle',category:'Category',subcategory:'Subcategory'};
  let summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value)).join(' · ');
  if(recordLaps)summary+=(summary?' · ':'')+recordLaps+' laps';
  for(const section of ['standings','telemetry','records','archive','dialog']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
@@ -128,12 +131,12 @@ function render(){
  $('dq-count-label').textContent=selectedPilot.toUpperCase()+' / TOTAL DNF';$('dq-rate-label').textContent=selectedPilot.toUpperCase()+' / DNF RATE';
  $('dq-count').textContent=own?own.dqs:0;$('dq-rate').textContent=own?Math.round(own.dqs/own.races*100)+'%':'—';
  $('dq-detail').textContent=own?own.dqs+' DNFs from '+own.races+' starts':'No recorded starts';
- const eliminatorStarts=data.filter(r=>r.pilot===selectedPilot&&r.category==='Eliminator'),eliminations=eliminatorStarts.filter(isEliminated).length;
+ const eliminatorStarts=data.filter(r=>r.pilot===selectedPilot&&['Eliminator','Galactic Gauntlet'].includes(r.category)),eliminations=eliminatorStarts.filter(isEliminated).length;
  $('elimination-total-label').textContent=selectedPilot.toUpperCase()+' / TOTAL ELIMINATIONS';
  $('elimination-rate-label').textContent=selectedPilot.toUpperCase()+' / ELIMINATION RATE';
  $('elimination-total').textContent=eliminations;
  $('elimination-rate').textContent=eliminatorStarts.length?Math.round(eliminations/eliminatorStarts.length*100)+'%':'—';
- $('elimination-detail').textContent=eliminatorStarts.length?eliminations+' eliminations from '+eliminatorStarts.length+' Eliminator starts':'No Eliminator starts';
+ $('elimination-detail').textContent=eliminatorStarts.length?eliminations+' eliminations from '+eliminatorStarts.length+' elimination-event starts':'No elimination-event starts';
  const categoryUsage=new Map();for(const r of data.filter(r=>r.pilot===selectedPilot))categoryUsage.set(r.category,(categoryUsage.get(r.category)||0)+1);
  for(const kind of ['least','most']){
   $('category-'+kind+'-label').textContent=selectedPilot.toUpperCase()+' / '+(kind==='least'?'LEAST':'MOST')+' COMMON CATEGORY';
@@ -191,7 +194,7 @@ function computeLeagueChanges(data){
  const rankSnapshot=standings=>new Map([...standings.values()].sort(compareStandings).map((p,i)=>[p.pilot,i+1]));
  for(const race of groupRaceResults(data)){
   const beforeRanks=rankSnapshot(standings);
-  const incomplete=race.results.every(r=>isDQ(r)&&!Number.isInteger(r.position));
+  const incomplete=race.results.every(r=>r.category!=='Galactic Gauntlet'&&isDQ(r)&&!Number.isInteger(r.position));
   for(const r of race.results){if(!standings.has(r.pilot))standings.set(r.pilot,newPilotStats(r.pilot));addResult(standings.get(r.pilot),r);}
   const afterRanks=rankSnapshot(standings),pilots=new Map();
   for(const [pilot,after] of afterRanks){const before=beforeRanks.get(pilot)??null;pilots.set(pilot,{before,after,delta:before!==null?before-after:null,incomplete});}
@@ -211,7 +214,7 @@ function renderArchive(data=filtered()){
  const list=groupRaceResults(data).filter(r=>r.results.some(result=>COLS.some(c=>String(result[c]).toLowerCase().includes(q)))||galacticDate(r.date).toLowerCase().includes(q)).sort((a,b)=>(ascending?1:-1)*(a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id)));
  const pages=Math.max(1,Math.ceil(list.length/10));page=Math.min(page,pages-1);
  $('archive-count').textContent=`/ ${list.length} HEATS`;
- $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),shade=r.results.find(result=>result.pilot==='Shade');return `<tr${i>0?(list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':list[page*10+i-1].planet!==r.planet?' class="planet-boundary"':''):''} data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)}<span class="subline">${r.results.length} recorded racers</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</span></td><td>${esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td>${leagueChangeMarkup(changes.get(r.race_id))}</td></tr>`;}).join('')||'<tr><td colspan="6" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
+ $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),selectedResult=r.results.find(result=>result.pilot===selectedPilot);return `<tr${i>0?(list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':list[page*10+i-1].planet!==r.planet?' class="planet-boundary"':''):''} data-category="${esc(r.category)}" data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)}<span class="subline">${r.category==='Galactic Gauntlet'?(selectedResult?esc(positionLabel(selectedResult)):'No telemetry'):r.results.length+' recorded racers'}</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</span></td><td>${r.category==='Galactic Gauntlet'?'<span class="gauntlet-planet">'+esc(r.planet)+'</span>':esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td>${leagueChangeMarkup(changes.get(r.race_id))}</td></tr>`;}).join('')||'<tr><td colspan="6" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
  $('page-info').textContent=list.length?`${page*10+1}–${Math.min(page*10+10,list.length)} of ${list.length} heats`:'0 heats';$('prev').disabled=page===0;$('next').disabled=page>=pages-1;
 }
 for(const key of ['tour','planet','track','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{recordLaps=null;if(key==='planet')options();page=0;render();});
@@ -227,7 +230,7 @@ function renderSectors(){
  $('sectors').innerHTML=PLANETS.map((planet,i)=>{const results=rows.filter(r=>r.planet===planet&&r.pilot==='Shade');const wins=results.filter(r=>r.position===1&&!isDQ(r)).length;return `<button class="sector sector-${i} ${$('planet').value===planet?'selected':''}" data-planet="${esc(planet)}" aria-pressed="${$('planet').value===planet}"><span class="sector-orb" aria-hidden="true"></span><span><small>SECTOR 0${i+1}</small><strong>${esc(planet)}</strong><em>${results.length} starts · ${wins} wins</em></span></button>`;}).join('');
 }
 function renderTelemetry(data){
- const events=[...new Map(data.map(r=>[r.race_id,r])).values()].sort((a,b)=>a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id)).slice(-12);
+ const events=[...new Map(data.filter(r=>r.category!=='Galactic Gauntlet').map(r=>[r.race_id,r])).values()].sort((a,b)=>a.date.localeCompare(b.date)||a.race_id.localeCompare(b.race_id)).slice(-12);
  const order=new Map(events.map((r,i)=>[r.race_id,i]));
  const recent=data.filter(r=>order.has(r.race_id)),pilots=[...new Set(data.map(r=>r.pilot))].sort((a,b)=>a==='Shade'?-1:b==='Shade'?1:a.localeCompare(b));
  telemetry=recent.filter(r=>r.pilot===selectedPilot).sort((a,b)=>order.get(a.race_id)-order.get(b.race_id));
@@ -242,13 +245,13 @@ function renderTelemetry(data){
  const ticks=gap?[0,max/2,max]:[1,Math.ceil(max/2),max];
  function path(results){let previous=-2;return results.map(r=>{const i=order.get(r.race_id);if(chartMissing(r)){previous=-2;return '';}const command=i===previous+1?'L':'M';previous=i;return `${command}${x(r)},${y(val(r))}`;}).join(' ');}
  const rivals=$('compare-grid').checked?pilots.filter(p=>p!==selectedPilot).map(p=>{const results=recent.filter(r=>r.pilot===p).sort((a,b)=>order.get(a.race_id)-order.get(b.race_id));return `<g class="rival-line" data-pilot="${esc(p)}"><path d="${path(results)}" fill="none" stroke="#99b7b0" stroke-opacity=".35" stroke-width="1.5"/>${results.map(r=>`<circle cx="${x(r)}" cy="${y(val(r))}" r="2" fill="${isDQ(r)?'#eb8f86':'#99b7b0'}" opacity=".5"/>`).join('')}</g>`;}).join(''):'';
- $('trend').innerHTML=events.length?`<svg viewBox="0 0 510 240" aria-label="Race telemetry for ${esc(selectedPilot)}; ${gap?'time gap':'finish positions'} across the last ${events.length} races">${ticks.map(p=>`<line x1="40" y1="${y(p)}" x2="485" y2="${y(p)}" stroke="#778a8740" stroke-dasharray="3 5"/><text x="2" y="${y(p)+5}" fill="#b8cbc7" font-size="13">${gap?p.toFixed(1)+'%':'P'+p}</text>`).join('')}<line x1="40" y1="183" x2="485" y2="183" stroke="#778a8740"/><text x="2" y="200" fill="#eb8f86" font-size="12">DNF</text>${rivals}<path class="chart-line" d="${path(telemetry)}" fill="none" stroke="#efbd70" stroke-width="3"/>${telemetry.map((r,i)=>`<g class="chart-point ${isDQ(r)?'dq':''} ${r.race_id===selectedRace?'selected':''}" tabindex="0" role="button" aria-label="Inspect ${esc(selectedPilot)}, ${esc(r.race_id)}, ${esc(r.planet)}, ${positionLabel(r)}" data-index="${i}"><circle class="hit" cx="${x(r)}" cy="${y(val(r))}" r="15" fill="transparent"/><circle class="dot" cx="${x(r)}" cy="${y(val(r))}" r="5" fill="${isDQ(r)?'#eb8f86':'#efbd70'}" stroke="#153e43" stroke-width="2"/></g>`).join('')}${events.map(r=>`<text x="${x(r)}" y="230" text-anchor="middle" font-size="12" fill="#b8cbc7">${esc(r.race_id.slice(-3))}</text>`).join('')}</svg>`:'<div class="empty">No signals in this sector.</div>';
+ $('trend').innerHTML=events.length?`<svg viewBox="0 0 510 240" aria-label="Telemetry for ${esc(selectedPilot)}; ${gap?'time gap':'finish positions'} across the last ${events.length} heats">${ticks.map(p=>`<line x1="40" y1="${y(p)}" x2="485" y2="${y(p)}" stroke="#778a8740" stroke-dasharray="3 5"/><text x="2" y="${y(p)+5}" fill="#b8cbc7" font-size="13">${gap?p.toFixed(1)+'%':'P'+p}</text>`).join('')}<line x1="40" y1="183" x2="485" y2="183" stroke="#778a8740"/><text x="2" y="200" fill="#eb8f86" font-size="12">DNF</text>${rivals}<path class="chart-line" d="${path(telemetry)}" fill="none" stroke="#efbd70" stroke-width="3"/>${telemetry.map((r,i)=>`<g class="chart-point ${isDQ(r)?'dq':''} ${r.race_id===selectedRace?'selected':''}" tabindex="0" role="button" aria-label="Inspect ${esc(selectedPilot)}, ${esc(r.race_id)}, ${esc(r.planet)}, ${positionLabel(r)}" data-index="${i}"><circle class="hit" cx="${x(r)}" cy="${y(val(r))}" r="15" fill="transparent"/><circle class="dot" cx="${x(r)}" cy="${y(val(r))}" r="5" fill="${isDQ(r)?'#eb8f86':'#efbd70'}" stroke="#153e43" stroke-width="2"/></g>`).join('')}${events.map(r=>`<text x="${x(r)}" y="230" text-anchor="middle" font-size="12" fill="#b8cbc7">${esc(r.race_id.slice(-3))}</text>`).join('')}</svg>`:'<div class="empty">No signals in this sector.</div>';
  const selected=telemetry.findIndex(r=>r.race_id===selectedRace);showSignal(selected>=0?selected:telemetry.length-1);
- if(events.length&&!telemetry.length)$('race-detail').innerHTML=`No recorded finishes for ${esc(selectedPilot)} in these races. Select another racer or clear your filters.`;
+ if(events.length&&!telemetry.length)$('race-detail').innerHTML=`No recorded finishes for ${esc(selectedPilot)} in these heats. Select another racer or clear your filters.`;
 }
 
 function showSignal(index){
- const r=telemetry[index];if(!r){$('race-detail').innerHTML='Awaiting race telemetry.';return;}
+ const r=telemetry[index];if(!r){$('race-detail').innerHTML='Awaiting telemetry.';return;}
  selectedRace=r.race_id;
  $('race-detail').innerHTML=`<div><span class="eyebrow">${esc(r.race_id)} / ${esc(galacticDate(r.date))}</span><strong>${esc(selectedPilot)} / ${esc(r.planet)}</strong><small>${esc(r.track||'Circuit uncharted')}${r.subcategory?' · '+esc(r.subcategory):''}${r.vehicle?' · '+esc(r.vehicle):''}</small></div><div class="signal-finish ${isDQ(r)?'signal-dq':''}">${positionLabel(r)}<small>${time(r.time_ms)}</small></div>`;
  for(const node of $('trend').querySelectorAll?.('.chart-point')||[])node.classList.toggle('selected',Number(node.dataset.index)===index);

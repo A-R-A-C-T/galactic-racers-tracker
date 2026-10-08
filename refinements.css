@@ -158,3 +158,12 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .record-times{gap:16px;flex-wrap:wrap}.record-time-dot{display:none}
 
 .record-times .record-equal strong{color:#52795d}.record-times .record-slower strong{color:#a66356}
+
+/* Galactic Gauntlet shares Derven’s bright cyan rim. */
+#archive tr[data-category="Galactic Gauntlet"] td{box-shadow:none}
+#archive tr[data-category="Galactic Gauntlet"] td:first-child{box-shadow:inset 3px 0 #65e5ed;background-image:linear-gradient(to right,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
+#archive tr[data-category="Galactic Gauntlet"] td:last-child{box-shadow:inset -3px 0 #65e5ed;background-image:linear-gradient(to left,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
+#archive tr[data-category="Galactic Gauntlet"] .gauntlet-planet{font-weight:400}
+#race-dialog.gauntlet{border:1px solid #65e5ed}
+#race-dialog.gauntlet .finish{width:auto;min-width:0}
+#race-dialog.gauntlet .finish::before{display:none}

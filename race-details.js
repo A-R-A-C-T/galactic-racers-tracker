@@ -6,6 +6,7 @@ function openRaceDialog(raceId){
  renderFilterSummaries();
  clearTimeout(raceCloseTimer);raceDialog.classList.remove('closing');
  const race=results[0],shade=results.find(r=>r.pilot==='Shade'),movement=computeLeagueChanges(filtered()).get(raceId)?.pilots,winner=results.find(r=>r.position===1&&!isDQ(r));
+ raceDialog.classList.toggle('gauntlet',race.category==='Galactic Gauntlet');
  $('race-dialog-code').textContent=raceId+' / '+galacticDate(race.date);
  $('race-dialog-title').textContent=race.planet+' / '+(race.track||'Circuit uncharted');
  $('race-dialog-meta').textContent=race.tour+' · '+race.category+(race.subcategory?' · '+race.subcategory:'')+(race.laps?' · '+race.laps+' lap'+(race.laps===1?'':'s'):'');
