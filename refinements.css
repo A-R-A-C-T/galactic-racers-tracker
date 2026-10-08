@@ -144,3 +144,9 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 /* Separate borders prevent sticky table headings exposing a collapsed-border seam. */
 .standings table{border-collapse:separate;border-spacing:0}
 .standings thead th{border-top:0;box-shadow:0 -2px 0 0 #f9f3e6,0 1px 0 var(--line);background-clip:border-box}
+
+/* Metric bars communicate purpose rather than card position. */
+.metrics:not(.detail-metrics) article:nth-child(1),.metrics:not(.detail-metrics) article:nth-child(2){border-top-color:#264e50}
+.metrics:not(.detail-metrics) article:nth-child(3),.metrics:not(.detail-metrics) article:nth-child(4){border-top-color:#b28e48}
+.detail-metrics .category-least,.detail-metrics .category-most,.detail-metrics .vehicle-least,.detail-metrics .vehicle-most{border-top-color:#7d9080}
+.detail-metrics .dnf-total,.detail-metrics .dnf-rate,.detail-metrics .elimination-total,.detail-metrics .elimination-rate{border-top-color:#b55c4d}
