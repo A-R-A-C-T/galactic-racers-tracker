@@ -47,3 +47,5 @@ body:has(#race-dialog[open]){overflow:hidden}
 @media(max-width:520px){.metrics.dq-metrics{gap:15px}.dq-metrics small{line-height:1.5}.dq-metrics strong{font-size:34px}}
 
 .race-modal-results .race-pilot-vehicle{display:block;margin-top:6px;color:#747873;font-size:13px;font-weight:400;line-height:1.4}
+
+#archive tr.tour-boundary>td{box-shadow:inset 0 2px 0 rgba(181,96,48,.55)}
