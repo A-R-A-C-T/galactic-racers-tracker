@@ -118,3 +118,5 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .finish.finish-eliminated,.finish.finish-dnf{display:inline-grid;width:max-content;text-align:left;white-space:nowrap;font-size:13px;line-height:1.4;font-variant-numeric:tabular-nums}
 .finish.finish-eliminated:before{content:"P12 · Eliminated"}.finish.finish-dnf:before{content:"P12 · DNF"}
 .finish.finish-eliminated:before,.finish.finish-dnf:before{visibility:hidden;grid-area:1/1;pointer-events:none}.finish-label{grid-area:1/1}
+
+.finish.podium{display:inline-grid;width:max-content;text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums}.finish.podium:before{content:"P3";visibility:hidden;grid-area:1/1;pointer-events:none}
