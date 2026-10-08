@@ -306,3 +306,15 @@ function setupStandingsStickyHeader(){
  update();if(typeof ResizeObserver==='function')new ResizeObserver(update).observe(heading);
 }
 setupStandingsStickyHeader();
+
+function centerInitialPilot(){
+ const scroller=document.querySelector?.('.standings .table-wrap'),pilot=document.querySelector?.('#leaders tr.pilot-selected');
+ if(!scroller||!pilot)return;
+ const box=scroller.getBoundingClientRect(),row=pilot.getBoundingClientRect();
+ scroller.scrollTop+=row.top-box.top+row.height/2-box.height/2;
+}
+if(typeof requestAnimationFrame==='function'){
+ const center=()=>requestAnimationFrame(()=>requestAnimationFrame(centerInitialPilot));
+ if(document.readyState==='complete')Promise.resolve(document.fonts?.ready).then(center);
+ else window.addEventListener?.('load',()=>Promise.resolve(document.fonts?.ready).then(center),{once:true});
+}

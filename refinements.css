@@ -140,3 +140,7 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .standings .table-wrap{flex:1 1 auto;min-height:0;overflow:auto;isolation:isolate}
 .standings thead th{position:sticky;top:0;z-index:1;background:#f9f3e6;box-shadow:0 1px 0 var(--line)}
 .standings .standings-notes{position:relative;bottom:auto;flex-shrink:0;z-index:2}
+
+/* Separate borders prevent sticky table headings exposing a collapsed-border seam. */
+.standings table{border-collapse:separate;border-spacing:0}
+.standings thead th{border-top:0;box-shadow:0 -2px 0 0 #f9f3e6,0 1px 0 var(--line);background-clip:border-box}
