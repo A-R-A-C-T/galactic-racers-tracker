@@ -183,33 +183,34 @@
     const standings=new Map();
     for(const event of [...prior,heat].filter(h=>h.tour===heat.tour))for(const result of event.results){if(!standings.has(result.pilot))standings.set(result.pilot,newPilotStats(result.pilot));addResult(standings.get(result.pilot),result);}
     const leaders=[...standings.values()].filter(isLeaguePilot).sort(compareStandings),rank=leaders.findIndex(p=>p.pilot==='Shade')+1;
-    return `Shade knocked out in round ${shade.phase} of the Galactic Gauntlet at ${heat.track||heat.planet}${heat.track?' · '+heat.planet:''}. ${heat.tour} concludes for Shade at P${rank} with ${standings.get('Shade').points} points. ${reaction('gauntlet',heat)}`;
+    return `Shade knocked out in Gauntlet round ${shade.phase} at ${heat.track||heat.planet}. ${heat.tour} ends: P${rank}, ${standings.get('Shade').points} points. ${reaction('gauntlet',heat)}`;
    }
    return `${heat.planet}: ${shade?'Shade reached phase '+shade.phase+' · '+resultStatus(shade):'Galactic Gauntlet settlement pending official confirmation'}. ${reaction('gauntlet',heat)}`;
   }
   if(!winner)return shade?`${shade.pilot}: ${positionLabel(shade)} at ${heat.track||heat.planet}. ${isEliminated(shade)?reaction('survival',heat):'House of Nix holds winner settlement pending official confirmation.'}`:`${heat.track||heat.planet}: winner settlement pending official confirmation.`;
   const runnerUp=ordered.find(r=>r.position===2&&!isDQ(r)),margin=runnerUp&&Number.isFinite(winner.time_ms)&&Number.isFinite(runnerUp.time_ms)?Math.abs(runnerUp.time_ms-winner.time_ms)/1000:null;
   let report=`${winner.pilot} wins at ${heat.track||heat.planet}`;
-  if(heat.category==='Eliminator')report+=` · ${eliminated} eliminated. ${reaction('survival',heat)}`;
+  if(heat.category==='Eliminator')report+=` · ${eliminated} eliminated.`;
   else report+=margin!==null?` · ${margin.toFixed(2)}s ahead of ${runnerUp.pilot}.`:'.';
   const winnerMove=movement?.get(winner.pilot),drop=[...(movement||[])].filter(([,m])=>!m.incomplete&&m.delta<=-2).sort((a,b)=>(a[0]==='Shade'?-1:b[0]==='Shade'?1:a[1].delta-b[1].delta))[0];
   const oldTimes=prior.filter(h=>trackKey(h)===trackKey(heat)).flatMap(h=>h.results).filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0);
   const wins=prior.slice(-3).filter(h=>h.results.some(r=>r.pilot===winner.pilot&&r.position===1&&!isDQ(r))).length;
   let kind='routine';
   if(winnerMove?.before>=7)kind='upset';else if(margin!==null&&margin<=.5)kind='close';else if(wins===3)kind='streak';
-  if(heat.category!=='Eliminator'||kind!=='routine')report+=' '+reaction(kind,heat);
+  if(shade&&winner.pilot!=='Shade')report+=' Shade: '+positionLabel(shade)+'.';
+  report+=' '+reaction(heat.category==='Eliminator'&&kind==='routine'?'survival':kind,heat);
   const recordEligible=heat.track&&heat.direction&&(heat.category==='Eliminator'||heat.subcategory);
   const fastest=recordEligible?ordered.filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0).sort((a,b)=>a.time_ms-b.time_ms)[0]:null;
   const previousRecord=oldTimes.length?oldTimes.reduce((best,r)=>r.time_ms<best.time_ms?r:best):null;
   if(fastest&&previousRecord&&fastest.time_ms<previousRecord.time_ms){
    const configuration=[directionLabel(heat),heat.category,heat.subcategory,heat.laps?heat.laps+' laps':''].filter(Boolean).join(' · ');
-   report+=`\u001e${fastest.pilot} sets a new track record at ${heat.track} (${configuration}): ${time(fastest.time_ms)}, beating ${previousRecord.pilot}’s ${time(previousRecord.time_ms)} by ${((previousRecord.time_ms-fastest.time_ms)/1000).toFixed(3)}s. ${reaction('record',heat)}`;
+   report+=`\u001e${heat.track} (${configuration}): ${fastest.pilot} sets ${time(fastest.time_ms)}, ${((previousRecord.time_ms-fastest.time_ms)/1000).toFixed(3)}s faster than ${previousRecord.pilot}’s record. ${reaction('record',heat)}`;
   }
   const surprise=ordered.find(r=>[2,3].includes(r.position)&&!isDQ(r)&&movement?.get(r.pilot)?.before>=7);
-  if(surprise){const before=movement.get(surprise.pilot).before;report+=`\u001e${surprise.pilot} claims a surprise P${surprise.position} after entering the heat at overall league P${before}. ${reaction('surprise',heat)}`;}
+  if(surprise){const before=movement.get(surprise.pilot).before;report+=`\u001e${surprise.pilot}: surprise P${surprise.position}, from overall league P${before}. ${reaction('surprise',heat)}`;}
   if(drop){const [pilot,m]=drop;report+=`\u001e${pilot} loses ${-m.delta} league places: P${m.before} → P${m.after}. ${reaction('loss',heat)}`;}
   else if(winnerMove?.delta>=2)report+=`\u001e${winner.pilot} climbs ${winnerMove.delta} league places to P${winnerMove.after}. ${reaction('gain',heat)}`;
-  else if(shade&&winner.pilot!=='Shade')report+=' Shade: '+positionLabel(shade)+'.';
+
   return report;
  }
  function buildWireEvents(heats){
@@ -257,7 +258,7 @@
   if(ending)for(const event of priorTour)for(const r of event.results){if(!priorStats.has(r.pilot))priorStats.set(r.pilot,newPilotStats(r.pilot));addResult(priorStats.get(r.pilot),r);}
   const priorLeader=[...priorStats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
   const momentum=ending&&priorLeader?.pilot===ending.pilot&&priorTour.some(h=>h.results.some(r=>r.pilot===ending.pilot&&r.position===1&&!isDQ(r)))?' Backers riding the tour leader’s winning form take a costly hit.':'';
-  const report=ending?`${ending.pilot} eliminated at P${ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early for ${ending.pilot}, before the Galactic Gauntlet.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
+  const report=ending?`${ending.pilot} eliminated at P${ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum||' '+reaction('earlyEnd',heat)}`:heatReport(heat);
   return [...report.split('\u001e').map(text=>text.trim()).filter(Boolean),...events.map(event=>event.text+' '+reaction(event.kind,heat))];
  }
  function wire(heat){return wireItems(heat).join(' ');}
