@@ -190,7 +190,7 @@
   if(!winner)return shade?`${shade.pilot}: ${positionLabel(shade)} at ${heat.track||heat.planet}. ${isEliminated(shade)?reaction('survival',heat):'House of Nix holds winner settlement pending official confirmation.'}`:`${heat.track||heat.planet}: winner settlement pending official confirmation.`;
   const runnerUp=ordered.find(r=>r.position===2&&!isDQ(r)),margin=runnerUp&&Number.isFinite(winner.time_ms)&&Number.isFinite(runnerUp.time_ms)?Math.abs(runnerUp.time_ms-winner.time_ms)/1000:null;
   let report=`${winner.pilot} wins at ${heat.track||heat.planet}`;
-  if(heat.category==='Eliminator')report+=` · ${eliminated} eliminated.`;
+  if(heat.category==='Eliminator')report+=` · ${eliminated} eliminated. ${reaction('survival',heat)}`;
   else report+=margin!==null?` · ${margin.toFixed(2)}s ahead of ${runnerUp.pilot}.`:'.';
   const winnerMove=movement?.get(winner.pilot),drop=[...(movement||[])].filter(([,m])=>!m.incomplete&&m.delta<=-2).sort((a,b)=>(a[0]==='Shade'?-1:b[0]==='Shade'?1:a[1].delta-b[1].delta))[0];
   const oldTimes=prior.filter(h=>trackKey(h)===trackKey(heat)).flatMap(h=>h.results).filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0);
@@ -198,7 +198,7 @@
   let kind='routine';
   if(winnerMove?.before>=7)kind='upset';else if(margin!==null&&margin<=.5)kind='close';else if(wins===3)kind='streak';
   if(shade&&winner.pilot!=='Shade')report+=' Shade: '+positionLabel(shade)+'.';
-  report+=' '+reaction(heat.category==='Eliminator'&&kind==='routine'?'survival':kind,heat);
+  if(heat.category!=='Eliminator'||kind!=='routine')report+=' '+reaction(kind,heat);
   const recordEligible=heat.track&&heat.direction&&(heat.category==='Eliminator'||heat.subcategory);
   const fastest=recordEligible?ordered.filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0).sort((a,b)=>a.time_ms-b.time_ms)[0]:null;
   const previousRecord=oldTimes.length?oldTimes.reduce((best,r)=>r.time_ms<best.time_ms?r:best):null;
@@ -258,7 +258,7 @@
   if(ending)for(const event of priorTour)for(const r of event.results){if(!priorStats.has(r.pilot))priorStats.set(r.pilot,newPilotStats(r.pilot));addResult(priorStats.get(r.pilot),r);}
   const priorLeader=[...priorStats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
   const momentum=ending&&priorLeader?.pilot===ending.pilot&&priorTour.some(h=>h.results.some(r=>r.pilot===ending.pilot&&r.position===1&&!isDQ(r)))?' Backers riding the tour leader’s winning form take a costly hit.':'';
-  const report=ending?`${ending.pilot} eliminated at P${ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum||' '+reaction('earlyEnd',heat)}`:heatReport(heat);
+  const report=ending?`${ending.pilot} eliminated at P${ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
   return [...report.split('\u001e').map(text=>text.trim()).filter(Boolean),...events.map(event=>event.text+' '+reaction(event.kind,heat))];
  }
  function wire(heat){return wireItems(heat).join(' ');}
