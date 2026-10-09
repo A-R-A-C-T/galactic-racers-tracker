@@ -1,103 +1,161 @@
 # Galactic Racers — Tracker
 
-Welcome to the Galactic League leaderboards! A homemade HTML dashboard for tracking campaign or multiplayer results in Fuse Games’ **Star Wars: Galactic Racer**. Bring your own CSV and build a racing history across the galaxy.
+A personal racing archive for **Star Wars: Galactic Racer**, presented as **The House of Nix · Backer Terminal**. Follow a pilot's progress, compare the grid, review past heats, and watch a wagering feed respond to the results.
 
-**Clone it, fork it, change the look, track your own races, and make it yours. Have fun!** The code is available under the [MIT license](LICENSE); keep the copyright and license notice when redistributing it.
+The league archive is the core of the project. The exchange adds the atmosphere of a casino-backed racing operation: track-specific odds, moving credit pools, and market chatter drawn from your racing history.
 
-## Get started
+## Try it
 
-1. Clone or download this repository.
-2. Open `index.html` in a browser. No installation, build step, or account is required.
-3. Choose **Import CSV** to load your results. [data/races.csv](data/races.csv) contains recorded races and provides the column format.
+Open the [live dashboard](https://a-r-a-c-t.github.io/galactic-racers-tracker/) to explore the recorded heats. Shade is the backed pilot and default selection; choose another pilot or tour to follow their results.
 
-The dashboard also works on static hosting such as GitHub Pages or GitLab Pages. Its core functionality works offline; optional Google Fonts load when connected, with system-font fallbacks.
+To run your own copy, download or clone this repository and open `index.html` in a browser. No installation, build step, or account is required. You can explore the bundled archive immediately, then import your own results when ready.
 
-## What it does
+## Using the dashboard
 
-- League standings with accumulated points, wins, and average finish.
-- Select any racer to inspect their average finish, podium rate, DQ count, and DQ rate.
-- Interactive race telemetry with optional rival overlays and finish-position/time-gap views.
-- Filters for tour, planet, track, category, subcategory, and Shade’s vehicle.
-- One archive row per race; open it for every recorded racer’s position, time, points, and league movement.
-- Track records, gold/silver/bronze podium badges, and red DQ badges.
-- In-universe date displays, rotating planet artwork, keyboard controls, and reduced-motion support.
-- CSV import/export and browser storage to retain imported results between visits.
+### Standings, telemetry, and results
 
-Shade is the backed pilot by default. This is a manually maintained race tracker: enter results yourself or transcribe screenshots. It does not read game saves or connect to game servers.
+- **Filters:** pilot, tour, planet, track, direction, vehicle, category, and subcategory. The browser remembers your selection. Clear filters with the reset control or **R** when you are outside a text field and no results dialog is open.
+- **League standings:** points, starts, wins, average classified finish, and rank movement. Pilot cards show species, portrait, and statistics for the current filters.
+- **Telemetry:** finish positions or gaps to the heat's fastest recorded finisher, with optional rival comparisons. Hover standings entries or legend names to highlight their lines; hover rival points to highlight their standings entries, and click to select that pilot. Gauntlet events are excluded from this graph.
+- **Results:** one row per heat, with the winner, selected pilot's position, and league change. Sort Heat, Date, Tour / Category, Planet / Track, Winner, or Position. Date defaults to newest first; selecting another sort starts descending. Search narrows the displayed archive without changing league calculations.
+- **Heat details:** open a result for the recorded grid, times, outcomes, points, and movement. Hover pilot names for their cards.
+- **Track records:** compare the global record with the selected pilot's best and latest results for each configuration. Click a record card to apply its course filters, including laps.
 
-## CSV format
+Missing portraits use placeholders until images are added.
 
-One row represents **one racer’s result in one event**. All racers in that event share a race ID and the same event details.
+### Points and league movement
+
+Normal races award **25, 18, 15, 12, 10, 8, 6, 4, 2, 1** points for P1–P10. P11 and lower earn zero. This follows the Formula 1 Grand Prix points scale as a tracker convention.
+
+**Eliminators** award the same scale to surviving finishers—normally 25, 18, and 15 for the final three. Eliminated pilots and DNFs earn zero.
+
+**Galactic Gauntlet** uses phase progression:
+
+| Outcome | Points |
+| --- | ---: |
+| Eliminated in phase 1 | 0 |
+| Eliminated in phase 2 | 8 |
+| Eliminated in phase 3 | 16 |
+| Cleared the final phase | 25 |
+
+Points and historical league movements are calculated from the archive, so scoring changes apply retroactively. Ties are resolved by wins, average classified finish, then pilot name. Gauntlet starts and points count toward standings, but do not count toward conventional finish averages, wins, or podiums.
+
+League movement uses standings immediately before and after each heat under the active filters. All tours gives cumulative movement; selecting a tour gives movement within that tour. Heats are processed by date, then heat ID, independently of the table's display sort. Keep same-day IDs sequential. A pilot's first recorded standing shows **Initial ranking**; missing information shows **No telemetry** where movement cannot be established.
+
+Classified eliminations retain their numeric position for finish averages. DNFs do not count toward those averages. DNF rate uses all recorded starts as its denominator; elimination statistics are tracked separately.
+
+### The wagering exchange
+
+The exchange is collapsed by default and remembers its open state across reloads.
+
+Markets are generated from recorded track configurations, including category, direction, subcategory, and laps. New configurations enter the market list when their results enter the archive. Selecting a track pauses automatic market rotation. Each market displays three pilots: the leading candidates, with the selected pilot replacing the third candidate when needed and present in the recorded grid. Gauntlet markets do not quote outright-win odds.
+
+Win estimates combine recorded win history, recent tour form, and exact-course performance, including best, oldest, and latest recorded times. These are lightweight estimates from the available archive, rather than calibrated predictions. Decimal prices include a **105% book**: the sum of implied probabilities is approximately 105%, allowing for displayed rounding.
+
+A decimal price of **3.50** means a winning 100-credit stake returns **350 credits total**, including the stake; the profit is 250 credits. A losing stake returns nothing. The interface does not accept bets or move credits.
+
+Named betting-terminal pools change and rotate every **5–7 seconds** while the exchange is open. The scrolling **Paddock Wire** builds commentary from recent heats and historical context, including eliminations, close finishes, upsets, records, streaks, and league gains or losses. Pilot cards show the same filtered standings as elsewhere in the dashboard.
+
+The market feed is in-world flavor and does not affect championship points. Motion respects reduced-motion preferences, and the exchange provides a pause control.
+
+## Add and manage results
+
+- **Import CSV** replaces the archive in the current browser and saves it locally.
+- **Export CSV** exports results matching the main filters. Archive search does not restrict the export.
+- Browser imports do not modify repository files or synchronize across devices or visitors.
+- **Reset archive** restores the bundled dataset. Export browser-only changes first.
+- Keep [data/races.csv](data/races.csv) and [data/races.js](data/races.js) synchronized when publishing. The JavaScript file supplies the default data without requiring a server-side CSV request.
+
+Filters and exchange expansion are stored separately from imported results. Browser storage must be available for persistence.
+
+### CSV reference
+
+One row represents **one pilot's result in one heat**. All rows for that heat share its ID and event details. [data/races.csv](data/races.csv) is the portable ledger.
 
 ```csv
-race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Fola Kanjen,1,147820,
-GR-001,2026-10-07,Tour 01,Race,Sentinel One,Caustic Fields,Shade,9,152600,Skim speeder
+race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle,status,subcategory,laps,phase,direction
+GR-001,2026-10-09,Tour 01,Race,Crait,Forgil Canyon,Shade,1,159170,Land speeder,,Circuit,2,,Forward
+GR-001,2026-10-09,Tour 01,Race,Crait,Forgil Canyon,Goli & 02-R0,2,160120,,,Circuit,2,,Forward
 ```
 
 | Column | Meaning |
 | --- | --- |
-| race_id | Unique event ID. Use padded sequential IDs, such as GR-001. |
-| date | Actual date logged, in YYYY-MM-DD format. |
-| tour | Tour identifier, for example Tour 01. |
-| category | Event category, initially Race or Eliminator. |
-| subcategory | Optional course description, such as Point-to-point. Missing columns and blank values are supported. |
-| laps | Optional positive lap count for a circuit; shown in race details, with no lap filter. Track records separate different lap counts. |
+| race_id | Unique heat ID, preferably padded and sequential, such as GR-001. |
+| date | Actual logged date in YYYY-MM-DD format. |
+| tour | Tour identifier, such as Tour 01. |
+| category | Race, Eliminator, or Galactic Gauntlet. |
 | planet | Planet name. |
-| track | Circuit name; may be blank until known. |
-| pilot | Racer name, spelled consistently across events. |
-| position | Positive integer, or DQ for a non-finish. |
-| time_ms | Total race time in milliseconds; may be blank for DQ. |
-| vehicle | Shade’s vehicle; blank for other racers. |
-| status | Optional: DNF or ELIMINATED; blank for a timed finish. Legacy DQ is supported. |
+| track | Course name; may be blank until known. |
+| pilot | Pilot name, spelled consistently across heats. |
+| position | Positive classified position, or DNF for an unclassified non-finish. Gauntlet results use a blank position. |
+| time_ms | Recorded finish time in milliseconds; non-finishes may leave it blank. |
+| vehicle | Shade's vehicle; blank for other pilots. |
+| status | Blank for a normal finish; DNF, ELIMINATED, or CLEARED for a completed Gauntlet. |
+| subcategory | Optional Circuit or Point-to-point. |
+| laps | Optional positive lap count. Different lap counts form separate configurations. |
+| phase | Gauntlet phase, 1–3; blank for other categories. |
+| direction | Forward for D1 (Standard), Reverse for D2; blank when unknown. |
 
-Shade’s supported vehicles are Land speeder, Speeder bike, Skim speeder, and Podracer. A vehicle filter retains the full recorded grid from events in which Shade used that vehicle. Pilot names and numeric finishing positions must be unique within a race. Multiple racers may have DQ. Imports validate the complete file before replacing the browser dataset.
+Optional columns may be omitted in older files. Imports validate the entire dataset before replacing browser data. Pilot names and numeric positions must be unique within a heat.
 
-### Result outcomes
+Shade's supported vehicles are Land speeder, Speeder bike, Skim speeder, and Podracer. The vehicle filter retains the entire recorded grid from heats where Shade used that vehicle.
 
-DNF and ELIMINATED are separate statuses. Both earn zero points and may have blank times. Keep the displayed numeric position where known. Eliminated racers retain classified positions, which count toward average finish; DNFs do not. The DNF total and rate count only explicit DNFs, with all recorded starts as the rate denominator. Legacy DQ data remains readable; ranked Eliminator DQs are interpreted as eliminations, while unclassified DQs remain unspecified non-finishes and are not counted as confirmed DNFs.
+#### Outcomes and incomplete records
 
-A race with only an unranked non-finish can be logged without inventing rival results. Rival points stay unchanged, and subsequent races continue the recorded league. Only the affected event shows incomplete results. Track records and time-gap calculations exclude all non-finish statuses; position telemetry retains classified eliminations.
+Use **ELIMINATED** for a classified elimination and keep its known position. Use **DNF** for an incomplete result. Legacy DQ values remain readable: ranked Eliminator DQs become eliminations, while unclassified DQs become DNFs.
 
-## Scoring and league movement
+Partial heats can be recorded without inventing rivals, winners, or times. Unrecorded rivals do not receive fabricated points. Non-finish times are excluded from timed track records and gap calculations; classified eliminations remain visible in position telemetry.
 
-The tracker uses the Formula 1 Grand Prix scale: **25, 18, 15, 12, 10, 8, 6, 4, 2, 1** for P1–P10; P11 and lower earn zero. Eliminators use the same position scale for survivors (normally 25, 18 and 15 for the final three), while eliminated pilots and DNFs earn zero. Scores and historical league movements are recalculated from recorded results, so this applies retroactively. This is the tracker’s scoring convention, rather than an assertion about the game’s points system.
+Timed track records require a known course and direction. Normal Race records also require a known subcategory. Records separate planet, track, category, subcategory, laps, and direction. Older results with unspecified configurations still contribute to applicable standings and results views. Gauntlet records display phase outcomes rather than timed records.
 
-Galactic Gauntlet retains separate phase scoring: elimination in phases 1, 2 and 3 earns 0, 8 and 16 points respectively; clearing the final phase earns 25.
+#### Dates
 
-Ties use wins, average completed finish, then pilot name. League-change arrows compare standings immediately before and after each race **across all tours**. They use the same active filters as the standings. Selecting a tour shows movement within that tour; All tours shows the cumulative league. Archive text search only hides rows and does not change rankings. Only a pilot’s first recorded standing shows **Initial ranking**; starting a new tour does not reset the league. Events are ordered by logged date, then race ID, so keep same-day IDs sequential.
+The ledger stores real dates. The interface displays an archive calendar using the Gregorian year minus 2016 and the day of that year. For example, **2026-10-07 → 10 ABY · 280**. This is a display convention, rather than a canonical Earth-to-Star-Wars conversion.
 
-Track records compare results within the same planet, circuit, category, and subcategory; unidentified circuits are excluded. Time-gap telemetry compares a racer’s time with the fastest recorded finish in that event.
+### Optional local logging utility
 
-### Dates
-
-The CSV keeps the real logged date. The interface displays a mathematical archive calendar: Gregorian year minus 2016, followed by the day of that year. For example, **2026-10-07 → 10 ABY · 280**. This is a display convention, not a canonical Earth-to-Star-Wars conversion.
-
-## Keeping the data up to date
-
-- **Import CSV** replaces and saves the dataset in the current browser. **Export CSV** backs up all results matching the main filters; archive search does not limit exports.
-- Browser imports stay on that device/browser. They do not write to the repository or synchronize with other visitors.
-- [data/races.csv](data/races.csv) is the portable ledger. [data/races.js](data/races.js) supplies the default dataset when the page opens. Keep them in sync when publishing updates.
-- **Reset archive** reloads the bundled dataset. Export any browser-only changes first.
-
-For an optional local logging workflow, install Node.js and run:
+Install Node.js, create a JSON file, and run:
 
 ```sh
-node scripts/log-race.cjs path/to/race.json
+node scripts/log-race.cjs path/to/heat.json
 ```
 
-The JSON contains date, tour, category, planet, track, vehicle, and a results array. Each result contains pilot, position, and time_ms (optional for DQ). The script appends a validated event, assigns the next GR ID, rejects duplicate results, and updates both published data files. It runs locally and is not needed to view or import CSVs in the dashboard.
+For example:
 
-## Hosting
+```json
+{
+  "date": "2026-10-09",
+  "tour": "Tour 01",
+  "category": "Race",
+  "planet": "Crait",
+  "track": "Forgil Canyon",
+  "subcategory": "Circuit",
+  "laps": 2,
+  "direction": "Forward",
+  "vehicle": "Land speeder",
+  "results": [
+    { "pilot": "Shade", "position": 1, "time_ms": 159170 },
+    { "pilot": "Goli & 02-R0", "position": 2, "time_ms": 160120 }
+  ]
+}
+```
 
-Publish the repository root on your preferred static host. All asset paths are relative, including data/races.js, so project-subdirectory hosting is supported. Only the HTML, CSS, browser JavaScript, and data files are needed to serve the tracker.
+The example is a partial grid; include every recorded pilot when available. Result objects may also contain `status` and, for Gauntlet, `phase`.
 
-## Make it yours
+The utility validates the new heat, assigns the next GR ID, checks for duplicate results, and updates both bundled data files. Without a file argument, it reads `data/pending-race.json`. This local utility is optional and is not required to view the dashboard or import CSVs.
 
-Change the colors, add planets, adjust the score in app.js, or adapt the pilot conventions for your own group. Contributions and personal forks are welcome. The MIT license applies to this project’s original code only. Star Wars names, game names, and game imagery—including pilot portraits captured from the game—belong to their respective rights holders and are not covered by this license.
+## Running locally and customization
 
-## House of Nix backer terminal
+Hosting is optional. Keep the project files together in a folder and open `index.html` directly in your browser; the dashboard, bundled archive, and CSV import/export work locally.
 
-The collapsible wagering exchange remembers its open state. Market prices use recorded win history, recent tour form, and best/oldest/latest times for the exact track configuration, with a 105% book. Markets are generated from the archive; selecting a track locks automatic market rotation. Each market shows three pilots, including the selected pilot when present in the grid.
+If you want to share it online, publish the repository root on a static host. Include the HTML, CSS, browser JavaScript, `data/races.js`, and `assets` directory. Paths are relative, so hosting under a project subdirectory is supported. There is no backend or build pipeline.
 
-Named betting-terminal pools rotate every 5–7 seconds. The scrolling Paddock Wire derives its reports and contextual reactions from recent results and historical league changes. Pilot cards inside the exchange use a green theme and the same filtered standings as other cards. These market features are in-world flavor and do not affect championship scoring.
+Change colors in the stylesheets, scoring and pilot metadata in `app.js`, market behavior in `exchange.js`, and planet presentation in `planet-display.js`. Contributions and personal forks are welcome.
+
+Portraits live in [assets/pilots](assets/pilots). Pilot portrait and species mappings are maintained in `app.js`; framing and presentation use CSS. Missing portraits have placeholders.
+
+The core dashboard works offline. Google Fonts load when connected, with system-font fallbacks.
+
+## License and game assets
+
+The MIT license covers this project's original code only. Star Wars names, game names, and game imagery—including pilot portraits captured from the game—belong to their respective rights holders and are not covered by this license.
