@@ -60,13 +60,25 @@
   gain:['Fresh backing follows the climb.','A standings surge draws the private money.','The floor takes notice of a rising contender.','Credit desks warming to the upward move.','A good heat buys breathing room in the league.','New momentum reaches the betting lanes.'],
   record:['A new circuit mark turns heads on the floor.','Timing desks flag a fresh record.','The circuit benchmark moves; the book follows.','A faster reference time sharpens the next market.','Record pace brings fresh attention from the private booths.','The timing board gives the backers something to talk about.'],
   streak:['Repeat wins keep the favorite desks busy.','Another victory strengthens the winner’s hold.','The winning run keeps drawing short-price money.','The field still has a champion to catch.','A familiar name collects again.','The house watches a winning streak take shape.'],
+  opening:['Fresh backing greets the opening statement.','The new tour starts with money following the winner.','Opening-night confidence reaches the private booths.','A clean start puts the chasing pack on notice.'],
+  setback:['Opening-night tickets leave the desks uneasy.','A bruising first heat forces an early rethink.','The new tour opens below the backers’ expectations.','A contender starts with ground to recover.'],
+  leadership:['The front of the book changes hands.','Private desks repricing the leader.','A new name heads the board.','The chasing pack has a new target.','Fresh money follows the new leader.','The crown moves; the floor takes notice.'],
+  visit:['Planetary books closed; credits follow the visit leader.','Departure clears the board for the next circuit.','The local desks settle their final accounts.','A strong planetary run travels with the backers.','Local bragging rights secured; the next world awaits.','The transport leaves with a new benchmark.'],
   gauntlet:['Phase desks reviewing survivor exposure.','Progress counts; final clearance remains the prize.','The gauntlet keeps the private booths watching.','Phase tickets settle as the field thins.','Elimination signals travel fast across the lanes.','A staged survival test leaves the floor watching the next phase.']
  };
- const wireChoices=new Map();let wireHistory=new Map(),wireChanges=new Map();
+ const wireChoices=new Map();let wireHistory=new Map(),wireChanges=new Map(),wireEvents=new Map();
  function reaction(kind,heat){const key=heat.race_id+':'+kind;if(!wireChoices.has(key))wireChoices.set(key,Math.floor(Math.random()*WIRE_LINES[kind].length));return WIRE_LINES[kind][wireChoices.get(key)];}
- function wire(heat){
+ function heatReport(heat){
   const ordered=[...heat.results].sort(resultOrder),winner=ordered.find(r=>r.position===1&&!isDQ(r)),shade=ordered.find(r=>r.pilot==='Shade'),eliminated=ordered.filter(isEliminated).length,prior=wireHistory.get(heat.race_id)||[],movement=wireChanges.get(heat.race_id)?.pilots;
-  if(heat.category==='Galactic Gauntlet')return `${heat.planet}: ${shade?'Shade reached phase '+shade.phase+' · '+(isEliminated(shade)?'eliminated':resultStatus(shade)):'Gauntlet signal received'}. ${reaction('gauntlet',heat)}`;
+  if(heat.category==='Galactic Gauntlet'){
+   if(shade&&isEliminated(shade)){
+    const standings=new Map();
+    for(const event of [...prior,heat].filter(h=>h.tour===heat.tour))for(const result of event.results){if(!standings.has(result.pilot))standings.set(result.pilot,newPilotStats(result.pilot));addResult(standings.get(result.pilot),result);}
+    const leaders=[...standings.values()].filter(isLeaguePilot).sort(compareStandings),rank=leaders.findIndex(p=>p.pilot==='Shade')+1;
+    return `Shade knocked out in round ${shade.phase} of the Galactic Gauntlet at ${heat.track||heat.planet}${heat.track?' · '+heat.planet:''}. ${heat.tour} concludes for Shade at P${rank} with ${standings.get('Shade').points} points. ${reaction('gauntlet',heat)}`;
+   }
+   return `${heat.planet}: ${shade?'Shade reached phase '+shade.phase+' · '+resultStatus(shade):'Gauntlet signal received'}. ${reaction('gauntlet',heat)}`;
+  }
   if(!winner)return `${heat.track||heat.planet}: partial classification received. Settlement desk awaiting complete telemetry.`;
   const runnerUp=ordered.find(r=>r.position===2&&!isDQ(r)),margin=runnerUp&&Number.isFinite(winner.time_ms)&&Number.isFinite(runnerUp.time_ms)?Math.abs(runnerUp.time_ms-winner.time_ms)/1000:null;
   let report=`${winner.pilot} wins at ${heat.track||heat.planet}`;
@@ -76,12 +88,61 @@
   const oldTimes=prior.filter(h=>trackKey(h)===trackKey(heat)).flatMap(h=>h.results).filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0);
   const wins=prior.slice(-3).filter(h=>h.results.some(r=>r.pilot===winner.pilot&&r.position===1&&!isDQ(r))).length;
   let kind='routine';
-  if(winnerMove?.before>=7)kind='upset';else if(oldTimes.length&&winner.time_ms>0&&winner.time_ms<Math.min(...oldTimes.map(r=>r.time_ms)))kind='record';else if(margin!==null&&margin<=.5)kind='close';else if(wins===3)kind='streak';
+  if(winnerMove?.before>=7)kind='upset';else if(margin!==null&&margin<=.5)kind='close';else if(wins===3)kind='streak';
   if(heat.category!=='Eliminator'||kind!=='routine')report+=' '+reaction(kind,heat);
+  const recordEligible=heat.track&&heat.direction&&(heat.category==='Eliminator'||heat.subcategory);
+  const fastest=recordEligible?ordered.filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0).sort((a,b)=>a.time_ms-b.time_ms)[0]:null;
+  const previousRecord=oldTimes.length?oldTimes.reduce((best,r)=>r.time_ms<best.time_ms?r:best):null;
+  if(fastest&&previousRecord&&fastest.time_ms<previousRecord.time_ms){
+   const configuration=[directionLabel(heat),heat.category,heat.subcategory,heat.laps?heat.laps+' laps':''].filter(Boolean).join(' · ');
+   report+=` ${fastest.pilot} sets a new track record at ${heat.track} (${configuration}): ${time(fastest.time_ms)}, beating ${previousRecord.pilot}’s ${time(previousRecord.time_ms)} by ${((previousRecord.time_ms-fastest.time_ms)/1000).toFixed(3)}s. ${reaction('record',heat)}`;
+  }
   if(drop){const [pilot,m]=drop;report+=` ${pilot} loses ${-m.delta} league places: P${m.before} → P${m.after}. ${reaction('loss',heat)}`;}
   else if(winnerMove?.delta>=2)report+=` ${winner.pilot} climbs ${winnerMove.delta} league places to P${winnerMove.after}. ${reaction('gain',heat)}`;
   else if(shade&&winner.pilot!=='Shade')report+=' Shade: '+positionLabel(shade)+'.';
   return report;
+ }
+ function buildWireEvents(heats){
+  const events=new Map(),overall=new Map(),tours=new Map();let visit=null;
+  const add=(stats,results)=>{for(const r of results){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}};
+  const leader=stats=>[...stats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
+  for(const heat of heats){
+   const reports=[];
+   // A visit is a consecutive run on one planet within one tour, not every
+   // appearance of that planet merged across the archive.
+   if(visit&&(visit.planet!==heat.planet||visit.tour!==heat.tour)){
+    const best=leader(visit.stats);
+    if(best&&best.points>0)reports.push({kind:'visit',text:visit.planet+' visit closed · '+visit.tour+': '+best.pilot+' led the visit with '+best.points+' points from '+visit.heats+' heat'+(visit.heats===1?'':'s')+'.'});
+    visit=null;
+   }
+   if(!visit)visit={planet:heat.planet,tour:heat.tour,stats:new Map(),heats:0};
+   const opening=!tours.has(heat.tour),previousTour=[...tours.values()].at(-1);
+   if(opening)tours.set(heat.tour,new Map());
+   const tour=tours.get(heat.tour),beforeOverall=leader(overall),beforeTour=leader(tour);
+   // Copy names before updating the accumulated statistics.
+   const oldOverall=beforeOverall?.pilot,oldTour=beforeTour?.pilot;
+   add(overall,heat.results);add(tour,heat.results);add(visit.stats,heat.results);visit.heats++;
+   const afterOverall=leader(overall),afterTour=leader(tour);
+   const incomplete=heat.results.every(r=>r.category!=='Galactic Gauntlet'&&isDQ(r)&&!Number.isInteger(r.position));
+   if(!incomplete){
+    if(opening&&heat.category!=='Galactic Gauntlet'){
+     const winner=heat.results.find(r=>r.position===1&&!isDQ(r));
+     if(winner)reports.push({kind:'opening',text:winner.pilot+' makes a strong start to '+heat.tour+' with an opening victory at '+(heat.track||heat.planet)+'.'});
+     const previousLeaders=previousTour?[...previousTour.values()].filter(isLeaguePilot).sort(compareStandings):[];
+     const contenders=new Map(previousLeaders.slice(0,3).map((p,i)=>[p.pilot,i+1]));
+     const disappointing=heat.results.filter(r=>contenders.has(r.pilot)&&(isDQ(r)||(Number.isInteger(r.position)&&r.position>=8))).sort((a,b)=>contenders.get(a.pilot)-contenders.get(b.pilot))[0];
+     if(disappointing)reports.push({kind:'setback',text:disappointing.pilot+' makes a disappointing start to '+heat.tour+': '+positionLabel(disappointing)+' at '+(heat.track||heat.planet)+', after finishing P'+contenders.get(disappointing.pilot)+' in the previous tour.'});
+    }
+    if(oldTour&&afterTour?.pilot!==oldTour)reports.push({kind:'leadership',text:heat.tour+' lead changes hands: '+afterTour.pilot+' takes P1 from '+oldTour+' · '+afterTour.points+' points.'});
+    if(oldOverall&&afterOverall?.pilot!==oldOverall)reports.push({kind:'leadership',text:'Overall league lead changes hands: '+afterOverall.pilot+' takes P1 from '+oldOverall+' · '+afterOverall.points+' points across all tours.'});
+   }
+   events.set(heat.race_id,reports);
+  }
+  return events;
+ }
+ function wire(heat){
+  const events=wireEvents.get(heat.race_id)||[];
+  return [heatReport(heat),...events.map(event=>event.text+' '+reaction(event.kind,heat))].join(' ');
  }
  function quoteMarkup(){return Array.from({length:3},(_,i)=>quotes[(venueOffset+i)%quotes.length]).map(q=>{const up=q.change>=0,points=q.history.map((v,j)=>`${j*6},${45-v*40}`).join(' ');return `<div class="exchange-quote ${up?'quote-up':'quote-down'}"><div><strong>${esc(q.venue.name)}</strong><small class="quote-location">${esc(q.venue.location)}</small><span>${Math.round(q.value).toLocaleString('en-US')} <small>CR</small></span></div><svg viewBox="0 0 114 50" aria-hidden="true"><polyline points="${points}" fill="none" stroke="currentColor" stroke-width="2"/></svg><b class="${up?'up':'down'}">${up?'▲':'▼'} ${up?'+':''}${q.change.toFixed(2)}%</b><small class="quote-caption">POOL VOLUME / SESSION MOVE</small></div>`;}).join('');}
  function updateQuotes(){venueOffset=(venueOffset+3)%quotes.length;for(const q of quotes){const move=(Math.random()-.5)*1.8;q.value=Math.max(1000,q.value*(1+move/100));q.change+=move;q.history.shift();q.history.push(Math.max(.08,Math.min(.92,q.history.at(-1)+move*.1)));}$('exchange-quotes').innerHTML=quoteMarkup();}
@@ -99,7 +160,7 @@
  }
  function refresh(){
   buildForm();
-  const allHeats=groupRaceResults(rows);wireChanges=computeLeagueChanges(rows);wireHistory=new Map(allHeats.map((h,i)=>[h.race_id,allHeats.slice(0,i)]));
+  const allHeats=groupRaceResults(rows);wireEvents=buildWireEvents(allHeats);wireChanges=computeLeagueChanges(rows);wireHistory=new Map(allHeats.map((h,i)=>[h.race_id,allHeats.slice(0,i)]));
   const previous=markets[index]?trackKey(markets[index]):null;
   const recent=groupRaceResults(rows).slice(-4).reverse(),configurations=new Map();
   for(const heat of groupRaceResults($('track').value?filtered():rows).reverse()){

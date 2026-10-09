@@ -54,7 +54,7 @@ Win estimates combine recorded win history, recent tour form, and exact-course p
 
 A decimal price of **3.50** means a winning 100-credit stake returns **350 credits total**, including the stake; the profit is 250 credits. A losing stake returns nothing. The interface does not accept bets or move credits.
 
-Named betting-terminal pools change and rotate every **5–7 seconds** while the exchange is open. The scrolling **Paddock Wire** builds commentary from recent heats and historical context, including eliminations, close finishes, upsets, records, streaks, and league gains or losses. Pilot cards show the same filtered standings as elsewhere in the dashboard.
+Named betting-terminal pools change and rotate every **5–7 seconds** while the exchange is open. The scrolling **Paddock Wire** builds commentary from recent heats and historical context, including eliminations, close finishes, upsets, records, streaks, league gains or losses, and changes to the tour or overall leader. When a planetary visit ends, it reports the leading pilot by points earned during that visit. Pilot cards show the same filtered standings as elsewhere in the dashboard.
 
 The market feed is in-world flavor and does not affect championship points. Motion respects reduced-motion preferences, and the exchange provides a pause control.
 
