@@ -2,10 +2,11 @@
 'use strict';
 const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory','laps','phase','direction'];
 const directionLabel=r=>r.direction==='Forward'?'D1':r.direction==='Reverse'?'D2':'';
-const PILOT_PORTRAITS={'Ary Quill':'assets/pilots/ary-quill.png','Sen Fira':'assets/pilots/sen-fira.png','Shade':'assets/pilots/shade.png','Malis Vazosk':'assets/pilots/malis-vazosk.png','Nik Skandaro':'assets/pilots/nik-skandaro.png','Goli & 02-R0':'assets/pilots/goli-02-r0.png'};
+const PILOT_SPECIES={'Lyren Shok':'Nautolan','Fola Kanjen':'Human','Goli & 02-R0':'Kallidahin','Shade':'Human','Sen Fira':'Tognath','Nik Skandaro':'Zabrak','Biddy Blas':'Crocin','Ary Quill':'Namaran','Soren Zaks':'Human','Griff Halloran':'Human','Katja Mox':'Pantoran','Malis Vazosk':'Trandoshan'};
+const PILOT_PORTRAITS={'Soren Zaks':'assets/pilots/soren-zaks.png','Biddy Blas':'assets/pilots/biddy-blas.png','Lyren Shok':'assets/pilots/lyren-shok.png','Griff Halloran':'assets/pilots/griff-halloran.png','Katja Mox':'assets/pilots/katja-mox.png','Fola Kanjen':'assets/pilots/fola-kanjen.png','Ary Quill':'assets/pilots/ary-quill.png','Sen Fira':'assets/pilots/sen-fira.png','Shade':'assets/pilots/shade.png','Malis Vazosk':'assets/pilots/malis-vazosk.png','Nik Skandaro':'assets/pilots/nik-skandaro.png','Goli & 02-R0':'assets/pilots/goli-02-r0.png'};
 const VEHICLES=['Land speeder','Speeder bike','Skim speeder','Podracer'];
 const PLANETS=['Jakku','Lantaana','Ando Prime','Sentinel One','Crait','Tatooine','Derven Akos'];
-const POINTS=[12,11,10,9,8,7,6,5,4,3,2,1],KEY='galactic-racing-v2';
+const POINTS=[25,18,15,12,10,8,6,4,2,1,0,0],KEY='galactic-racing-v2';
 const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const resultStatus=r=>r.status==='DQ'&&Number.isInteger(r.position)&&r.category==='Eliminator'?'ELIMINATED':r.status||(['DQ','DNF'].includes(String(r.position).toUpperCase())?String(r.position).toUpperCase():'');
 const isDNF=r=>resultStatus(r)==='DNF';
@@ -13,7 +14,7 @@ const isEliminated=r=>resultStatus(r)==='ELIMINATED';
 const isDQ=r=>['DQ','DNF','ELIMINATED'].includes(resultStatus(r));
 const isUnclassified=r=>r.category==='Galactic Gauntlet'||isDNF(r)||resultStatus(r)==='DQ';
 const points=p=>p==='DQ'?0:POINTS[p-1]||0;
-const resultPoints=r=>r.category==='Galactic Gauntlet'?(resultStatus(r)==='CLEARED'?12:isEliminated(r)?(Number(r.phase)-1)*4:0):isDQ(r)?0:points(r.position);
+const resultPoints=r=>r.category==='Galactic Gauntlet'?(resultStatus(r)==='CLEARED'?25:isEliminated(r)?(Number(r.phase)-1)*8:0):isDQ(r)?0:points(r.position);
 const resultOrder=(a,b)=>(Number.isInteger(a.position)?a.position:Infinity)-(Number.isInteger(b.position)?b.position:Infinity)||a.pilot.localeCompare(b.pilot);
 const positionLabel=r=>r.category==='Galactic Gauntlet'?'Phase '+r.phase+' · '+(resultStatus(r)==='CLEARED'?'Cleared':isEliminated(r)?'Eliminated':resultStatus(r)):isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · ':'')+(isEliminated(r)?'Eliminated':resultStatus(r)):'P'+r.position;
 const finishBadge=r=>'<span class="finish '+(isDQ(r)?'dq '+(isEliminated(r)?'finish-eliminated':isDNF(r)?'finish-dnf':'finish-legacy'):(r.position<=3?'podium medal-'+r.position:'')+(r.position>=10?' finish-double':' finish-single'))+'"><span class="finish-label">'+positionLabel(r)+'</span></span>';
@@ -143,6 +144,7 @@ function reserveDashboardSpace(){
 
 }
 function render(){
+ window.GalacticExchange?.refresh();
  $('pilot').value=selectedPilot;
  hidePilotPreview();
  saveFilters();
@@ -392,12 +394,13 @@ if(typeof requestAnimationFrame==='function'){
  else window.addEventListener?.('load',()=>Promise.resolve(document.fonts?.ready).then(center),{once:true});
 }
 
-function hidePilotPreview(){clearTimeout(pilotPreviewTimer);const preview=$('pilot-portrait-preview');if(preview&&!preview.hidden&&!preview.classList.contains('closing')){preview.classList.add('closing');clearTimeout(pilotPreviewCloseTimer);pilotPreviewCloseTimer=setTimeout(()=>{if(preview.hidePopover&&preview.matches?.(':popover-open'))preview.hidePopover();preview.hidden=true;preview.classList.remove('closing');},220);}for(const button of [...($('leaders').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[]),...($('trend').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[]),...($('race-dialog-results').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[])])button.removeAttribute('aria-describedby');}
+function hidePilotPreview(){clearTimeout(pilotPreviewTimer);const preview=$('pilot-portrait-preview');if(preview&&!preview.hidden&&!preview.classList.contains('closing')){preview.classList.add('closing');clearTimeout(pilotPreviewCloseTimer);pilotPreviewCloseTimer=setTimeout(()=>{if(preview.hidePopover&&preview.matches?.(':popover-open'))preview.hidePopover();preview.hidden=true;preview.classList.remove('closing');},220);}for(const button of [...($('leaders').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[]),...($('trend').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[]),...($('race-dialog-results').querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[]),...($('exchange-odds')?.querySelectorAll?.('[aria-describedby="pilot-portrait-preview"]')||[])])button.removeAttribute('aria-describedby');}
 function showPilotPreview(button){
  const preview=$('pilot-portrait-preview');if(!preview||!button.getBoundingClientRect)return;
+ const marketPreview=!!button.closest?.('#exchange-odds');preview.classList[marketPreview?'add':'remove']('pilot-preview-market');
  const modal=button.closest?.('dialog[open]');const host=modal||document.body;if(host&&preview.parentElement!==host)host.appendChild(preview);clearTimeout(pilotPreviewCloseTimer);preview.classList.remove('closing');const pilot=button.dataset.pilot,path=PILOT_PORTRAITS[pilot];const rect=button.getBoundingClientRect();if(rect.bottom<0||rect.top>window.innerHeight)return;
  const data=filtered(),stats=new Map();for(const r of data){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}const personal=stats.get(pilot)||newPilotStats(pilot),rank=[...stats.values()].filter(isLeaguePilot).sort(compareStandings).findIndex(p=>p.pilot===pilot),role=pilot==='Shade'?'BACKED PILOT':isLeaguePilot({pilot})?'LEAGUE PILOT':'GUEST RIVAL';
- preview.innerHTML='<div class="pilot-preview-image" data-preview-pilot="'+esc(pilot)+'">'+(path?'<img src="'+esc(path)+'" alt="">':'<span class="pilot-preview-initials">'+esc(pilot==='Shade'?'SH':pilot.split(' ').map(part=>part[0]).join(''))+'</span>')+'</div><div class="pilot-preview-info"><div class="eyebrow">'+role+'</div><strong>'+esc(pilot)+'</strong><div class="pilot-preview-stats"><div><span>League position</span><b>'+(rank>=0?'P'+(rank+1):'—')+'</b></div><div><span>Points</span><b>'+personal.points+'</b></div><div><span>Podiums</span><b>'+personal.podiums+'</b></div></div><small>'+personal.races+' recorded starts · Current filters</small></div>';
+ preview.innerHTML='<div class="pilot-preview-image" data-preview-pilot="'+esc(pilot)+'">'+(path?'<img src="'+esc(path)+'" alt="">':'<span class="pilot-preview-initials">'+esc(pilot==='Shade'?'SH':pilot.split(' ').map(part=>part[0]).join(''))+'</span>')+'</div><div class="pilot-preview-info"><div class="eyebrow">'+role+(PILOT_SPECIES[pilot]?' · '+esc(PILOT_SPECIES[pilot]):'')+'</div><strong>'+esc(pilot)+'</strong><div class="pilot-preview-stats"><div><span>League position</span><b>'+(rank>=0?'P'+(rank+1):'—')+'</b></div><div><span>Points</span><b>'+personal.points+'</b></div><div><span>Podiums</span><b>'+personal.podiums+'</b></div></div><small>'+personal.races+' recorded starts · '+'Current filters'+'</small></div>';
  preview.style.animation='none';preview.hidden=false;if(preview.showPopover&&!preview.matches?.(':popover-open'))preview.showPopover();const box=preview.getBoundingClientRect(),left=rect.right+12+box.width<=window.innerWidth-12?rect.right+12:Math.max(12,rect.left-box.width-12);preview.style.left=left+'px';preview.style.top=Math.max(12,Math.min(rect.top-24,window.innerHeight-box.height-12))+'px';preview.style.setProperty('--preview-slide',left>=rect.right?' -18px':'18px');void preview.offsetWidth;preview.style.animation='';button.setAttribute('aria-describedby','pilot-portrait-preview');}
 
 function setupPilotPreview(){

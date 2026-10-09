@@ -272,3 +272,80 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .archive th button::after{position:absolute;right:0;width:10px;text-align:center;content:'•';color:var(--muted)}
 .archive th[aria-sort="ascending"] button::after{content:'↑';color:inherit}
 .archive th[aria-sort="descending"] button::after{content:'↓';color:inherit}
+
+[data-portrait-pilot="Fola Kanjen"]{--portrait-zoom:1.9;--portrait-x:49%;--portrait-y:29%}
+.pilot-preview-image[data-preview-pilot="Fola Kanjen"]{--preview-position:49% 20%;--preview-zoom:1.12}
+
+[data-portrait-pilot="Katja Mox"]{--portrait-zoom:1.8;--portrait-x:49%;--portrait-y:25%}
+.pilot-preview-image[data-preview-pilot="Katja Mox"]{--preview-position:49% 15%}
+
+[data-portrait-pilot="Griff Halloran"]{--portrait-zoom:1.9;--portrait-x:48%;--portrait-y:25%}
+.pilot-preview-image[data-preview-pilot="Griff Halloran"]{--preview-position:48% 20%;--preview-zoom:1.06}
+
+[data-portrait-pilot="Lyren Shok"]{--portrait-zoom:1.75;--portrait-x:44%;--portrait-y:25%}
+.pilot-preview-image[data-preview-pilot="Lyren Shok"]{--preview-position:44% 15%}
+
+[data-portrait-pilot="Soren Zaks"]{--portrait-zoom:1.9;--portrait-x:47%;--portrait-y:28%}
+.pilot-preview-image[data-preview-pilot="Soren Zaks"]{--preview-position:47% 20%;--preview-zoom:1.08}
+[data-portrait-pilot="Biddy Blas"]{--portrait-zoom:2.1;--portrait-x:48%;--portrait-y:24%}
+.pilot-preview-image[data-preview-pilot="Biddy Blas"]{--preview-position:48% 15%;--preview-zoom:1.25}
+
+.wager-exchange{border:1px solid var(--line);border-radius:3px;background:var(--panel);margin:0 0 14px}
+.wager-exchange summary{display:flex;align-items:center;gap:12px;padding:15px 20px;cursor:pointer;list-style:none;font-size:11px;letter-spacing:1px;color:var(--text)}
+.wager-exchange summary::-webkit-details-marker{display:none}.wager-exchange summary small{margin-left:auto;font-size:9px;color:var(--muted)}
+.exchange-indicator{width:5px;height:5px;border-radius:50%;background:#b77b45;box-shadow:0 0 0 3px #b77b4518}.exchange-chevron{font-size:17px;transition:transform .35s}.wager-exchange[open] .exchange-chevron{transform:rotate(180deg)}
+.exchange-body{padding:24px;border-top:1px solid var(--line);animation:exchange-enter .45s ease both}.exchange-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.exchange-heading h2{font-size:28px;margin:6px 0 0}.exchange-disclaimer{font-size:9px;letter-spacing:.7px;color:var(--muted)}
+.exchange-grid{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:28px}.exchange-grid article+article{border-left:1px solid var(--line);padding-left:28px}.exchange-grid .eyebrow{font-size:9px}.exchange-market h3{font:500 23px Antonio,sans-serif;margin:12px 0 6px}.exchange-market>p{font-size:11px;color:var(--muted);min-height:30px;margin:0 0 12px}
+#exchange-odds{min-height:156px}.exchange-odd{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #d2c9b566;font-size:12px;gap:10px}.exchange-odd span small{font-size:8px;color:var(--accent);margin-left:6px}.exchange-odd strong{font-size:15px;font-weight:500;text-align:right;font-variant-numeric:tabular-nums}.exchange-odd strong small{display:block;font-size:8px;color:var(--muted)}
+.exchange-controls{display:flex;align-items:center;gap:12px;margin-top:16px}.exchange-controls button{padding:4px 9px;font:inherit}.exchange-controls button:hover{transform:none;box-shadow:none;color:var(--accent)}.exchange-controls span{font-size:10px;color:var(--muted)}#exchange-pause{margin-left:auto}
+.exchange-quote{display:grid;grid-template-columns:1fr 65px;gap:8px;padding:15px 0;border-bottom:1px solid #d2c9b566}.exchange-quote strong{display:block;font-size:12px;font-weight:500}.exchange-quote span{display:block;font-size:16px;margin-top:6px;font-variant-numeric:tabular-nums}.exchange-quote small{font-size:9px;color:var(--muted)}.exchange-quote svg{width:65px;color:#64837b}.exchange-quote b{grid-column:2;text-align:right;font-size:10px;font-weight:400}.exchange-quote .up{color:#52795d}.exchange-quote .down{color:#a66356}.exchange-quotes>small{display:block;font-size:9px;color:var(--muted);margin-top:12px}
+.wire-item{padding:13px 0;border-bottom:1px solid #d2c9b566}.wire-item>span{font-size:9px;letter-spacing:.5px;color:var(--accent)}.wire-item p{font-size:12px;line-height:1.6;margin:6px 0 0}.exchange-refresh{animation:exchange-enter .5s ease both}
+@keyframes exchange-enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1100px){.exchange-grid{grid-template-columns:1fr 1fr}.exchange-grid .exchange-chatter{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.exchange-chatter #exchange-chatter{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}}
+@media(max-width:720px){.exchange-body{padding:18px}.exchange-grid{grid-template-columns:1fr}.exchange-grid article+article{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.exchange-heading{align-items:flex-start;flex-direction:column}.wager-exchange summary{padding:14px;font-size:9px}.wager-exchange summary small{display:none}.exchange-chatter #exchange-chatter{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.exchange-body,.exchange-refresh{animation:none}.exchange-chevron{transition:none}}
+
+/* Backer exchange: illuminated market board and continuous results wire. */
+.wager-exchange[open]{background:#123438;border-color:#45615b;color:#f1ead9;box-shadow:inset 0 0 65px #071e2240}
+.wager-exchange[open] summary{color:#efbd70;border-bottom:0}.wager-exchange[open] summary small{color:#9cb4ac}.exchange-body{border-color:#45615b;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#ffffff02 4px)}
+.exchange-heading h2{color:#f1ead9;font-size:34px}.exchange-body .eyebrow{color:#b6c9ba}.exchange-disclaimer{color:#b6c9ba}.exchange-grid{grid-template-columns:.85fr 1.6fr;gap:30px}.exchange-grid article+article{border-color:#45615b}.exchange-market h3{color:#efbd70;font-size:29px}.exchange-market>p{color:#9cb4ac}.exchange-odd{border-color:#45615b77;font-size:14px}.exchange-odd strong{color:#efbd70;font-size:24px}.exchange-odd strong small,.exchange-controls span{color:#9cb4ac}.exchange-odd span small{color:#efbd70}.exchange-controls button{border-color:#45615b;color:#efbd70}
+#exchange-quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.exchange-quote{position:relative;display:flex;flex-direction:column;gap:10px;padding:18px 14px;border:1px solid #45615b;background:#09272c;overflow:hidden;animation:quote-flash .7s ease both}.exchange-quote strong{font-size:11px;color:#b6c9ba;min-height:30px}.exchange-quote span{font:500 clamp(26px,2.5vw,43px) Antonio,sans-serif;letter-spacing:.3px;white-space:nowrap}.exchange-quote span small{font:12px 'Space Grotesk',sans-serif;color:inherit}.exchange-quote svg{width:100%;height:55px;color:inherit}.exchange-quote b{font:500 26px Antonio,sans-serif;text-align:left}.exchange-quote.quote-up,.exchange-quote .up{color:#72e09a}.exchange-quote.quote-down,.exchange-quote .down{color:#ff7770}.exchange-quote .quote-caption{font-size:8px;letter-spacing:.5px;color:#9cb4ac}.exchange-quotes>small{color:#9cb4ac}
+.exchange-chatter{display:flex;align-items:stretch;margin-top:25px;border-top:1px solid #45615b;border-bottom:1px solid #45615b;background:#08292e;overflow:hidden}.exchange-chatter>.eyebrow{display:flex;align-items:center;gap:9px;flex-shrink:0;padding:0 18px;margin:0;border-right:1px solid #45615b;background:#123438;z-index:1}.wire-live{height:6px;width:6px;border-radius:50%;background:#efbd70;box-shadow:0 0 8px #efbd7080;animation:wire-pulse 2s ease-in-out infinite}#exchange-chatter{overflow:hidden;flex:1;min-width:0}.wire-track{display:flex;width:max-content;animation:wire-scroll 75s linear infinite}.wire-copy{display:flex;flex-shrink:0;align-items:center}.wire-item{display:flex;align-items:center;gap:12px;white-space:nowrap;padding:16px 28px;border:0}.wire-item:after{content:'◆';font-size:8px;color:#efbd70;margin-left:28px}.wire-item>span{color:#efbd70}.wire-item p{color:#d0ddd2;margin:0;font-size:12px}
+@keyframes wire-scroll{to{transform:translateX(-50%)}}@keyframes quote-flash{from{box-shadow:inset 0 0 25px currentColor}to{box-shadow:inset 0 0 0 transparent}}@keyframes wire-pulse{50%{opacity:.35}}
+@media(max-width:1100px){.exchange-grid{grid-template-columns:1fr}.exchange-grid article+article{border-left:0;border-top:1px solid #45615b;padding:20px 0 0}.exchange-chatter #exchange-chatter{display:block}.exchange-quote span{font-size:36px}}
+@media(max-width:720px){#exchange-quotes{grid-template-columns:1fr}.exchange-quote{display:grid;grid-template-columns:1fr 90px}.exchange-quote strong{min-height:0}.exchange-quote b{font-size:23px}.exchange-chatter>.eyebrow{padding:0 10px;font-size:8px}.exchange-quote span{font-size:32px}}
+@media(prefers-reduced-motion:reduce){.wire-track,.exchange-quote,.wire-live{animation:none}.wire-track{width:auto}.wire-copy{flex-direction:column;align-items:flex-start}.wire-copy[aria-hidden]{display:none}.wire-item{white-space:normal;padding:12px}.wire-item p{line-height:1.6}.exchange-chatter{align-items:flex-start}.exchange-chatter>.eyebrow{padding-block:14px}}
+
+.market-paused .wire-track{animation-play-state:paused}
+
+.wager-exchange,.wager-exchange[open]{background:#123438;border-color:#45615b}
+.wager-exchange summary,.wager-exchange[open] summary{color:#b6c9ba;background:#123438}
+.wager-exchange summary small,.wager-exchange[open] summary small{color:#9cb4ac}
+.exchange-indicator,.wire-live{background:#72e09a;box-shadow:0 0 0 3px #72e09a18,0 0 9px #72e09a60;animation:uplink-pulse 2.4s ease-in-out infinite}
+@keyframes uplink-pulse{0%,100%{opacity:1;box-shadow:0 0 0 2px #72e09a18,0 0 9px #72e09a60}50%{opacity:.45;box-shadow:0 0 0 6px #72e09a00,0 0 3px #72e09a30}}
+@media(prefers-reduced-motion:reduce){.exchange-indicator,.wire-live{animation:none}}
+
+.house-title{font-size:clamp(42px,5.2vw,82px)}
+@media(max-width:720px){.house-title{font-size:clamp(32px,7.5vw,49px)}}
+
+.exchange-quote strong{min-height:30px}
+.exchange-quote .quote-location{display:block;min-height:26px;margin-top:5px;font-size:10px;line-height:1.4;color:#9cb4ac}
+@media(max-width:720px){.exchange-quote strong{min-height:0}.exchange-quote .quote-location{min-height:0}}
+
+.exchange-market .exchange-model-note{font-size:9px;line-height:1.5;color:#9cb4ac;min-height:0;margin:12px 0 0}
+
+.exchange-odd .market-pilot-name{padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;transition:color .28s ease}
+.exchange-odd .market-pilot-name:hover,.exchange-odd .market-pilot-name:focus-visible{color:#72e09a;transform:none;box-shadow:none}
+.pilot-portrait-preview.pilot-preview-market{--panel:#123438;--text:#f1ead9;--muted:#9cb4ac;--line:#45615b;--accent:#72e09a;background:var(--panel);border-color:var(--line);box-shadow:0 12px 35px #061c2266}
+.pilot-preview-market .pilot-preview-stats b{color:#72e09a}
+.pilot-preview-market .pilot-preview-image{background:#1b4144}
+
+.exchange-odd .market-rank{color:#9cb4ac}
+
+.exchange-odd strong small{font-size:9px}
+.wire-item p{font-size:13px}
+.wire-item{padding-block:17px}
+
+.exchange-chatter .wire-live{background:#efbd70;box-shadow:0 0 0 3px #efbd7018,0 0 9px #efbd7060;animation:wire-uplink-pulse 2.4s ease-in-out infinite}
+@keyframes wire-uplink-pulse{0%,100%{opacity:1;box-shadow:0 0 0 2px #efbd7018,0 0 9px #efbd7060}50%{opacity:.45;box-shadow:0 0 0 6px #efbd7000,0 0 3px #efbd7030}}
+@media(prefers-reduced-motion:reduce){.exchange-chatter .wire-live{animation:none}}

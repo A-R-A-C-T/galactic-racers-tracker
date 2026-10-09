@@ -61,7 +61,9 @@ A race with only an unranked non-finish can be logged without inventing rival re
 
 ## Scoring and league movement
 
-The tracker currently uses its own simple score: **12 points for first, 11 for second, down to 1 for twelfth**. Places beyond twelfth and DQs earn zero. The same scale applies to smaller grids. This is the tracker’s scoring convention, rather than an assertion about the game’s points system.
+The tracker uses the Formula 1 Grand Prix scale: **25, 18, 15, 12, 10, 8, 6, 4, 2, 1** for P1–P10; P11 and lower earn zero. Eliminators use the same position scale for survivors (normally 25, 18 and 15 for the final three), while eliminated pilots and DNFs earn zero. Scores and historical league movements are recalculated from recorded results, so this applies retroactively. This is the tracker’s scoring convention, rather than an assertion about the game’s points system.
+
+Galactic Gauntlet retains separate phase scoring: elimination in phases 1, 2 and 3 earns 0, 8 and 16 points respectively; clearing the final phase earns 25.
 
 Ties use wins, average completed finish, then pilot name. League-change arrows compare standings immediately before and after each race **across all tours**. They use the same active filters as the standings. Selecting a tour shows movement within that tour; All tours shows the cumulative league. Archive text search only hides rows and does not change rankings. Only a pilot’s first recorded standing shows **Initial ranking**; starting a new tour does not reset the league. Events are ordered by logged date, then race ID, so keep same-day IDs sequential.
 
@@ -93,3 +95,9 @@ Publish the repository root on your preferred static host. All asset paths are r
 ## Make it yours
 
 Change the colors, add planets, adjust the score in app.js, or adapt the pilot conventions for your own group. Contributions and personal forks are welcome. The MIT license applies to this project’s original code only. Star Wars names, game names, and game imagery—including pilot portraits captured from the game—belong to their respective rights holders and are not covered by this license.
+
+## House of Nix backer terminal
+
+The collapsible wagering exchange remembers its open state. Market prices use recorded win history, recent tour form, and best/oldest/latest times for the exact track configuration, with a 105% book. Markets are generated from the archive; selecting a track locks automatic market rotation. Each market shows three pilots, including the selected pilot when present in the grid.
+
+Named betting-terminal pools rotate every 5–7 seconds. The scrolling Paddock Wire derives its reports and contextual reactions from recent results and historical league changes. Pilot cards inside the exchange use a green theme and the same filtered standings as other cards. These market features are in-world flavor and do not affect championship scoring.
