@@ -51,21 +51,129 @@
   // Five percentage points of overround spread across the entire book.
   return rates.map(p=>{const probability=p.strength/total;return {...p,probability,odds:1/(probability+.05/pilots.length)};}).sort((a,b)=>a.odds-b.odds||a.pilot.localeCompare(b.pilot));
  }
+ // In-world market commentary: venues are fictional businesses on established worlds.
  const WIRE_LINES={
-  routine:['Settlement desks balancing the books.','Outer Rim money follows the chequered flag.','Late tickets closed; the house settles.','Private booths reviewing the next grid.','Credit runners carrying the result across the lanes.','The house watches the next entry list.'],
-  survival:['Survival desks reassessing exposure.','Token losses ripple through the private booths.','Survivors collect; eliminated tickets expire.','The cutoff leaves the betting floor divided.','Risk desks tightening their survival books.','Three places at the table; no mercy behind them.'],
-  upset:['An outsider breaks the book.','Favorite tickets take a hit across the lanes.','Private desks caught on the wrong side of the finish.','The long shot sends the floor scrambling.','An unexpected winner forces a market rethink.','Quiet booths; expensive surprises.'],
-  close:['Photo-finish nerves on the betting floor.','A narrow margin keeps both camps watching.','The book was settled by a heartbeat.','Little separates the contenders; plenty separates the payouts.','A tight finish sharpens interest in the rematch.','Private desks split over the next running.'],
-  loss:['Backer confidence takes a hit.','Private desks cutting exposure after the slide.','A costly heat sends the standings south.','The floor reassesses a slipping contender.','Bad classification; worse news for the backers.','A league slide puts the next start under scrutiny.'],
-  gain:['Fresh backing follows the climb.','A standings surge draws the private money.','The floor takes notice of a rising contender.','Credit desks warming to the upward move.','A good heat buys breathing room in the league.','New momentum reaches the betting lanes.'],
-  record:['A new circuit mark turns heads on the floor.','Timing desks flag a fresh record.','The circuit benchmark moves; the book follows.','A faster reference time sharpens the next market.','Record pace brings fresh attention from the private booths.','The timing board gives the backers something to talk about.'],
-  streak:['Repeat wins keep the favorite desks busy.','Another victory strengthens the winner’s hold.','The winning run keeps drawing short-price money.','The field still has a champion to catch.','A familiar name collects again.','The house watches a winning streak take shape.'],
-  opening:['Fresh backing greets the opening statement.','The new tour starts with money following the winner.','Opening-night confidence reaches the private booths.','A clean start puts the chasing pack on notice.'],
-  setback:['Opening-night tickets leave the desks uneasy.','A bruising first heat forces an early rethink.','The new tour opens below the backers’ expectations.','A contender starts with ground to recover.'],
-  leadership:['The front of the book changes hands.','Private desks repricing the leader.','A new name heads the board.','The chasing pack has a new target.','Fresh money follows the new leader.','The crown moves; the floor takes notice.'],
-  visit:['Planetary books closed; credits follow the visit leader.','Departure clears the board for the next circuit.','The local desks settle their final accounts.','A strong planetary run travels with the backers.','Local bragging rights secured; the next world awaits.','The transport leaves with a new benchmark.'],
-  gauntlet:['Phase desks reviewing survivor exposure.','Progress counts; final clearance remains the prize.','The gauntlet keeps the private booths watching.','Phase tickets settle as the field thins.','Elimination signals travel fast across the lanes.','A staged survival test leaves the floor watching the next phase.']
- };
+  "routine": [
+    "Winning tickets collect across the Outer Rim.",
+    "Canto Bight’s private pools begin settling winning tickets.",
+    "The Velvet Moon on Nar Shaddaa closes its wagers on this heat.",
+    "Coruscant’s private stakes settle in the winner’s favor.",
+    "Cantina credits and syndicate fortunes collect on the same winner.",
+    "The Dust Crown pays out the winning tickets; rival stakes stay with the house."
+  ],
+  "survival": [
+    "Survival desks reassessing exposure after the cutoff.",
+    "The cutoff eats backing like a sarlacc. Surviving tickets stay in play.",
+    "Survivor backing pays off. The eliminated pilots’ patrons absorb the loss.",
+    "Canto Bight’s survival pools pay the successful stakes; rival backing takes the hit.",
+    "The White Lantern on Ando Prime counts the cost of backing the eliminated field.",
+    "Hutt-backed pools count the token losses. Their credits carry no extra lives."
+  ],
+  "upset": [
+    "Big-name confidence, outsider payout. Rival backing gets an expensive correction.",
+    "The league’s leading names carried the confidence. The outsider takes the payout.",
+    "Nar Shaddaa’s private pools pay the outsider while rival stakes expire.",
+    "Deep pockets, wrong pilot. The outsider takes the credits.",
+    "Canto Bight’s high-stakes patrons absorb an unwelcome surprise.",
+    "Outer Rim tickets on the outsider collect against the prevailing form."
+  ],
+  "surprise": [
+    "A lower-ranked pilot reaches the podium and earns a second look from backers.",
+    "The league table missed a contender. Smart credits may look twice.",
+    "A podium finish puts another name in contention for Coruscant’s private backing.",
+    "The Three Engines has another podium contender to consider for the next market.",
+    "An overlooked pilot delivers. The big-name backing gets no monopoly on the podium.",
+    "Nar Shaddaa’s larger stakes have another contender to consider."
+  ],
+  "close": [
+    "The decimals decide the payout. Expensive confidence came within a fraction of failing.",
+    "Winning wagers in Canto Bight clear on the narrowest of margins.",
+    "The Velvet Moon settles a finish with little room between rival tickets.",
+    "Large stakes turn on a small margin at the line.",
+    "Outer Rim clients backing the runner-up miss collection by a fraction.",
+    "A narrow win pays in full. The runner-up’s backers get no consolation return."
+  ],
+  "loss": [
+    "A falling league position leaves continued backing harder to justify.",
+    "Premium backing, bantha-grade returns. Rival pools note the slide.",
+    "The slide weakens the case for another large stake on the same form.",
+    "The slide gives rival backers in Canto Bight more to work with.",
+    "The reputation drew backing. The latest result gives rivals grounds to challenge it.",
+    "Longer-term backing at the Three Engines on Corellia rests on a weaker league position."
+  ],
+  "gain": [
+    "The climb strengthens the case for backing the pilot over the remaining tour.",
+    "Improving form gives Outer Rim backers a stronger case for the next stake.",
+    "The climb puts another contender within reach of Coruscant’s high-stakes pools.",
+    "Early backing gains ground. Rival credits have a bigger target to beat.",
+    "The result puts a rising contender within reach of larger private stakes.",
+    "Canto Bight’s private stakes have a rising contender to account for."
+  ],
+  "record": [
+    "A record time, not a cantina boast. Backers have something measurable.",
+    "The White Lantern on Ando Prime weighs the record against its next circuit price.",
+    "Record pace gives the next wager a firmer basis than the pilot’s reputation.",
+    "Corellian clients now have a faster benchmark to judge the field against.",
+    "Private pools on Nar Shaddaa review the record before the next running.",
+    "The circuit record gives rival backing a faster target—and less room for excuses."
+  ],
+  "streak": [
+    "Repeat winning tickets collect again across the Outer Rim.",
+    "Canto Bight’s private pools face another payout on the same pilot.",
+    "More winning tickets. Another costly wait for backers financing the upset.",
+    "Another win pays the loyal backers. Those financing the challenge lose again.",
+    "The Dust Crown settles another victory for patrons who stayed with the pilot.",
+    "The winning run keeps paying. Rival stakes keep finding the wrong challenger."
+  ],
+  "opening": [
+    "The opening result gives fresh tour backing an immediate return.",
+    "Canto Bight’s first-heat tickets settle in the winner’s favor.",
+    "Opening stakes collect across the Outer Rim; the longer tour wagers remain in play.",
+    "New tour, fresh stakes. Even old Imperial fortunes need current form.",
+    "The first victory gives Coruscant’s larger pools an early contender to back.",
+    "First-heat tickets collect at the Three Engines. Tour backing still has a long way to run."
+  ],
+  "earlyEnd": [
+    "Longer-term tour wagers lose a contender before the final test.",
+    "Canto Bight’s private pools absorb an early exit from the remaining tour.",
+    "The campaign ends here. Its backers lose the chance to recover in later heats.",
+    "Outer Rim credits following this campaign lose their contender for the remaining heats.",
+    "At the Velvet Moon, backing for the eliminated pilot reaches an expensive conclusion.",
+    "Earlier race payouts stand; wagers requiring a continued run take the loss."
+  ],
+  "setback": [
+    "Yesterday’s credentials, today’s loss. Returning backers pay for the difference.",
+    "Canto Bight’s returning backers pay for trusting last tour’s reputation.",
+    "Last tour’s reputation buys no protection. Not even for Hutt money.",
+    "Coruscant’s private stakes meet a weaker opening than last tour’s standing promised.",
+    "Returning backing at the Dust Crown in Mos Espa gets a costly opening lesson.",
+    "Earlier standing offers little protection for wagers on the new tour’s first heat."
+  ],
+  "leadership": [
+    "The old advantage is gone. Rival backing has its opening.",
+    "Canto Bight’s private clients reassess which contender deserves the larger stake.",
+    "Coruscant’s private pools have a new leader—and credits still committed to the former leader.",
+    "The new leader gives Outer Rim backing another claim on the remaining campaign.",
+    "The change tests wagers built around the previous leader’s advantage.",
+    "Nar Shaddaa’s rival pools weigh the new lead against credits committed to the old one."
+  ],
+  "visit": [
+    "Planetary wagers settle; backing for the wider tour stays in play.",
+    "Backers carry the planetary results into their assessment of the next venue.",
+    "Another world behind the grid. Syndicate stakes follow the accumulated form.",
+    "Outer Rim tour wagers continue; local stakes settle before the next jump.",
+    "Off-world backing now has the full visit’s form to judge the next stake.",
+    "Coruscant’s tour pools weigh the completed visit before committing to the next planet."
+  ],
+  "gauntlet": [
+    "Final-clearance backing settles separately from the points already earned.",
+    "At the White Lantern, progression tickets and final-clearance stakes face different returns.",
+    "Confidence does not clear the Gauntlet. Progression and final-win stakes settle differently.",
+    "Canto Bight’s Gauntlet patrons settle progression and clearance wagers.",
+    "Nar Shaddaa’s private pools settle the round against each patron’s chosen target.",
+    "Outer Rim progression wagers settle on the round reached; clearance tickets require the final win."
+  ]
+};
  const wireChoices=new Map();let wireHistory=new Map(),wireChanges=new Map(),wireEvents=new Map();
  function reaction(kind,heat){const key=heat.race_id+':'+kind;if(!wireChoices.has(key))wireChoices.set(key,Math.floor(Math.random()*WIRE_LINES[kind].length));return WIRE_LINES[kind][wireChoices.get(key)];}
  function heatReport(heat){
@@ -77,9 +185,9 @@
     const leaders=[...standings.values()].filter(isLeaguePilot).sort(compareStandings),rank=leaders.findIndex(p=>p.pilot==='Shade')+1;
     return `Shade knocked out in round ${shade.phase} of the Galactic Gauntlet at ${heat.track||heat.planet}${heat.track?' · '+heat.planet:''}. ${heat.tour} concludes for Shade at P${rank} with ${standings.get('Shade').points} points. ${reaction('gauntlet',heat)}`;
    }
-   return `${heat.planet}: ${shade?'Shade reached phase '+shade.phase+' · '+resultStatus(shade):'Gauntlet signal received'}. ${reaction('gauntlet',heat)}`;
+   return `${heat.planet}: ${shade?'Shade reached phase '+shade.phase+' · '+resultStatus(shade):'Galactic Gauntlet settlement pending official confirmation'}. ${reaction('gauntlet',heat)}`;
   }
-  if(!winner)return `${heat.track||heat.planet}: partial classification received. Settlement desk awaiting complete telemetry.`;
+  if(!winner)return shade?`${shade.pilot}: ${positionLabel(shade)} at ${heat.track||heat.planet}. ${isEliminated(shade)?reaction('survival',heat):'House of Nix holds winner settlement pending official confirmation.'}`:`${heat.track||heat.planet}: winner settlement pending official confirmation.`;
   const runnerUp=ordered.find(r=>r.position===2&&!isDQ(r)),margin=runnerUp&&Number.isFinite(winner.time_ms)&&Number.isFinite(runnerUp.time_ms)?Math.abs(runnerUp.time_ms-winner.time_ms)/1000:null;
   let report=`${winner.pilot} wins at ${heat.track||heat.planet}`;
   if(heat.category==='Eliminator')report+=` · ${eliminated} eliminated. ${reaction('survival',heat)}`;
@@ -95,10 +203,12 @@
   const previousRecord=oldTimes.length?oldTimes.reduce((best,r)=>r.time_ms<best.time_ms?r:best):null;
   if(fastest&&previousRecord&&fastest.time_ms<previousRecord.time_ms){
    const configuration=[directionLabel(heat),heat.category,heat.subcategory,heat.laps?heat.laps+' laps':''].filter(Boolean).join(' · ');
-   report+=` ${fastest.pilot} sets a new track record at ${heat.track} (${configuration}): ${time(fastest.time_ms)}, beating ${previousRecord.pilot}’s ${time(previousRecord.time_ms)} by ${((previousRecord.time_ms-fastest.time_ms)/1000).toFixed(3)}s. ${reaction('record',heat)}`;
+   report+=`\u001e${fastest.pilot} sets a new track record at ${heat.track} (${configuration}): ${time(fastest.time_ms)}, beating ${previousRecord.pilot}’s ${time(previousRecord.time_ms)} by ${((previousRecord.time_ms-fastest.time_ms)/1000).toFixed(3)}s. ${reaction('record',heat)}`;
   }
-  if(drop){const [pilot,m]=drop;report+=` ${pilot} loses ${-m.delta} league places: P${m.before} → P${m.after}. ${reaction('loss',heat)}`;}
-  else if(winnerMove?.delta>=2)report+=` ${winner.pilot} climbs ${winnerMove.delta} league places to P${winnerMove.after}. ${reaction('gain',heat)}`;
+  const surprise=ordered.find(r=>[2,3].includes(r.position)&&!isDQ(r)&&movement?.get(r.pilot)?.before>=7);
+  if(surprise){const before=movement.get(surprise.pilot).before;report+=`\u001e${surprise.pilot} claims a surprise P${surprise.position} after entering the heat at overall league P${before}. ${reaction('surprise',heat)}`;}
+  if(drop){const [pilot,m]=drop;report+=`\u001e${pilot} loses ${-m.delta} league places: P${m.before} → P${m.after}. ${reaction('loss',heat)}`;}
+  else if(winnerMove?.delta>=2)report+=`\u001e${winner.pilot} climbs ${winnerMove.delta} league places to P${winnerMove.after}. ${reaction('gain',heat)}`;
   else if(shade&&winner.pilot!=='Shade')report+=' Shade: '+positionLabel(shade)+'.';
   return report;
  }
@@ -131,7 +241,7 @@
      const previousLeaders=previousTour?[...previousTour.values()].filter(isLeaguePilot).sort(compareStandings):[];
      const contenders=new Map(previousLeaders.slice(0,3).map((p,i)=>[p.pilot,i+1]));
      const disappointing=heat.results.filter(r=>contenders.has(r.pilot)&&(isDQ(r)||(Number.isInteger(r.position)&&r.position>=8))).sort((a,b)=>contenders.get(a.pilot)-contenders.get(b.pilot))[0];
-     if(disappointing)reports.push({kind:'setback',text:disappointing.pilot+' makes a disappointing start to '+heat.tour+': '+positionLabel(disappointing)+' at '+(heat.track||heat.planet)+', after finishing P'+contenders.get(disappointing.pilot)+' in the previous tour.'});
+     if(disappointing)reports.push({kind:'setback',text:disappointing.pilot+' opens '+heat.tour+' below the previous campaign’s form: '+positionLabel(disappointing)+' at '+(heat.track||heat.planet)+', after finishing P'+contenders.get(disappointing.pilot)+' in the previous tour.'});
     }
     if(oldTour&&afterTour?.pilot!==oldTour)reports.push({kind:'leadership',text:heat.tour+' lead changes hands: '+afterTour.pilot+' takes P1 from '+oldTour+' · '+afterTour.points+' points.'});
     if(oldOverall&&afterOverall?.pilot!==oldOverall)reports.push({kind:'leadership',text:'Overall league lead changes hands: '+afterOverall.pilot+' takes P1 from '+oldOverall+' · '+afterOverall.points+' points across all tours.'});
@@ -140,10 +250,17 @@
   }
   return events;
  }
- function wire(heat){
+ function wireItems(heat){
   const events=wireEvents.get(heat.race_id)||[];
-  return [heatReport(heat),...events.map(event=>event.text+' '+reaction(event.kind,heat))].join(' ');
+  const ending=(window.TOUR_EVENTS||[]).find(event=>event.outcome==='EARLY_END'&&event.race_id===heat.race_id&&event.tour===heat.tour&&event.planet===heat.planet&&event.track===heat.track&&event.category===heat.category&&event.direction===heat.direction&&heat.results.some(r=>r.pilot===event.pilot&&r.position===event.position&&isEliminated(r)));
+  const priorTour=(wireHistory.get(heat.race_id)||[]).filter(h=>h.tour===heat.tour),priorStats=new Map();
+  if(ending)for(const event of priorTour)for(const r of event.results){if(!priorStats.has(r.pilot))priorStats.set(r.pilot,newPilotStats(r.pilot));addResult(priorStats.get(r.pilot),r);}
+  const priorLeader=[...priorStats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
+  const momentum=ending&&priorLeader?.pilot===ending.pilot&&priorTour.some(h=>h.results.some(r=>r.pilot===ending.pilot&&r.position===1&&!isDQ(r)))?' Backers riding the tour leader’s winning form take a costly hit.':'';
+  const report=ending?`${ending.pilot} eliminated at P${ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early for ${ending.pilot}, before the Galactic Gauntlet.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
+  return [...report.split('\u001e').map(text=>text.trim()).filter(Boolean),...events.map(event=>event.text+' '+reaction(event.kind,heat))];
  }
+ function wire(heat){return wireItems(heat).join(' ');}
  function quoteMarkup(){return Array.from({length:3},(_,i)=>quotes[(venueOffset+i)%quotes.length]).map(q=>{const up=q.change>=0,points=q.history.map((v,j)=>`${j*6},${45-v*40}`).join(' ');return `<div class="exchange-quote ${up?'quote-up':'quote-down'}"><div><strong>${esc(q.venue.name)}</strong><small class="quote-location">${esc(q.venue.location)}</small><span>${Math.round(q.value).toLocaleString('en-US')} <small>CR</small></span></div><svg viewBox="0 0 114 50" aria-hidden="true"><polyline points="${points}" fill="none" stroke="currentColor" stroke-width="2"/></svg><b class="${up?'up':'down'}">${up?'▲':'▼'} ${up?'+':''}${q.change.toFixed(2)}%</b><small class="quote-caption">POOL VOLUME / SESSION MOVE</small></div>`;}).join('');}
  function updateQuotes(){venueOffset=(venueOffset+3)%quotes.length;for(const q of quotes){const move=(Math.random()-.5)*1.8;q.value=Math.max(1000,q.value*(1+move/100));q.change+=move;q.history.shift();q.history.push(Math.max(.08,Math.min(.92,q.history.at(-1)+move*.1)));}$('exchange-quotes').innerHTML=quoteMarkup();}
  function showMarket(){
@@ -170,7 +287,7 @@
   markets=[...configurations.values()];
   index=Math.max(0,markets.findIndex(heat=>trackKey(heat)===previous));
   $('exchange-page').title=$('track').value?'Track filter active · automatic market rotation paused':'Automatic market rotation';
-  const chatter=recent.map(heat=>`<div class="wire-item"><span>${esc(heat.race_id)} · ${esc(heat.tour)}</span><p>${esc(wire(heat))}</p></div>`).join('')||'<div class="wire-item"><p>Awaiting the first recorded heat.</p></div>';
+  const chatter=recent.flatMap(heat=>wireItems(heat).map(report=>`<div class="wire-item"><span>${esc(heat.race_id)} · ${esc(heat.tour)}</span><p>${esc(report)}</p></div>`)).join('')||'<div class="wire-item"><p>Awaiting the first recorded heat.</p></div>';
   $('exchange-chatter').innerHTML='<div class="wire-track"><div class="wire-copy">'+chatter+'</div><div class="wire-copy" aria-hidden="true">'+chatter+'</div></div>';
   $('exchange-quotes').innerHTML=quoteMarkup();showMarket();
  }
