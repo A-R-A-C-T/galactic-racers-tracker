@@ -79,7 +79,7 @@
   ],
   "surprise": [
     "A lower-ranked pilot reaches the podium and earns a second look from backers.",
-    "The league table missed a contender. Smart credits may look twice.",
+    "Smart credits may look twice.",
     "A podium finish puts another name in contention for Coruscant’s private backing.",
     "The Three Engines has another podium contender to consider for the next market.",
     "An overlooked pilot delivers. The big-name backing gets no monopoly on the podium.",
