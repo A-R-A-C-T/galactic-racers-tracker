@@ -345,6 +345,29 @@
   $('exchange-page').textContent=`${index+1} / ${markets.length}`;
   $('exchange-odds').classList.remove('exchange-refresh');void $('exchange-odds').offsetWidth;$('exchange-odds').classList.add('exchange-refresh');
  }
+ // Keep ticker velocity constant even as dynamic reports change the loop width.
+ let wirePixelsPerSecond=40;
+ let wireResizeObserver=null;
+ function updateWireSpeed(){
+  const track=$('exchange-chatter').querySelector('.wire-track'),copy=track?.querySelector('.wire-copy');
+  if(!copy)return;
+  const width=copy.getBoundingClientRect().width;
+  if(width>0)track.style.setProperty('--wire-duration',(width/wirePixelsPerSecond)+'s');
+ }
+ function setWireSpeed(pixelsPerSecond){
+  if(!Number.isFinite(pixelsPerSecond)||pixelsPerSecond<=0)throw new RangeError('Use a positive speed in pixels per second.');
+  wirePixelsPerSecond=pixelsPerSecond;updateWireSpeed();return wirePixelsPerSecond;
+ }
+ function measureWire(){
+  wireResizeObserver?.disconnect();
+  const copy=$('exchange-chatter').querySelector('.wire-copy');
+  if(copy&&typeof ResizeObserver!=='undefined'){
+   wireResizeObserver=new ResizeObserver(updateWireSpeed);wireResizeObserver.observe(copy);
+  }
+  updateWireSpeed();
+ }
+ if(document.fonts?.ready)document.fonts.ready.then(updateWireSpeed);
+ window.addEventListener?.('resize',updateWireSpeed);
  function refresh(){
   buildForm();
   const allHeats=groupRaceResults(rows);wireEvents=buildWireEvents(allHeats);wireChanges=computeLeagueChanges(rows);wireHistory=new Map(allHeats.map((h,i)=>[h.race_id,allHeats.slice(0,i)]));
@@ -359,6 +382,7 @@
   $('exchange-page').title=$('track').value?'Track filter active · automatic market rotation paused':'Automatic market rotation';
   const chatter=recent.flatMap(heat=>wireItems(heat).map(report=>`<div class="wire-item"><span>${esc(heat.race_id)} · ${esc(heat.tour)}</span><p>${esc(report)}</p></div>`)).join('')||'<div class="wire-item"><p>Awaiting the first recorded heat.</p></div>';
   $('exchange-chatter').innerHTML='<div class="wire-track"><div class="wire-copy">'+chatter+'</div><div class="wire-copy" aria-hidden="true">'+chatter+'</div></div>';
+  measureWire();
   $('exchange-quotes').innerHTML=quoteMarkup();showMarket();
  }
  function move(step){if(markets.length){index=(index+step+markets.length)%markets.length;showMarket();}}
@@ -371,7 +395,7 @@
  $('exchange-prev').onclick=()=>move(-1);$('exchange-next').onclick=()=>move(1);
  $('exchange-pause').onclick=()=>{paused=!paused;panel.classList.toggle('market-paused',paused);$('exchange-pause').textContent=paused?'▷':'Ⅱ';$('exchange-pause').setAttribute('aria-label',paused?'Resume market rotation':'Pause market rotation');$('exchange-pause').setAttribute('aria-pressed',String(paused));};
  panel.addEventListener('toggle',()=>{try{localStorage.setItem(OPEN_KEY,String(panel.open));}catch{}if(panel.open)refresh();schedule();});document.addEventListener('visibilitychange',schedule);reduced.addEventListener('change',schedule);
- window.GalacticExchange={refresh};
+ window.GalacticExchange={refresh,setWireSpeed};
  try{panel.open=localStorage.getItem(OPEN_KEY)==='true';}catch{}
  refresh();schedule();
 })();
