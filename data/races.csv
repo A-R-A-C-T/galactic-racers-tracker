@@ -544,3 +544,64 @@ GR-050,2026-10-10,Tour 06,Race,Jakku,Star Destroyer Speedway,Soren Zaks,9,94280,
 GR-050,2026-10-10,Tour 06,Race,Jakku,Star Destroyer Speedway,Biddy Blas,10,94910,,,Circuit,5,,Forward
 GR-050,2026-10-10,Tour 06,Race,Jakku,Star Destroyer Speedway,Malis Vazosk,11,95040,,,Circuit,5,,Forward
 GR-050,2026-10-10,Tour 06,Race,Jakku,Star Destroyer Speedway,Fola Kanjen,12,97480,,,Circuit,5,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Kestar Bool,1,85000,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Shade,2,85330,Skim speeder,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Fola Kanjen,3,89300,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Ary Quill,4,91090,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Sen Fira,5,92270,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Katja Mox,6,92780,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Biddy Blas,7,96590,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Soren Zaks,8,98790,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Malis Vazosk,9,100030,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Goli & 02-R0,10,103200,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Lyren Shok,11,107360,,,Point-to-point,,,Forward
+GR-051,2026-10-10,Tour 06,Race,Crait,Rhodochrosite Run,Nik Skandaro,12,123160,,,Point-to-point,,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Shade,1,159200,Skim speeder,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Sen Fira,2,162660,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Ary Quill,3,166180,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Fola Kanjen,4,172360,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Goli & 02-R0,5,172690,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Katja Mox,6,174460,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Biddy Blas,7,177970,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Nik Skandaro,8,179130,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Griff Halloran,9,179470,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Malis Vazosk,10,187030,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Lyren Shok,11,194470,,,Circuit,3,,Forward
+GR-052,2026-10-10,Tour 06,Race,Ando Prime,Monastery Mountains,Soren Zaks,12,195220,,,Circuit,3,,Forward
+GR-053,2026-10-10,Tour 06,Race,Ando Prime,Ice Field Circuit,Shade,DNF,,Skim speeder,DNF,Circuit,2,,Reverse
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Katja Mox,1,80140,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Biddy Blas,2,80920,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Soren Zaks,3,82010,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Nik Skandaro,4,82660,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Ary Quill,5,83050,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Shade,6,85670,Land speeder,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Griff Halloran,7,88970,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Sen Fira,8,90420,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Malis Vazosk,9,92580,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Fola Kanjen,10,92950,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Lyren Shok,11,95480,,,Circuit,4,,Forward
+GR-054,2026-10-10,Tour 07,Race,Sentinel One,Mineral Loop,Goli & 02-R0,12,95970,,,Circuit,4,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Goli & 02-R0,1,129040,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Shade,2,130250,Land speeder,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Biddy Blas,3,130520,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Katja Mox,4,130540,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Nik Skandaro,5,132530,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Griff Halloran,6,135690,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Sen Fira,7,137450,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Fola Kanjen,8,138650,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Soren Zaks,9,138810,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Malis Vazosk,10,140060,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Lyren Shok,11,142540,,,Point-to-point,,,Forward
+GR-055,2026-10-10,Tour 07,Race,Sentinel One,Bool River Run,Ary Quill,12,145290,,,Point-to-point,,,Forward
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Shade,1,133370,Land speeder,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Goli & 02-R0,2,137260,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Sen Fira,3,142430,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Lyren Shok,4,143490,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Ary Quill,5,144120,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Nik Skandaro,6,144330,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Katja Mox,7,145290,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Fola Kanjen,8,146060,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Biddy Blas,9,146230,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Malis Vazosk,10,146430,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Soren Zaks,11,147900,,,Circuit,2,,Reverse
+GR-056,2026-10-10,Tour 07,Race,Sentinel One,Caustic Fields,Griff Halloran,12,148160,,,Circuit,2,,Reverse
