@@ -350,3 +350,8 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .exchange-chatter .wire-live{background:#efbd70;box-shadow:0 0 0 3px #efbd7018,0 0 9px #efbd7060;animation:wire-uplink-pulse 2.4s ease-in-out infinite}
 @keyframes wire-uplink-pulse{0%,100%{opacity:1;box-shadow:0 0 0 2px #efbd7018,0 0 9px #efbd7060}50%{opacity:.45;box-shadow:0 0 0 6px #efbd7000,0 0 3px #efbd7030}}
 @media(prefers-reduced-motion:reduce){.exchange-chatter .wire-live{animation:none}}
+
+.pilot-preview-position{display:flex!important;align-items:baseline;gap:6px;white-space:nowrap}
+.pilot-preview-overall{font:10px/1.1 'Space Grotesk','Segoe UI',sans-serif;color:var(--muted)}
+
+.pilot-preview-image[data-preview-pilot="Kestar Bool"]{--preview-position:50% 25%}
