@@ -85,6 +85,14 @@
     "An overlooked pilot delivers. The big-name backing gets no monopoly on the podium.",
     "Nar Shaddaa’s larger stakes have another contender to consider."
   ],
+  "dominant": [
+    "A decisive margin rewards the winning backing. Rival stakes bought little competition.",
+    "Canto Bight’s rival pools pay for backing a challenge that never reached the winner.",
+    "Large stakes, clear separation. The winning tickets needed no narrow escape.",
+    "The gap gives repeat backing a case. Reputation alone will not close it.",
+    "Outer Rim credits on the winner collect with room to spare.",
+    "Serious backing, decisive pace. Rival money needs a stronger challenger."
+  ],
   "close": [
     "The decimals decide the payout. Expensive confidence came within a fraction of failing.",
     "Winning wagers in Canto Bight clear on the narrowest of margins.",
@@ -138,7 +146,7 @@
     "Canto Bight’s private pools absorb an early exit from the remaining tour.",
     "The campaign ends here. Its backers lose the chance to recover in later heats.",
     "Outer Rim credits following this campaign lose their contender for the remaining heats.",
-    "At the Velvet Moon, backing for the eliminated pilot reaches an expensive conclusion.",
+    "At the Velvet Moon, backing for the departing pilot reaches an expensive conclusion.",
     "Earlier race payouts stand; wagers requiring a continued run take the loss."
   ],
   "setback": [
@@ -174,8 +182,32 @@
     "Outer Rim progression wagers settle on the round reached; clearance tickets require the final win."
   ]
 };
+ Object.assign(WIRE_LINES,{"vehicleRare":["The less-used vehicle draws cautious opening stakes. Backers want proof before committing larger credits.","Canto Bight prices the unfamiliar choice carefully. Familiar winning form does not guarantee familiar handling.","A change of vehicle gives the private pools reason to hold some credits back.","Outer Rim backing tests the new choice with smaller stakes. The opening pace will do the selling."],"vehicleReturn":["The familiar vehicle returns. Backers have a longer record to put their credits behind.","Canto Bight’s repeat backing has its preferred machinery again.","A return to the established vehicle draws fresh stakes from patrons who backed the earlier runs.","Familiar machinery brings familiar money back to the pools."],"vehicleRareEnd":["The less-used vehicle leaves its cautious backers with little reason to raise their next stake.","An early exit gives the wary pools an expensive answer to the vehicle change.","The unfamiliar choice ends its run early. Credits held in reserve stay out of trouble.","Canto Bight’s cautious stakes fare better than the confidence behind this vehicle change."],"vehicleFavoredEnd":["Even the favored vehicle cannot protect a tour wager. Repeat backers absorb an unexpected early exit.","Familiar machinery, costly confidence. The private pools lose a campaign they had reason to trust.","An early exit catches the established vehicle’s repeat backing on the wrong side of settlement.","Outer Rim credits followed the familiar choice. Its record offers no refund today."]});
+ Object.assign(WIRE_LINES,{sweep:[
+ 'Repeat stakes collect across the entire visit. Rival backing never finds its winning heat.',
+ 'Canto Bight’s opposition pools pay for every attempt to break the run.',
+ 'Outer Rim credits riding the same winner collect at every stop in this visit.',
+ 'One pilot takes the whole planetary run. Spreading stakes across rivals offers no winning ticket.',
+ 'The private pools settle a clean sweep. Every challenge leaves its backers on the losing side.',
+ 'Unbroken winning form rewards the loyal backing. Rival money pays for another failed challenge.'
+ ]});
+ Object.assign(WIRE_LINES,{streakEnd:[
+ 'Repeat backing finally takes a loss. The winning run offers no protection for this ticket.',
+ 'Canto Bight’s momentum stakes meet their first losing settlement of the run.',
+ 'Outer Rim credits chasing another victory stop collecting here.',
+ 'The streak ends; rival backing finally has a result to collect on.',
+ 'Loyal stakes rode the winning run. Today’s settlement belongs to the opposition.',
+ 'The private pools put a price on expecting one more win. This time, confidence pays nothing.'
+ ]});
  const wireChoices=new Map();let wireHistory=new Map(),wireChanges=new Map(),wireEvents=new Map();
  function reaction(kind,heat){const key=heat.race_id+':'+kind;if(!wireChoices.has(key))wireChoices.set(key,Math.floor(Math.random()*WIRE_LINES[kind].length));return WIRE_LINES[kind][wireChoices.get(key)];}
+ // Require a substantial absolute AND relative margin; no invented gap for partial grids.
+ function dominantMargin(winner,runnerUp){
+  if(!winner||!runnerUp||isDQ(winner)||isDQ(runnerUp)||winner.category!=='Race')return false;
+  if(!Number.isFinite(winner.time_ms)||!Number.isFinite(runnerUp.time_ms)||winner.time_ms<=0)return false;
+  const gap=runnerUp.time_ms-winner.time_ms;
+  return gap>=5000&&gap/winner.time_ms>=.04;
+ }
  function heatReport(heat){
   const ordered=[...heat.results].sort(resultOrder),winner=ordered.find(r=>r.position===1&&!isDQ(r)),shade=ordered.find(r=>r.pilot==='Shade'),eliminated=ordered.filter(isEliminated).length,prior=wireHistory.get(heat.race_id)||[],movement=wireChanges.get(heat.race_id)?.pilots;
   if(heat.category==='Galactic Gauntlet'){
@@ -194,11 +226,13 @@
   else report+=margin!==null?` · ${margin.toFixed(2)}s ahead of ${runnerUp.pilot}.`:'.';
   const winnerMove=movement?.get(winner.pilot),drop=[...(movement||[])].filter(([,m])=>!m.incomplete&&m.delta<=-2).sort((a,b)=>(a[0]==='Shade'?-1:b[0]==='Shade'?1:a[1].delta-b[1].delta))[0];
   const oldTimes=prior.filter(h=>trackKey(h)===trackKey(heat)).flatMap(h=>h.results).filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0);
-  const wins=prior.slice(-3).filter(h=>h.results.some(r=>r.pilot===winner.pilot&&r.position===1&&!isDQ(r))).length;
   let kind='routine';
-  if(winnerMove?.before>=7)kind='upset';else if(margin!==null&&margin<=.5)kind='close';else if(wins===3)kind='streak';
+  if(winnerMove?.before>=7)kind='upset';else if(margin!==null&&margin<=.5)kind='close';
+  const dominant=dominantMargin(winner,runnerUp);
+  if(dominant&&kind==='routine')kind='dominant';
   if(shade&&winner.pilot!=='Shade')report+=' Shade: '+positionLabel(shade)+'.';
   if(heat.category!=='Eliminator'||kind!=='routine')report+=' '+reaction(kind,heat);
+  if(dominant&&kind!=='dominant')report+=`\u001e${winner.pilot} wins decisively at ${heat.track||heat.planet}, ${(100*(runnerUp.time_ms-winner.time_ms)/winner.time_ms).toFixed(1)}% clear of P2. ${reaction('dominant',heat)}`;
   const recordEligible=heat.track&&heat.direction&&(heat.category==='Eliminator'||heat.subcategory);
   const fastest=recordEligible?ordered.filter(r=>!isDQ(r)&&Number.isFinite(r.time_ms)&&r.time_ms>0).sort((a,b)=>a.time_ms-b.time_ms)[0]:null;
   const previousRecord=oldTimes.length?oldTimes.reduce((best,r)=>r.time_ms<best.time_ms?r:best):null;
@@ -213,26 +247,43 @@
 
   return report;
  }
+ function vehicleProfile(heat,pilot,prior){
+  const current=heat.results.find(r=>r.pilot===pilot)?.vehicle;
+  if(!current)return null;
+  const starts=new Map();
+  for(const h of prior){const r=h.results.find(r=>r.pilot===pilot&&r.vehicle);if(r&&!starts.has(h.tour))starts.set(h.tour,r.vehicle);}
+  const counts=new Map(VEHICLES.map(v=>[v,0]));for(const v of starts.values())counts.set(v,(counts.get(v)||0)+1);
+  if(!starts.size)return null;
+  const values=[...counts.values()],count=counts.get(current),max=Math.max(...values),min=Math.min(...values);
+  const favored=count===max&&[...counts.values()].filter(n=>n===max).length===1;
+  const rare=count===min&&count<max;
+  return {current,previous:[...starts.values()].at(-1),rare,favored};
+ }
+ function occasionalVehicle(kind,heat){const key=heat.race_id+':'+kind+':include';if(!wireChoices.has(key))wireChoices.set(key,Math.random()<.5);return wireChoices.get(key);}
  function buildWireEvents(heats){
-  const events=new Map(),overall=new Map(),tours=new Map();let visit=null;
+  const events=new Map(),overall=new Map(),tours=new Map(),priorHeats=[],streaks=new Map();let visit=null;
   const add=(stats,results)=>{for(const r of results){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}};
   const leader=stats=>[...stats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
+  const closeVisit=reports=>{
+   const best=leader(visit.stats);
+   if(best&&best.points>0)reports.push({kind:'visit',text:visit.planet+' visit closed · '+visit.tour+': '+best.pilot+' led the visit with '+best.points+' points from '+visit.heats+' heat'+(visit.heats===1?'':'s')+'.'});
+   if(visit.heats>=2&&visit.winners.every(p=>p&&p===visit.winners[0]))reports.push({kind:'sweep',text:visit.winners[0]+' sweeps '+visit.planet+' in '+visit.tour+' · '+visit.heats+' wins from '+visit.heats+' heats.'});
+  };
   for(const heat of heats){
    const reports=[];
    // A visit is a consecutive run on one planet within one tour, not every
    // appearance of that planet merged across the archive.
    if(visit&&(visit.planet!==heat.planet||visit.tour!==heat.tour)){
-    const best=leader(visit.stats);
-    if(best&&best.points>0)reports.push({kind:'visit',text:visit.planet+' visit closed · '+visit.tour+': '+best.pilot+' led the visit with '+best.points+' points from '+visit.heats+' heat'+(visit.heats===1?'':'s')+'.'});
+    closeVisit(reports);
     visit=null;
    }
-   if(!visit)visit={planet:heat.planet,tour:heat.tour,stats:new Map(),heats:0};
+   if(!visit)visit={planet:heat.planet,tour:heat.tour,stats:new Map(),heats:0,winners:[]};
    const opening=!tours.has(heat.tour),previousTour=[...tours.values()].at(-1);
    if(opening)tours.set(heat.tour,new Map());
    const tour=tours.get(heat.tour),beforeOverall=leader(overall),beforeTour=leader(tour);
    // Copy names before updating the accumulated statistics.
    const oldOverall=beforeOverall?.pilot,oldTour=beforeTour?.pilot;
-   add(overall,heat.results);add(tour,heat.results);add(visit.stats,heat.results);visit.heats++;
+   add(overall,heat.results);add(tour,heat.results);add(visit.stats,heat.results);visit.heats++;visit.winners.push(heat.results.find(r=>r.position===1&&!isDQ(r))?.pilot||null);
    const afterOverall=leader(overall),afterTour=leader(tour);
    const incomplete=heat.results.every(r=>r.category!=='Galactic Gauntlet'&&isDQ(r)&&!Number.isInteger(r.position));
    if(!incomplete){
@@ -240,26 +291,44 @@
      const winner=heat.results.find(r=>r.position===1&&!isDQ(r));
      if(winner)reports.push({kind:'opening',text:winner.pilot+' makes a strong start to '+heat.tour+' with an opening victory at '+(heat.track||heat.planet)+'.'});
      const previousLeaders=previousTour?[...previousTour.values()].filter(isLeaguePilot).sort(compareStandings):[];
-     const contenders=new Map(previousLeaders.slice(0,3).map((p,i)=>[p.pilot,i+1]));
+     const contenders=new Map(previousLeaders.slice(0,4).map((p,i)=>[p.pilot,i+1]));
      const disappointing=heat.results.filter(r=>contenders.has(r.pilot)&&(isDQ(r)||(Number.isInteger(r.position)&&r.position>=8))).sort((a,b)=>contenders.get(a.pilot)-contenders.get(b.pilot))[0];
      if(disappointing)reports.push({kind:'setback',text:disappointing.pilot+' opens '+heat.tour+' below the previous campaign’s form: '+positionLabel(disappointing)+' at '+(heat.track||heat.planet)+', after finishing P'+contenders.get(disappointing.pilot)+' in the previous tour.'});
     }
     if(oldTour&&afterTour?.pilot!==oldTour)reports.push({kind:'leadership',text:heat.tour+' lead changes hands: '+afterTour.pilot+' takes P1 from '+oldTour+' · '+afterTour.points+' points.'});
     if(oldOverall&&afterOverall?.pilot!==oldOverall)reports.push({kind:'leadership',text:'Overall league lead changes hands: '+afterOverall.pilot+' takes P1 from '+oldOverall+' · '+afterOverall.points+' points across all tours.'});
    }
-   events.set(heat.race_id,reports);
+   if(opening)for(const r of heat.results.filter(r=>r.vehicle)){
+    const profile=vehicleProfile(heat,r.pilot,priorHeats);
+    if(profile&&profile.current!==profile.previous){const kind=profile.rare?'vehicleRare':profile.favored?'vehicleReturn':null;if(kind&&occasionalVehicle(kind,heat))reports.push({kind,text:r.pilot+' starts '+heat.tour+' in the '+profile.current+'.'});}
+   }
+   for(const r of heat.results){
+    const count=streaks.get(r.pilot)||0;
+    const won=r.category!=='Galactic Gauntlet'&&r.position===1&&!isDQ(r);
+    if(won){const next=count+1;streaks.set(r.pilot,next);if(next>=4)reports.push({kind:'streak',text:r.pilot+' extends the winning streak to '+next+' consecutive victories at '+(heat.track||heat.planet)+'.'});}
+    else if(Number.isInteger(r.position)||isDQ(r)||r.category==='Galactic Gauntlet'){
+     if(count>=4)reports.push({kind:'streakEnd',text:r.pilot+'’s '+count+'-win streak ends at '+(heat.track||heat.planet)+' · '+positionLabel(r)+'.'});
+     streaks.set(r.pilot,0);
+    }
+   }
+   const ended=(window.TOUR_EVENTS||[]).some(e=>e.outcome==='EARLY_END'&&e.race_id===heat.race_id&&e.tour===heat.tour&&e.planet===heat.planet&&e.track===heat.track&&e.category===heat.category&&e.direction===heat.direction&&heat.results.some(r=>r.pilot===e.pilot&&r.position===e.position&&(isEliminated(r)||isDNF(r))));
+   if(ended){closeVisit(reports);visit=null;}
+   events.set(heat.race_id,reports);priorHeats.push(heat);
   }
   return events;
  }
  function wireItems(heat){
   const events=wireEvents.get(heat.race_id)||[];
-  const ending=(window.TOUR_EVENTS||[]).find(event=>event.outcome==='EARLY_END'&&event.race_id===heat.race_id&&event.tour===heat.tour&&event.planet===heat.planet&&event.track===heat.track&&event.category===heat.category&&event.direction===heat.direction&&heat.results.some(r=>r.pilot===event.pilot&&r.position===event.position&&isEliminated(r)));
+  const ending=(window.TOUR_EVENTS||[]).find(event=>event.outcome==='EARLY_END'&&event.race_id===heat.race_id&&event.tour===heat.tour&&event.planet===heat.planet&&event.track===heat.track&&event.category===heat.category&&event.direction===heat.direction&&heat.results.some(r=>r.pilot===event.pilot&&r.position===event.position&&(isEliminated(r)||isDNF(r))));
   const priorTour=(wireHistory.get(heat.race_id)||[]).filter(h=>h.tour===heat.tour),priorStats=new Map();
   if(ending)for(const event of priorTour)for(const r of event.results){if(!priorStats.has(r.pilot))priorStats.set(r.pilot,newPilotStats(r.pilot));addResult(priorStats.get(r.pilot),r);}
   const priorLeader=[...priorStats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
   const momentum=ending&&priorLeader?.pilot===ending.pilot&&priorTour.some(h=>h.results.some(r=>r.pilot===ending.pilot&&r.position===1&&!isDQ(r)))?' Backers riding the tour leader’s winning form take a costly hit.':'';
-  const report=ending?`${ending.pilot} eliminated at P${ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
-  return [...report.split('\u001e').map(text=>text.trim()).filter(Boolean),...events.map(event=>event.text+' '+reaction(event.kind,heat))];
+  const report=ending?`${ending.pilot} ${ending.position==='DNF'?'does not finish':'eliminated at P'+ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
+  const profile=ending?vehicleProfile(heat,ending.pilot,(wireHistory.get(heat.race_id)||[]).filter(h=>h.tour!==heat.tour)):null;
+  const vehicleKind=profile?.rare?'vehicleRareEnd':profile?.favored?'vehicleFavoredEnd':null;
+  const vehicleReport=vehicleKind&&occasionalVehicle(vehicleKind,heat)?[ending.pilot+' exits '+heat.tour+' in the '+profile.current+'. '+reaction(vehicleKind,heat)]:[];
+  return [...vehicleReport,...report.split('\u001e').map(text=>text.trim()).filter(Boolean),...events.map(event=>event.text+' '+reaction(event.kind,heat))];
  }
  function wire(heat){return wireItems(heat).join(' ');}
  function quoteMarkup(){return Array.from({length:3},(_,i)=>quotes[(venueOffset+i)%quotes.length]).map(q=>{const up=q.change>=0,points=q.history.map((v,j)=>`${j*6},${45-v*40}`).join(' ');return `<div class="exchange-quote ${up?'quote-up':'quote-down'}"><div><strong>${esc(q.venue.name)}</strong><small class="quote-location">${esc(q.venue.location)}</small><span>${Math.round(q.value).toLocaleString('en-US')} <small>CR</small></span></div><svg viewBox="0 0 114 50" aria-hidden="true"><polyline points="${points}" fill="none" stroke="currentColor" stroke-width="2"/></svg><b class="${up?'up':'down'}">${up?'▲':'▼'} ${up?'+':''}${q.change.toFixed(2)}%</b><small class="quote-caption">POOL VOLUME / SESSION MOVE</small></div>`;}).join('');}
