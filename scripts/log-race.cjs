@@ -10,6 +10,11 @@ const nodes=new Map();function el(id){if(!nodes.has(id))nodes.set(id,{value:'',c
 const context={setTimeout,clearTimeout,window:{},document:{getElementById:el},localStorage:{getItem(){return null;}}};vm.createContext(context);
 vm.runInContext(fs.readFileSync(file('data/races.js'),'utf8'),context);vm.runInContext(fs.readFileSync(file('app.js'),'utf8'),context);
 context.csv=fs.readFileSync(file('data/races.csv'),'utf8');const existing=vm.runInContext('parseCSV(csv)',context);
+// A new lap count on a known course needs explicit confirmation before logging.
+if(incoming.laps!==undefined&&incoming.laps!==null&&incoming.laps!==''){
+ const knownLaps=[...new Set(existing.filter(r=>r.planet===incoming.planet&&r.track===(incoming.track??'')&&r.category===incoming.category&&r.laps!=='').map(r=>Number(r.laps)))];
+ assert.ok(!knownLaps.length||knownLaps.includes(Number(incoming.laps))||incoming.confirm_new_lap_count===true,'Unfamiliar lap count for '+incoming.track+': '+incoming.laps+'. Previously recorded: '+knownLaps.join(', ')+'. Ask the user to confirm before logging; then set confirm_new_lap_count to true.');
+}
 const next=1+Math.max(0,...existing.map(r=>Number(r.race_id.match(/^GR-(\d+)$/)?.[1]||0))),id='GR-'+String(next).padStart(3,'0');
 context.added=incoming.results.map(r=>({race_id:id,date:incoming.date,tour:incoming.tour,category:incoming.category,subcategory:incoming.subcategory??'',laps:incoming.laps??'',direction:incoming.direction??'',planet:incoming.planet,track:incoming.track??'',...r,vehicle:r.pilot==='Shade'?incoming.vehicle??'':'',mechanical_spec:r.pilot==='Shade'?incoming.mechanical_spec??'':''}));
 const added=vm.runInContext('validate(added)',context);
