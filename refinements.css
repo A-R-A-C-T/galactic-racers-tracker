@@ -498,3 +498,27 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 
 .champion-metrics .overview-grid-leader strong,.champion-metrics .overview-heats strong{display:flex;align-items:center;min-height:58px;line-height:1.2;margin-top:20px}
 .metrics.detail-metrics .pilot-average,.metrics.detail-metrics .pilot-podium{border-top-color:#b4934c}
+
+/* Podraces use a quiet recessed cream edge, rather than an emissive accent. */
+.record[data-podrace="true"]{box-shadow:inset 3px 0 #b6a991,inset 12px 0 18px -14px #75664d70}
+#archive tr[data-podrace="true"] td:first-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset 3px 0 #b6a991;background-image:linear-gradient(to right,#b6a99145,transparent 20px)}
+#archive tr[data-podrace="true"] td:last-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset -3px 0 #b6a991;background-image:linear-gradient(to left,#b6a99145,transparent 20px)}
+
+/* Match the cyan edge geometry with a subdued cream/brass shadow. */
+#archive tr[data-podrace="true"] td:first-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset 3px 0 #f63e55;background-image:linear-gradient(to right,#f63e5555 3px,#f63e5522 8px,transparent 18px)}
+#archive tr[data-podrace="true"] td:last-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset -3px 0 #f63e55;background-image:linear-gradient(to left,#f63e5555 3px,#f63e5522 8px,transparent 18px)}
+.record[data-podrace="true"]{box-shadow:none}
+.record[data-podrace="true"]:before{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 3px 0 #f63e55;background-image:linear-gradient(to right,#f63e5555 3px,#f63e5522 8px,transparent 18px)}
+#race-dialog.podrace-result:not(.akos-result){border-top:4px solid #f63e55;box-shadow:0 -3px 12px #f63e5555,0 28px 100px #051d2455}
+#race-dialog.podrace-result:not(.akos-result) .pilot-selected{box-shadow:inset 3px 0 #f63e55}
+#race-dialog.podrace-result:not(.akos-result) .race-modal-results tr:first-child td:first-child{box-shadow:inset 3px 0 #f63e55;background-image:linear-gradient(to right,#f63e5555 3px,#f63e5522 8px,transparent 18px)}
+
+/* A separate grid keeps pod records below the planet's ordinary circuits. */
+.podracer-record-row{min-height:0}
+#archive tr[data-podrace="true"][data-category="Championship Race"] td:first-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset 3px 0 #65e5ed;background-image:linear-gradient(to right,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
+#archive tr[data-podrace="true"][data-category="Championship Race"] td:last-child{box-shadow:var(--archive-boundary,inset 0 0 transparent),inset -3px 0 #65e5ed;background-image:linear-gradient(to left,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
+.record[data-podrace="true"][data-category="Championship Race"]:before{box-shadow:inset 3px 0 #65e5ed;background-image:linear-gradient(to right,#65e5ed55 3px,#65e5ed22 8px,transparent 18px)}
+#race-dialog.akos-result.podrace-result{position:relative}
+#race-dialog.akos-result.podrace-result:after{content:'';position:absolute;width:24px;height:3px;background:#f63e55;box-shadow:0 0 5px #f63e55;offset-path:inset(0 round 6px);offset-distance:0%;animation:championship-pod-probe 12s linear infinite;pointer-events:none}
+@keyframes championship-pod-probe{to{offset-distance:100%}}
+@media(prefers-reduced-motion:reduce){#race-dialog.akos-result.podrace-result:after{animation:none}}

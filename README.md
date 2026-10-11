@@ -170,3 +170,5 @@ Championship Race is a separate category. The championship panel shows the curre
 GR-087 is the story exception: Shade finished first at Stadium Showdown but was disqualified for collusion with the league owner. The title stays with Kestar. A classified Championship Race DQ preserves the finish position, earns zero points, and is excluded from win and finish statistics. Missing championship times remain blank. Stadium Showdown has six laps; D1 is stored but omitted from its planet record heading.
 
 Vehicle and mechanical spec are stored per result. Kestar used a Land speeder in GR-087; subsequent Championship Race entries default to Podracer unless an explicit vehicle is supplied. Profile telemetry uses the latest recorded configuration, preserving the historical vehicle shown in each race popup.
+
+Podracer events use the existing Race category and award zero league points; Championship Race retains its own rules. Podracer entrants are recorded explicitly, and private events do not replace the declared league-tour vehicle/spec. Gasgano is a guest rival outside the ranked league grid.

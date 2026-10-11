@@ -6,7 +6,7 @@ const incomingPath=process.argv[2]?path.resolve(process.argv[2]):file('data/pend
 const incoming=JSON.parse(fs.readFileSync(incomingPath,'utf8'));
 assert.ok(Array.isArray(incoming.results)&&incoming.results.length,'A nonempty results array is required.');
 assert.ok(incoming.category,'Category is required.');
-const nodes=new Map();function el(id){if(!nodes.has(id))nodes.set(id,{value:'',checked:true,hidden:true,options:[],addEventListener(){},querySelectorAll(){return [];}});return nodes.get(id);}
+const nodes=new Map();function el(id){if(!nodes.has(id))nodes.set(id,{value:'',checked:true,hidden:true,options:[],style:{setProperty(){}},parentElement:{querySelector(){return {textContent:''};}},querySelector(){return {addEventListener(){},getBoundingClientRect(){return {height:0};}};},addEventListener(){},querySelectorAll(){return [];}});return nodes.get(id);}
 const context={setTimeout,clearTimeout,window:{},document:{getElementById:el},localStorage:{getItem(){return null;}}};vm.createContext(context);
 vm.runInContext(fs.readFileSync(file('data/races.js'),'utf8'),context);vm.runInContext(fs.readFileSync(file('app.js'),'utf8'),context);
 context.csv=fs.readFileSync(file('data/races.csv'),'utf8');const existing=vm.runInContext('parseCSV(csv)',context);
@@ -26,4 +26,4 @@ context.output=csv;assert.equal(vm.runInContext('parseCSV(output).length',contex
 fs.writeFileSync(file('data/races.csv'),csv);fs.writeFileSync(file('data/races.js'),'window.DEMO_RESULTS = '+JSON.stringify(combined)+';\n');
 fs.writeFileSync(file('data/last-logged-race.json'),JSON.stringify({race_id:id,...incoming},null,2)+'\n');
 const shade=added.find(r=>r.pilot==='Shade');
-if(shade)fs.writeFileSync(file('data/current-tour.js'),'window.CURRENT_TOUR_CONFIGURATION = '+JSON.stringify({tour:incoming.tour,pilot:'Shade',vehicle:shade.vehicle,mechanical_spec:shade.mechanical_spec})+';\n');console.log('Logged '+id+': '+added.length+' racers'+(shade?', Shade '+vm.runInContext('positionLabel(added.find(r=>r.pilot==="Shade"))',context):'')+'.');
+if(shade&&shade.vehicle!=='Podracer')fs.writeFileSync(file('data/current-tour.js'),'window.CURRENT_TOUR_CONFIGURATION = '+JSON.stringify({tour:incoming.tour,pilot:'Shade',vehicle:shade.vehicle,mechanical_spec:shade.mechanical_spec})+';\n');console.log('Logged '+id+': '+added.length+' racers'+(shade?', Shade '+vm.runInContext('positionLabel(added.find(r=>r.pilot==="Shade"))',context):'')+'.');

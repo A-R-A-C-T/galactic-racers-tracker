@@ -10,6 +10,7 @@ function openRaceDialog(raceId){
  const race=results[0],shade=results.find(r=>r.pilot==='Shade'),movement=computeLeagueChanges(filtered()).get(raceId)?.pilots,winner=results.find(r=>r.category==='Galactic Gauntlet'?resultStatus(r)==='CLEARED':r.position===1&&!isDQ(r));
  raceDialog.classList.toggle('gauntlet',race.category==='Galactic Gauntlet');
  raceDialog.classList.toggle('akos-result',race.planet==='Derven Akos');
+ raceDialog.classList.toggle('podrace-result',results.some(r=>r.vehicle==='Podracer'));
  $('race-dialog-code').textContent=raceId+' / '+galacticDate(race.date);
  $('race-dialog-title').textContent=race.planet+' / '+(race.track||'Circuit uncharted')+(directionLabel(race)?' · '+directionLabel(race):'');
  $('race-dialog-meta').textContent=race.tour+' · '+race.category+(race.subcategory?' · '+race.subcategory:'')+(race.laps?' · '+race.laps+' lap'+(race.laps===1?'':'s'):'');

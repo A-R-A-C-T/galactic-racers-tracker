@@ -253,9 +253,8 @@
  }
  function heatReport(heat){
   const ordered=[...heat.results].sort(resultOrder),winner=ordered.find(r=>r.position===1&&!isDQ(r)),shade=ordered.find(r=>r.pilot==='Shade'),eliminated=ordered.filter(isEliminated).length,prior=wireHistory.get(heat.race_id)||[],movement=wireChanges.get(heat.race_id)?.pilots;
+  if(heat.category==='Race'&&heat.results.some(r=>r.vehicle==='Podracer'))return (winner?winner.pilot+' wins':'Result recorded')+' at '+heat.track+' · private '+heat.laps+'-lap podrace, no league points. '+(shade?'Shade '+positionLabel(shade)+'. ':'')+'The quiet arrangements have not kept the betting pools quiet.';
   if(heat.category==='Championship Race'){
-   const overturned=heat.results.find(r=>r.position===1&&isDQ(r));
-   if(overturned)return overturned.pilot+' finished first at '+heat.track+' but was disqualified. Kestar Bool retains the title.';
    const championWinner=heat.results.find(r=>r.position===1&&!isDQ(r));
    const incumbent=championshipState(prior.flatMap(h=>h.results)).pilot;
    if(!championWinner)return heat.track+': championship settlement awaits an official result.';
@@ -382,14 +381,37 @@
   }
   return events;
  }
+ Object.assign(WIRE_LINES,{podracerEvent:[
+  'Outlaw-era engines, fresh money in the pools.',
+  'The pods are back. Cautious backers are paying attention.',
+  'Old circuit loyalties are moving new credits.',
+  'Legendary machinery makes this an expensive wager.',
+  'Pod engines have pulled the whole paddock to the rail.',
+  'The Empire banned the sport; the Outer Rim kept its appetite.'
+ ],shadePodracer:[
+  'A human in Sebulba’s pod has the bookmakers twitching.',
+  'Sebulba owns the paddock. His reasons remain expensive guesswork.',
+  'The old lone wolf bought a racer. Backers are still pricing that surprise.',
+  'Sebulba’s pod carries a killer’s reputation into Shade’s wager.',
+  'Shade races for Sebulba now. The pools smell a bigger play.',
+  'Years of pod racing never finished Sebulba. His name still moves credits.',
+  'Human reflexes, Sebulba’s machinery: a bold bet even by Outer Rim standards.',
+  'Sebulba bought the crew; Shade has to deliver the result.'
+ ]});
+ function podracerComment(heat){
+  const pods=heat.results.filter(r=>r.vehicle==='Podracer');
+  return pods.length?reaction(pods.some(r=>r.pilot==='Shade')?'shadePodracer':'podracerEvent',heat):'';
+ }
  function wireItems(heat){
+  if(heat.category==='Championship Race'&&heat.results.some(r=>r.position===1&&isDQ(r)))return [];
   const events=wireEvents.get(heat.race_id)||[];
   const ending=(window.TOUR_EVENTS||[]).find(event=>event.outcome==='EARLY_END'&&event.race_id===heat.race_id&&event.tour===heat.tour&&event.planet===heat.planet&&event.track===heat.track&&event.category===heat.category&&event.direction===heat.direction&&heat.results.some(r=>r.pilot===event.pilot&&r.position===event.position&&(isEliminated(r)||isDNF(r))));
   const priorTour=(wireHistory.get(heat.race_id)||[]).filter(h=>h.tour===heat.tour),priorStats=new Map();
   if(ending)for(const event of priorTour)for(const r of event.results){if(!priorStats.has(r.pilot))priorStats.set(r.pilot,newPilotStats(r.pilot));addResult(priorStats.get(r.pilot),r);}
   const priorLeader=[...priorStats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
   const momentum=ending&&priorLeader?.pilot===ending.pilot&&priorTour.some(h=>h.results.some(r=>r.pilot===ending.pilot&&r.position===1&&!isDQ(r)))?' Backers riding the tour leader’s winning form take a costly hit.':'';
-  const report=ending?`${ending.pilot} ${ending.position==='DNF'?'does not finish':'eliminated at P'+ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
+  let report=ending?`${ending.pilot} ${ending.position==='DNF'?'does not finish':'eliminated at P'+ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
+  const podComment=podracerComment(heat);if(podComment){const parts=report.split('\u001e');parts[0]+=' '+podComment;report=parts.join('\u001e');}
   const profile=ending?vehicleProfile(heat,ending.pilot,(wireHistory.get(heat.race_id)||[]).filter(h=>h.tour!==heat.tour)):null;
   const vehicleKind=profile?.rare?'vehicleRareEnd':profile?.favored?'vehicleFavoredEnd':null;
   const vehicleReport=vehicleKind&&occasionalVehicle(vehicleKind,heat)?[ending.pilot+' exits '+heat.tour+' in the '+profile.current+'. '+reaction(vehicleKind,heat)]:[];
