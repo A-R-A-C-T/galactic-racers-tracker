@@ -204,7 +204,7 @@
  const SPEC_WIRE_KINDS={"Afterburner":"mechanicalSpec0","Brawler":"mechanicalSpec1","Clean Racer":"mechanicalSpec2","Engineer":"mechanicalSpec3","Firebug":"mechanicalSpec4","Ice Cold":"mechanicalSpec5","Ramjet Rider":"mechanicalSpec6","Redliner":"mechanicalSpec7","Slipstreamer":"mechanicalSpec8","Stunt Runner":"mechanicalSpec9","Survivor":"mechanicalSpec10","Tech Expert":"mechanicalSpec11","Tenacious":"mechanicalSpec12","Weaponized":"mechanicalSpec13"};
  Object.assign(WIRE_LINES,{"mechanicalSpec0":["Afterburner backing buys speed without staking everything on ramjet heat.","Canto Bight’s acceleration stakes have an afterburner contender to follow.","Straight-line pace draws credits; the afterburner still has to deliver the finish."],"mechanicalSpec1":["Contact is part of the proposition. Rival backing should expect a bruising challenge.","The Brawler setup courts takedowns. Private stakes are buying aggression as well as pace.","Outer Rim money has a rougher route to the podium in this field."],"mechanicalSpec2":["Clean Racer backing buys pace without picking fights. Rival trouble remains a risk.","A clean run is the proposition. Credits here are on driving, not takedowns.","Coruscant’s pools have a contender aiming to pass the opposition without breaking it."],"mechanicalSpec3":["Engineer backing puts a premium on recovery when the race turns hostile.","The Engineer setup offers a way through interference. Private stakes still need competitive pace.","Trouble on the circuit may cost less time with this setup. Backers price the recovery."],"mechanicalSpec4":["Short ramjet bursts, sharp acceleration. Firebug stakes are backing the timing.","The Firebug proposition is a burst of pace, not a promise of lasting heat.","Outer Rim pools have explosive speed to price. The finish still decides the payout."],"mechanicalSpec5":["The Ice Cold setup makes freezing interference part of the betting calculation.","Frozen rivals may open a route to the front. Ice Cold backing follows that possibility.","Canto Bight’s pools have cold interference to account for in this campaign."],"mechanicalSpec6":["Longer ramjet running attracts pace wagers. Sustained heat still calls for control.","Ramjet Rider backing buys endurance in the boost. Overconfidence remains a private expense.","The Three Engines prices sustained ramjet pace into its opening stakes."],"mechanicalSpec7":["Redliner backing buys extra pace near the heat limit. The safety margin is part of the wager.","Outer Rim credits ride the ramjet’s red zone. Restraint may decide who collects.","Canto Bight’s Redliner stakes are buying speed with less room for error."],"mechanicalSpec8":["Slipstreamer backing can profit from the opposition setting the pace first.","The lead vehicle supplies a tow, not a guarantee. Drafting stakes need a timely pass.","Private pools back a contender who can turn a rival’s wake into an overtaking chance."],"mechanicalSpec9":["Jump sections offer more than spectacle. Stunt Runner backing prices the extra afterburner.","Aerial routes draw credits when the landing can carry the pace forward.","The Stunt Runner setup gives jump-heavy sections a place in the betting calculation."],"mechanicalSpec10":["Survivor backing buys protection against interference. It still needs pace to collect.","Defensive machinery gives private pools a reason to expect a less interrupted run.","Rival attacks face a defensive proposition. Survival alone does not settle a winning ticket."],"mechanicalSpec11":["Tech Expert backing puts credits behind the ability systems as well as the engine.","Canto Bight prices technical options into the challenge. Deployment still has to earn the payout.","The private pools have more than raw speed to assess with this setup."],"mechanicalSpec12":["Tenacious backing looks for pace when conditions turn risky. The risk has not disappeared.","A difficult run may suit this setup. Outer Rim stakes are buying resilience under pressure.","The Tenacious proposition rewards commitment under threat; the finish remains the reckoning."],"mechanicalSpec13":["The Weaponized setup puts rivals in the firing line. Their backers are funding targets.","Private stakes buy offensive pressure here. Clean passage for the opposition is no part of the offer.","Canto Bight has a contender equipped to attack the field. Rival tickets carry that exposure."]});
  const wireChoices=new Map();let wireHistory=new Map(),wireChanges=new Map(),wireEvents=new Map();
- function reaction(kind,heat){const key=heat.race_id+':'+kind;if(!wireChoices.has(key))wireChoices.set(key,Math.floor(Math.random()*WIRE_LINES[kind].length));return WIRE_LINES[kind][wireChoices.get(key)];}
+ function reaction(kind,heat){const key=heat.race_id+':'+kind;if(!wireChoices.has(key))wireChoices.set(key,Math.floor(Math.random()*WIRE_LINES[kind].length));return WIRE_LINES[kind][wireChoices.get(key)].replace('Every backroom on Ando Prime wants odds','Every backroom on '+heat.planet+' wants odds');}
  // Require a substantial absolute AND relative margin; no invented gap for partial grids.
  function dominantMargin(winner,runnerUp){
   if(!winner||!runnerUp||isDQ(winner)||isDQ(runnerUp)||winner.category!=='Race')return false;
@@ -253,7 +253,7 @@
  }
  function heatReport(heat){
   const ordered=[...heat.results].sort(resultOrder),winner=ordered.find(r=>r.position===1&&!isDQ(r)),shade=ordered.find(r=>r.pilot==='Shade'),eliminated=ordered.filter(isEliminated).length,prior=wireHistory.get(heat.race_id)||[],movement=wireChanges.get(heat.race_id)?.pilots;
-  if(heat.category==='Race'&&heat.results.some(r=>r.vehicle==='Podracer'))return (winner?winner.pilot+' wins':'Result recorded')+' at '+heat.track+' · private '+heat.laps+'-lap podrace, no league points. '+(shade?'Shade '+positionLabel(shade)+'. ':'')+'The quiet arrangements have not kept the betting pools quiet.';
+  if(heat.category==='Race'&&heat.results.some(r=>r.vehicle==='Podracer'))return (winner?winner.pilot+' wins the '+heat.laps+'-lap podrace at '+heat.track+'!':'Podracing at '+heat.track+'!')+' '+reaction(winner?.pilot==='Shade'?'shadePodraceWin':shade?'shadePodracer':'podraceHeat',heat);
   if(heat.category==='Championship Race'){
    const championWinner=heat.results.find(r=>r.position===1&&!isDQ(r));
    const incumbent=championshipState(prior.flatMap(h=>h.results)).pilot;
@@ -381,22 +381,28 @@
   }
   return events;
  }
- Object.assign(WIRE_LINES,{podracerEvent:[
-  'Outlaw-era engines, fresh money in the pools.',
-  'The pods are back. Cautious backers are paying attention.',
-  'Old circuit loyalties are moving new credits.',
-  'Legendary machinery makes this an expensive wager.',
-  'Pod engines have pulled the whole paddock to the rail.',
-  'The Empire banned the sport; the Outer Rim kept its appetite.'
+ Object.assign(WIRE_LINES,{podraceHeat:[
+  'The Empire’s gone. The pods carry on. Word of the private meeting has reached patrons Nix hasn’t heard from in years.',
+  'A discreet meeting, an extraordinary book. Requests for the next invitation began before the engines cooled.',
+  'Every backroom on Ando Prime wants odds on the next one.'
+ ],podracerEvent:[
+  'The Empire’s gone. The pods carry on. Word of the private meeting has reached patrons Nix hasn’t heard from in years.',
+  'A discreet meeting, an extraordinary book. Requests for the next invitation began before the engines cooled.'
  ],shadePodracer:[
-  'A human in Sebulba’s pod has the bookmakers twitching.',
-  'Sebulba owns the paddock. His reasons remain expensive guesswork.',
-  'The old lone wolf bought a racer. Backers are still pricing that surprise.',
-  'Sebulba’s pod carries a killer’s reputation into Shade’s wager.',
-  'Shade races for Sebulba now. The pools smell a bigger play.',
-  'Years of pod racing never finished Sebulba. His name still moves credits.',
-  'Human reflexes, Sebulba’s machinery: a bold bet even by Outer Rim standards.',
-  'Sebulba bought the crew; Shade has to deliver the result.'
+  'Few humans would take that cockpit. Fewer owners would entrust them with it. Sebulba’s arrangement is drawing serious interest.',
+  'The old circuit crowd recognised the engines immediately. Several backed Sebulba’s machine before asking who was driving.',
+  'Plenty would threaten a rival’s mechanic. Fewer would threaten Sebulba’s.'
+ ],shadePodraceWin:[
+  'The Empire’s gone. The pods carry on. Word of the private meeting has reached patrons Nix hasn’t heard from in years.',
+  'Sebulba’s human has upset a rather expensive consensus. His judgement attracted fewer objections after the finish.',
+  'A discreet meeting, an extraordinary book. Requests for the next invitation began before the engines cooled.',
+  'Few humans would take that cockpit. Fewer owners would entrust them with it. Sebulba’s arrangement is drawing serious interest.',
+  'The result stands. Two substantial losing accounts have requested privacy; Nix has extended it to their settlements.',
+  'The old circuit crowd recognised the engines immediately. Several backed Sebulba’s machine before asking who was driving.',
+  'Every backroom on Ando Prime wants odds on the next one.',
+  'A human in Sebulba’s pod. Some very expensive laughter just stopped.',
+  'Sebulba’s human pays out. Collect before the losing money disappears.',
+  'Plenty would threaten a rival’s mechanic. Fewer would threaten Sebulba’s.'
  ]});
  function podracerComment(heat){
   const pods=heat.results.filter(r=>r.vehicle==='Podracer');
@@ -411,7 +417,7 @@
   const priorLeader=[...priorStats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
   const momentum=ending&&priorLeader?.pilot===ending.pilot&&priorTour.some(h=>h.results.some(r=>r.pilot===ending.pilot&&r.position===1&&!isDQ(r)))?' Backers riding the tour leader’s winning form take a costly hit.':'';
   let report=ending?`${ending.pilot} ${ending.position==='DNF'?'does not finish':'eliminated at P'+ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
-  const podComment=podracerComment(heat);if(podComment){const parts=report.split('\u001e');parts[0]+=' '+podComment;report=parts.join('\u001e');}
+  const podComment=heat.category==='Race'?'':podracerComment(heat);if(podComment){const parts=report.split('\u001e');parts[0]+=' '+podComment;report=parts.join('\u001e');}
   const profile=ending?vehicleProfile(heat,ending.pilot,(wireHistory.get(heat.race_id)||[]).filter(h=>h.tour!==heat.tour)):null;
   const vehicleKind=profile?.rare?'vehicleRareEnd':profile?.favored?'vehicleFavoredEnd':null;
   const vehicleReport=vehicleKind&&occasionalVehicle(vehicleKind,heat)?[ending.pilot+' exits '+heat.tour+' in the '+profile.current+'. '+reaction(vehicleKind,heat)]:[];
