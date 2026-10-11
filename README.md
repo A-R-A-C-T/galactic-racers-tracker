@@ -73,8 +73,8 @@ Filters and exchange expansion are stored separately from imported results. Brow
 One row represents **one pilot's result in one heat**. All rows for that heat share its ID and event details. [data/races.csv](data/races.csv) is the portable ledger.
 
 ```csv
-race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle,status,subcategory,laps,phase,direction
-GR-001,2026-10-09,Tour 01,Race,Crait,Forgil Canyon,Shade,1,159170,Land speeder,,Circuit,2,,Forward
+race_id,date,tour,category,planet,track,pilot,position,time_ms,vehicle,status,subcategory,laps,phase,direction,mechanical_spec
+GR-001,2026-10-09,Tour 01,Race,Crait,Forgil Canyon,Shade,1,159170,Land speeder,,Circuit,2,,Forward,
 GR-001,2026-10-09,Tour 01,Race,Crait,Forgil Canyon,Goli & 02-R0,2,160120,,,Circuit,2,,Forward
 ```
 
@@ -89,16 +89,19 @@ GR-001,2026-10-09,Tour 01,Race,Crait,Forgil Canyon,Goli & 02-R0,2,160120,,,Circu
 | pilot | Pilot name, spelled consistently across heats. |
 | position | Positive classified position, or DNF for an unclassified non-finish. Gauntlet results use a blank position. |
 | time_ms | Recorded finish time in milliseconds; non-finishes may leave it blank. |
-| vehicle | Shade's vehicle; blank for other pilots. |
+| vehicle | Recorded vehicle. Known rival configurations also fill missing values on import. |
 | status | Blank for a normal finish; DNF, ELIMINATED, or CLEARED for a completed Gauntlet. |
 | subcategory | Optional Circuit or Point-to-point. |
 | laps | Optional positive lap count. Different lap counts form separate configurations. |
 | phase | Gauntlet phase, 1–3; blank for other categories. |
 | direction | Forward for D1 (Standard), Reverse for D2; blank when unknown. |
+| mechanical_spec | Optional mechanical spec (the game’s racer style). Historical Shade entries remain blank unless confirmed; known rivals have fixed specs. |
 
 Optional columns may be omitted in older files. Imports validate the entire dataset before replacing browser data. Pilot names and numeric positions must be unique within a heat.
 
-Shade's supported vehicles are Land speeder, Speeder bike, Skim speeder, and Podracer. The vehicle filter retains the entire recorded grid from heats where Shade used that vehicle.
+Shade's supported vehicles are Land speeder, Speeder bike, Skim speeder, and Podracer. The vehicle filter retains the entire recorded grid from heats where the selected pilot used that vehicle. The mechanical spec filter works the same way. Least/most common spec counts span vehicles within the active filters and exclude unspecified entries. Specs appear beside each recorded vehicle in heat results. The configuration card shows Shade’s declared current tour setup or a rival’s known fixed setup.
+
+Supported mechanical specs: Afterburner, Brawler, Clean Racer, Engineer, Firebug, Ice Cold, Ramjet Rider, Redliner, Slipstreamer, Stunt Runner, Survivor, Tech Expert, Tenacious, and Weaponized.
 
 #### Outcomes and incomplete records
 

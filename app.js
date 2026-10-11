@@ -1,9 +1,11 @@
 /* Offline-first CSV racing archive. No build step or server required. */
 'use strict';
-const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory','laps','phase','direction'];
+const COLS=['race_id','date','tour','category','planet','track','pilot','position','time_ms','vehicle','status','subcategory','laps','phase','direction','mechanical_spec'];
 const directionLabel=r=>r.direction==='Forward'?'D1':r.direction==='Reverse'?'D2':'';
 const PILOT_SPECIES={'Lyren Shok':'Nautolan','Fola Kanjen':'Human','Goli & 02-R0':'Kallidahin','Shade':'Human','Sen Fira':'Tognath','Nik Skandaro':'Zabrak','Biddy Blas':'Crocin','Ary Quill':'Namaran','Soren Zaks':'Human','Griff Halloran':'Human','Katja Mox':'Pantoran','Malis Vazosk':'Trandoshan'};
 const PILOT_PORTRAITS={'Kestar Bool':'assets/pilots/kestar-bool.png','Soren Zaks':'assets/pilots/soren-zaks.png','Biddy Blas':'assets/pilots/biddy-blas.png','Lyren Shok':'assets/pilots/lyren-shok.png','Griff Halloran':'assets/pilots/griff-halloran.png','Katja Mox':'assets/pilots/katja-mox.png','Fola Kanjen':'assets/pilots/fola-kanjen.png','Ary Quill':'assets/pilots/ary-quill.png','Sen Fira':'assets/pilots/sen-fira.png','Shade':'assets/pilots/shade.png','Malis Vazosk':'assets/pilots/malis-vazosk.png','Nik Skandaro':'assets/pilots/nik-skandaro.png','Goli & 02-R0':'assets/pilots/goli-02-r0.png'};
+const MECHANICAL_SPECS=['Afterburner','Brawler','Clean Racer','Engineer','Firebug','Ice Cold','Ramjet Rider','Redliner','Slipstreamer','Stunt Runner','Survivor','Tech Expert','Tenacious','Weaponized'];
+const PILOT_CONFIGURATIONS={"Griff Halloran":{"vehicle":"Skim speeder","mechanical_spec":"Afterburner"},"Malis Vazosk":{"vehicle":"Speeder bike","mechanical_spec":"Brawler"},"Goli & 02-R0":{"vehicle":"Skim speeder","mechanical_spec":"Clean Racer"},"Soren Zaks":{"vehicle":"Land speeder","mechanical_spec":"Engineer"},"Biddy Blas":{"vehicle":"Speeder bike","mechanical_spec":"Firebug"},"Ary Quill":{"vehicle":"Land speeder","mechanical_spec":"Redliner"},"Sen Fira":{"vehicle":"Speeder bike","mechanical_spec":"Slipstreamer"},"Lyren Shok":{"vehicle":"Skim speeder","mechanical_spec":"Stunt Runner"},"Nik Skandaro":{"vehicle":"Land speeder","mechanical_spec":"Survivor"},"Katja Mox":{"vehicle":"Speeder bike","mechanical_spec":"Tech Expert"},"Fola Kanjen":{"vehicle":"Skim speeder","mechanical_spec":"Tenacious"},"Kestar Bool":{"vehicle":"Land speeder","mechanical_spec":"Weaponized"}};
 const VEHICLES=['Land speeder','Speeder bike','Skim speeder','Podracer'];
 const PLANETS=['Jakku','Lantaana','Ando Prime','Sentinel One','Crait','Tatooine','Derven Akos'];
 const POINTS=[25,18,15,12,10,8,6,4,2,1,0,0],KEY='galactic-racing-v2';
@@ -29,18 +31,19 @@ const compareStandings=(a,b)=>b.points-a.points||b.wins-a.wins||(averageValue(a)
 function galacticDate(date){const d=new Date(date+'T00:00:00Z');const year=d.getUTCFullYear();const day=Math.floor((d-Date.UTC(year,0,1))/86400000)+1;const era=year-2016;return Math.abs(era)+' '+(era>=0?'ABY':'BBY')+' · '+String(day).padStart(3,'0');}
 const time=ms=>{if(ms===null||ms===undefined||ms==='')return '—';const n=Math.round(ms);return `${Math.floor(n/60000)}:${String(Math.floor(n/1000)%60).padStart(2,'0')}.${String(n%1000).padStart(3,'0')}`;};
 let selectedPilot='Shade',recordLaps=null,pilotPreviewTimer,pilotPreviewCloseTimer,hoveredGraphPilot=null;
-let rows=window.DEMO_RESULTS.map(r=>({...r})),page=0,ascending=false,archiveSort='date';
+let rows=validate(window.DEMO_RESULTS.map(r=>({...r}))),page=0,ascending=false,archiveSort='date';
 function validate(data){
  if(!data.length)throw Error('The CSV contains no results.');
  const events=new Map();
  data.forEach((r,i)=>{
-  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status','subcategory','laps','phase','direction'].includes(c)))if((r[c]===undefined||String(r[c]).trim()==='')&&!(c==='position'&&r.category==='Galactic Gauntlet'))throw Error(`Row ${i+2}: missing ${c}.`);
+  for(const c of COLS.filter(c=>!['vehicle','track','time_ms','status','subcategory','laps','phase','direction','mechanical_spec'].includes(c)))if((r[c]===undefined||String(r[c]).trim()==='')&&!(c==='position'&&r.category==='Galactic Gauntlet'))throw Error(`Row ${i+2}: missing ${c}.`);
   for(const c of COLS)r[c]=String(r[c]??'').trim();
   if(r.category==='Galactic Gauntlet'){if(!/^[123]$/.test(r.phase)||!['ELIMINATED','CLEARED','DNF'].includes(r.status.toUpperCase())||(r.status.toUpperCase()==='CLEARED'&&r.phase!=='3')||r.position!=='')throw Error(`Row ${i+2}: Gauntlet requires phase 1–3, no finishing position, and ELIMINATED, DNF or final-phase CLEARED status.`);r.phase=Number(r.phase);}else if(r.phase!=='')throw Error(`Row ${i+2}: phase is only supported for Galactic Gauntlet.`);
   if(r.direction&&!['Forward','Reverse'].includes(r.direction))throw Error(`Row ${i+2}: direction must be Forward, Reverse or blank.`);
   if(r.laps!==''){if(!/^\d+$/.test(r.laps)||!Number.isSafeInteger(Number(r.laps))||Number(r.laps)<1)throw Error(`Row ${i+2}: laps must be a positive integer or blank.`);r.laps=Number(r.laps);}
   if(r.category==='Sprint')r.category='Race';else if(r.category==='Circuit race')r.category='Eliminator';
-  if(r.vehicle&&r.pilot!=='Shade')throw Error(`Row ${i+2}: vehicle is recorded only for Shade.`);
+  const known=PILOT_CONFIGURATIONS[r.pilot];if(known){r.vehicle=r.vehicle||known.vehicle;r.mechanical_spec=r.mechanical_spec||known.mechanical_spec;}
+  if(r.mechanical_spec&&!MECHANICAL_SPECS.includes(r.mechanical_spec))throw Error(`Row ${i+2}: unknown mechanical spec.`);
   if(r.vehicle&&!VEHICLES.includes(r.vehicle))throw Error(`Row ${i+2}: unknown vehicle type.`);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!Number.isFinite(Date.parse(r.date+'T00:00:00Z'))||new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)!==r.date)throw Error(`Row ${i+2}: use a valid YYYY-MM-DD date.`);
   r.status=r.status.toUpperCase();
@@ -75,7 +78,7 @@ function parseCSV(text){
  }
  if(quoted)throw Error('Unclosed quoted field.');row.push(field);if(row.some(v=>v.trim()))result.push(row);
  const headers=(result.shift()||[]).map(v=>v.trim());
- if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status','subcategory','laps','phase','direction'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
+ if(new Set(headers).size!==headers.length||COLS.filter(c=>!['vehicle','track','status','subcategory','laps','phase','direction','mechanical_spec'].includes(c)).some(c=>!headers.includes(c)))throw Error('Required headers: '+COLS.join(', '));
  return validate(result.map((cells,i)=>{if(cells.length!==headers.length)throw Error(`Row ${i+2}: incorrect number of columns.`);return Object.fromEntries(COLS.map(c=>[c,headers.includes(c)?cells[headers.indexOf(c)]:'']));}));
 }
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(rows));return true;}catch{$('message').textContent='Loaded for this session. Browser storage unavailable; export CSV to keep your data.';return false;}}
@@ -83,6 +86,9 @@ try{const saved=localStorage.getItem(KEY);if(saved)rows=validate(JSON.parse(save
 function options(){
  const pilots=[...new Set(['Shade',...rows.map(r=>r.pilot)])].sort((a,b)=>a==='Shade'?-1:b==='Shade'?1:a.localeCompare(b));
  $('pilot').innerHTML=pilots.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');$('pilot').value=selectedPilot;
+ const previousSpec=$('mechanical_spec').value;
+ $('mechanical_spec').innerHTML='<option value="">All specs</option>'+MECHANICAL_SPECS.map(v=>`<option value="${v}">${v}</option>`).join('');
+ $('mechanical_spec').value=MECHANICAL_SPECS.includes(previousSpec)?previousSpec:'';
  const previousVehicle=$('vehicle').value;
  $('vehicle').innerHTML='<option value="">All vehicles</option>'+VEHICLES.map(v=>`<option value="${v}">${v}</option>`).join('');
  $('vehicle').value=VEHICLES.includes(previousVehicle)?previousVehicle:'';
@@ -94,7 +100,7 @@ function options(){
   $(key).value=values.includes(old)||(key==='subcategory'&&old==='__unspecified__')?old:'';
  }
 }
-const FILTER_KEY='galactic-racing-filters-v1',FILTER_FIELDS=['tour','planet','track','direction','vehicle','category','subcategory'];
+const FILTER_KEY='galactic-racing-filters-v1',FILTER_FIELDS=['tour','planet','track','direction','vehicle','mechanical_spec','category','subcategory'];
 function saveFilters(){try{localStorage.setItem(FILTER_KEY,JSON.stringify({pilot:selectedPilot,filters:Object.fromEntries(FILTER_FIELDS.map(k=>[k,$(k).value])),laps:recordLaps}));}catch{}}
 function restoreFilters(){
  try{
@@ -104,6 +110,7 @@ function restoreFilters(){
   for(const key of FILTER_FIELDS){
    const value=filters[key];let valid=typeof value==='string';
    if(key==='vehicle')valid=valid&&VEHICLES.includes(value);
+   else if(key==='mechanical_spec')valid=valid&&MECHANICAL_SPECS.includes(value);
    else if(key==='direction')valid=valid&&['Forward','Reverse','__unknown__'].includes(value);
    else if(key==='planet')valid=valid&&(PLANETS.includes(value)||rows.some(r=>r.planet===value));
    else if(key==='subcategory'&&value==='__unspecified__')valid=true;
@@ -116,9 +123,9 @@ function restoreFilters(){
   if(recordLaps!==null&&!filtered().length)recordLaps=null;
  }catch{}
 }
-function filtered(){const vehicle=$('vehicle').value;const races=new Set(rows.filter(r=>r.pilot==='Shade'&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(recordLaps===null||String(r.laps??'')===recordLaps)&&(!vehicle||races.has(r.race_id))&&(!$('direction').value||($('direction').value==='__unknown__'?!r.direction:r.direction===$('direction').value))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
+function filtered(){const vehicle=$('vehicle').value,spec=$('mechanical_spec').value;const specRaces=new Set(rows.filter(r=>r.pilot===selectedPilot&&r.mechanical_spec===spec).map(r=>r.race_id));const races=new Set(rows.filter(r=>r.pilot===selectedPilot&&r.vehicle===vehicle).map(r=>r.race_id));return rows.filter(r=>(recordLaps===null||String(r.laps??'')===recordLaps)&&(!vehicle||races.has(r.race_id))&&(!spec||specRaces.has(r.race_id))&&(!$('direction').value||($('direction').value==='__unknown__'?!r.direction:r.direction===$('direction').value))&&['tour','planet','track','category','subcategory'].every(k=>!$(k).value||($(k).value==='__unspecified__'&&k==='subcategory'?!r[k]:r[k]===$(k).value)));}
 function renderFilterSummaries(){
- const labels={pilot:'Pilot',tour:'Tour',planet:'Planet',track:'Track',direction:'Direction',vehicle:'Vehicle',category:'Category',subcategory:'Subcategory'};
+ const labels={pilot:'Pilot',tour:'Tour',planet:'Planet',track:'Track',direction:'Direction',vehicle:'Vehicle',mechanical_spec:'Mechanical spec',category:'Category',subcategory:'Subcategory'};
  let summary=Object.keys(labels).filter(k=>$(k).value).map(k=>labels[k]+': '+($(k).value==='__unspecified__'?'Unspecified':$(k).value==='__unknown__'?'Unspecified':k==='direction'?($(k).value==='Forward'?'D1 · Standard':'D2 · Reverse'):$(k).value)).join(' · ');
  if(recordLaps)summary+=(summary?' · ':'')+recordLaps+' laps';
  for(const section of ['standings','telemetry','records','archive','dialog']){const node=$(section+'-filters');node.textContent=summary;node.hidden=!summary;}
@@ -156,7 +163,7 @@ function render(){
  data.forEach(r=>{if(!groups.has(r.pilot))groups.set(r.pilot,newPilotStats(r.pilot));addResult(groups.get(r.pilot),r);});
  const leaders=[...groups.values()].filter(isLeaguePilot).sort(compareStandings);
  const own=groups.get(selectedPilot);
- $('race-count').textContent=new Set(data.map(r=>r.race_id)).size;
+ $('race-count').textContent=new Set(data.filter(r=>r.pilot===selectedPilot).map(r=>r.race_id)).size;
  $('result-count').textContent=`${data.length} results · ${groups.size} pilots`;
  const hasRecordedFinish=data.some(r=>!isDQ(r));
  $('leader').textContent=hasRecordedFinish?(leaders[0]?.pilot||'—'):'—';$('leader-points').textContent=hasRecordedFinish&&leaders.length?`${leaders[0].points} pts · ${leaders[0].wins} wins`:data.length?'No completed results recorded':'No results in this selection';
@@ -181,13 +188,29 @@ function render(){
   $('category-'+kind+'-count').textContent=categories.length?count+' recorded start'+(count===1?'':'s')+(categories.length>1?' each · tied':''):'No recorded starts';
  }
  const vehicleUsage=new Map();
- if(selectedPilot==='Shade')for(const r of data.filter(r=>r.pilot==='Shade'&&r.vehicle))vehicleUsage.set(r.vehicle,(vehicleUsage.get(r.vehicle)||0)+1);
+ for(const r of data.filter(r=>r.pilot===selectedPilot&&r.vehicle))vehicleUsage.set(r.vehicle,(vehicleUsage.get(r.vehicle)||0)+1);
  for(const kind of ['least','most']){
   $('vehicle-'+kind+'-label').textContent=selectedPilot.toUpperCase()+' / '+(kind==='least'?'LEAST':'MOST')+' COMMON VEHICLE';
   const counts=[...vehicleUsage.values()],count=counts.length?(kind==='least'?Math.min(...counts):Math.max(...counts)):0;
   const vehicles=[...vehicleUsage].filter(([,n])=>n===count).map(([v])=>v).sort();
   $('vehicle-'+kind).textContent=vehicles.length?vehicles.join(' / '):'No telemetry';
   $('vehicle-'+kind+'-count').textContent=vehicles.length?count+' recorded start'+(count===1?'':'s')+(vehicles.length>1?' each · tied':''):selectedPilot==='Shade'?'No vehicle records in this selection':'Vehicle data unavailable';
+ }
+ const latestTour=[...new Set(rows.map(r=>r.tour))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).at(-1)||'';
+ const declared=window.CURRENT_TOUR_CONFIGURATION;
+ const useDeclared=declared&&(!latestTour||declared.tour.localeCompare(latestTour,undefined,{numeric:true})>=0);
+ const configuration=selectedPilot==='Shade'?(useDeclared?declared:[...rows].reverse().find(r=>r.pilot==='Shade'&&r.tour===latestTour&&r.vehicle)):PILOT_CONFIGURATIONS[selectedPilot];
+ $('configuration-label').textContent=selectedPilot.toUpperCase()+' / CURRENT CONFIGURATION';
+ $('configuration-value').textContent=configuration?.vehicle?configuration.vehicle+(configuration.mechanical_spec?' · '+configuration.mechanical_spec:''):'No telemetry';
+ $('configuration-detail').textContent=configuration?(selectedPilot==='Shade'?configuration.tour+' · '+(configuration.mechanical_spec?'Mechanical spec recorded':'Mechanical spec unspecified'):'Fixed racer configuration'):'Vehicle and mechanical spec data unavailable';
+ const specUsage=new Map();
+ for(const r of data.filter(r=>r.pilot===selectedPilot&&r.mechanical_spec))specUsage.set(r.mechanical_spec,(specUsage.get(r.mechanical_spec)||0)+1);
+ for(const kind of ['least','most']){
+  $('spec-'+kind+'-label').textContent=selectedPilot.toUpperCase()+' / '+(kind==='least'?'LEAST':'MOST')+' COMMON MECHANICAL SPEC';
+  const counts=[...specUsage.values()],count=counts.length?(kind==='least'?Math.min(...counts):Math.max(...counts)):0;
+  const specs=[...specUsage].filter(([,n])=>n===count).map(([v])=>v).sort();
+  $('spec-'+kind).textContent=specs.length?specs.join(' / '):'No telemetry';
+  $('spec-'+kind+'-count').textContent=specs.length?count+' recorded start'+(count===1?'':'s')+(specs.length>1?' each · tied':''):selectedPilot==='Shade'?'No mechanical spec records in this selection':'Mechanical spec data unavailable';
  }
  if(typeof syncPlanetDisplay==='function')syncPlanetDisplay();
  const visitTrend=planetVisitTrend(data);
@@ -268,8 +291,8 @@ function renderArchive(data=filtered()){
  $('archive').innerHTML=list.slice(page*10,page*10+10).map((r,i)=>{const winner=r.results.find(result=>result.position===1&&!isDQ(result)),selectedResult=r.results.find(result=>result.pilot===selectedPilot);return `<tr${i>0?(list[page*10+i-1].tour!==r.tour?' class="tour-boundary"':list[page*10+i-1].planet!==r.planet?' class="planet-boundary"':''):''} data-category="${esc(r.category)}" data-race-id="${esc(r.race_id)}"><td><button class="race-open" aria-haspopup="dialog" aria-label="View results for ${esc(r.race_id)}">${esc(r.race_id)}<span class="subline">${r.category==='Galactic Gauntlet'?(selectedResult?esc(positionLabel(selectedResult)):'No telemetry'):r.results.length+' recorded racers'}</span></button></td><td>${esc(galacticDate(r.date))}</td><td>${esc(r.tour)}<span class="subline">${esc(r.category)}${r.subcategory?' · '+esc(r.subcategory):''}</span></td><td>${r.category==='Galactic Gauntlet'?'<span class="gauntlet-planet">'+esc(r.planet)+'</span>':esc(r.planet)}<span class="subline">${esc(r.track||'Circuit uncharted')}${directionLabel(r)?' · '+directionLabel(r):''}</span></td><td>${winner?esc(winner.pilot):'Not recorded'}<span class="subline">${winner?time(winner.time_ms):'Winner unavailable'}</span></td><td class="archive-pilot-position">${selectedResult?(selectedResult.category==='Galactic Gauntlet'?'<span class="muted" title="'+esc(positionLabel(selectedResult))+'">—</span>':Number.isInteger(selectedResult.position)?'<span class="archive-position '+(isDQ(selectedResult)?'archive-position-outcome':'')+'" title="'+esc(positionLabel(selectedResult))+'">P'+selectedResult.position+'</span>':'<span class="archive-position archive-position-outcome">'+esc(resultStatus(selectedResult))+'</span>'):'<span class="muted" title="No telemetry" aria-label="No telemetry">—</span>'}</td><td>${leagueChangeMarkup(changes.get(r.race_id)?.pilots.get(selectedPilot))}</td></tr>`;}).join('')||'<tr><td colspan="7" class="empty">No races found. Try a different search or clear the filters.</td></tr>';
  $('page-info').textContent=list.length?`${page*10+1}–${Math.min(page*10+10,list.length)} of ${list.length} heats`:'0 heats';$('prev').disabled=page===0;$('next').disabled=page>=pages-1;
 }
-for(const key of ['tour','planet','track','direction','category','subcategory','vehicle'])$(key).addEventListener('change',()=>{recordLaps=null;if(key==='planet')options();page=0;render();});
-$('clear').onclick=()=>{selectedPilot='Shade';$('pilot').value='Shade';recordLaps=null;for(const k of ['tour','planet','track','direction','category','subcategory','vehicle'])$(k).value='';$('search').value='';page=0;render();};
+for(const key of ['tour','planet','track','direction','category','subcategory','vehicle','mechanical_spec'])$(key).addEventListener('change',()=>{recordLaps=null;if(key==='planet')options();page=0;render();});
+$('clear').onclick=()=>{selectedPilot='Shade';$('pilot').value='Shade';recordLaps=null;for(const k of ['tour','planet','track','direction','category','subcategory','vehicle','mechanical_spec'])$(k).value='';$('search').value='';page=0;render();};
 $('sidebar-clear').onclick=()=>$('clear').onclick();
 function handleFilterShortcut(event){
  if(event.defaultPrevented||event.repeat||event.isComposing||event.ctrlKey||event.metaKey||event.altKey||event.shiftKey||event.key?.toLowerCase()!=='r')return;
@@ -286,7 +309,7 @@ for(const [key,label] of Object.entries(archiveSortLabels))$('sort-'+key).onclic
 };
 $('import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>10000000)throw Error('CSV is too large. Please use a file below 10 MB.');const imported=parseCSV(await file.text());rows=imported;recordLaps=null;page=0;options();render();if(persist())$('message').textContent=`Imported ${rows.length} results from ${file.name}. Saved in this browser.`;}catch(err){$('message').textContent='Import failed: '+err.message;}finally{e.target.value='';}};
 $('export').onclick=()=>{const data=filtered();const cell=v=>{const s=String(v);return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};const csv=[COLS.join(','),...data.map(r=>COLS.map(k=>cell(r[k])).join(','))].join('\r\n');const url=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='galactic-racing-results.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('message').textContent=`Exported ${data.length} filtered results. Archive search does not affect export.`;};
-$('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CSV first if you want to keep it.'))return;rows=window.DEMO_RESULTS.map(r=>({...r}));recordLaps=null;page=0;for(const k of ['tour','planet','track','direction','category','subcategory','vehicle'])$(k).value='';$('search').value='';options();render();if(persist())$('message').textContent='Initial archive restored.';};
+$('reset').onclick=()=>{if(!confirm('Restore the initial archive? Export your CSV first if you want to keep it.'))return;rows=validate(window.DEMO_RESULTS.map(r=>({...r})));recordLaps=null;page=0;for(const k of ['tour','planet','track','direction','category','subcategory','vehicle','mechanical_spec'])$(k).value='';$('search').value='';options();render();if(persist())$('message').textContent='Initial archive restored.';};
 let telemetry=[],selectedRace='';
 $('import-trigger').onclick=()=>$('import').click();
 function renderSectors(){
@@ -317,7 +340,7 @@ function renderTelemetry(data){
 function showSignal(index){
  const r=telemetry[index];if(!r){$('race-detail').innerHTML='Awaiting telemetry.';return;}
  selectedRace=r.race_id;
- $('race-detail').innerHTML=`<div><span class="eyebrow">${esc(r.race_id)} / ${esc(galacticDate(r.date))}</span><strong>${esc(selectedPilot)} / ${esc(r.planet)}</strong><small>${esc(r.track||'Circuit uncharted')}${directionLabel(r)?' · '+directionLabel(r):''}${r.subcategory?' · '+esc(r.subcategory):''}${r.vehicle?' · '+esc(r.vehicle):''}</small></div><div class="signal-finish ${isDQ(r)?'signal-dq':''}">${positionLabel(r)}<small>${time(r.time_ms)}</small></div>`;
+ $('race-detail').innerHTML=`<div><span class="eyebrow">${esc(r.race_id)} / ${esc(galacticDate(r.date))}</span><strong>${esc(selectedPilot)} / ${esc(r.planet)}</strong><small>${esc(r.track||'Circuit uncharted')}${directionLabel(r)?' · '+directionLabel(r):''}${r.subcategory?' · '+esc(r.subcategory):''}${r.vehicle?' · '+esc(r.vehicle):''}${r.mechanical_spec?' · '+esc(r.mechanical_spec):''}</small></div><div class="signal-finish ${isDQ(r)?'signal-dq':''}">${positionLabel(r)}<small>${time(r.time_ms)}</small></div>`;
  for(const node of $('trend').querySelectorAll?.('.chart-point')||[])node.classList.toggle('selected',Number(node.dataset.index)===index);
 }
 $('chart-mode').onchange=()=>renderTelemetry(filtered());

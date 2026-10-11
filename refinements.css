@@ -355,3 +355,23 @@ body:has(#race-dialog[open]){margin-right:var(--dialog-scrollbar-width,0px)}
 .pilot-preview-overall{font:10px/1.1 'Space Grotesk','Segoe UI',sans-serif;color:var(--muted)}
 
 .pilot-preview-image[data-preview-pilot="Kestar Bool"]{--preview-position:50% 25%}
+
+.detail-metrics .spec-least{grid-area:3/1}.detail-metrics .spec-most{grid-area:3/2}.metrics.detail-metrics article.spec-least,.metrics.detail-metrics article.spec-most{border-top-color:#7d9080}
+@media(max-width:800px){.detail-metrics .spec-least{grid-area:5/1}.detail-metrics .spec-most{grid-area:5/2}}
+
+/* Configuration and outcomes on the left; usage pairs on the right. */
+.detail-metrics .current-configuration{grid-area:1/1/2/3;border-top-color:#264e50}
+.detail-metrics .current-configuration strong{font-size:clamp(22px,2vw,32px)}
+.detail-metrics .dnf-total{grid-area:2/1}.detail-metrics .dnf-rate{grid-area:2/2}
+.detail-metrics .elimination-total{grid-area:3/1}.detail-metrics .elimination-rate{grid-area:3/2}
+.detail-metrics .category-least{grid-area:1/3}.detail-metrics .category-most{grid-area:1/4}
+.detail-metrics .vehicle-least{grid-area:2/3}.detail-metrics .vehicle-most{grid-area:2/4}
+.detail-metrics .spec-least{grid-area:3/3}.detail-metrics .spec-most{grid-area:3/4}
+@media(max-width:800px){
+ .detail-metrics .current-configuration{grid-area:1/1/2/3}
+ .detail-metrics .dnf-total{grid-area:2/1}.detail-metrics .dnf-rate{grid-area:2/2}
+ .detail-metrics .elimination-total{grid-area:3/1}.detail-metrics .elimination-rate{grid-area:3/2}
+ .detail-metrics .category-least{grid-area:4/1}.detail-metrics .category-most{grid-area:4/2}
+ .detail-metrics .vehicle-least{grid-area:5/1}.detail-metrics .vehicle-most{grid-area:5/2}
+ .detail-metrics .spec-least{grid-area:6/1}.detail-metrics .spec-most{grid-area:6/2}
+}
