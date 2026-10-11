@@ -212,9 +212,58 @@
   const gap=runnerUp.time_ms-winner.time_ms;
   return gap>=5000&&gap/winner.time_ms>=.04;
  }
+ Object.assign(WIRE_LINES,{gauntletClear:[
+ 'The Gauntlet pools pay their winning tickets. Kestar Bool is the next proposition.',
+ 'Outer Rim credits collect on the final. The next stakes pit the qualifier against Kestar Bool.',
+ 'Canto Bight settles the Gauntlet winner’s backing. The Kestar Bool challenge now has its contender.',
+ 'Progression wagers have their answer; outright backers collect. Kestar Bool awaits.',
+ 'The final is settled. Private pools turn to the qualified challenger’s meeting with Kestar Bool.',
+ 'Gauntlet-winning backing collects at Derven Akos. Kestar Bool gives the money its next test.'
+ ],flawlessGauntlet:[
+ 'Every challenge has paid the same winning tickets. Kestar Bool’s backers face an unbroken run.',
+ 'Outer Rim money has followed a tour without a defeat. The Kestar Bool challenge tests that confidence.',
+ 'No rival has collected a win against this contender all tour. Kestar Bool’s backing has been warned.',
+ 'Canto Bight’s repeat backing reaches the title challenge without a losing result.',
+ 'An unbeaten campaign carries the winning stakes into the Kestar Bool challenge.',
+ 'Backing against this run has paid nothing all tour. Kestar Bool is its next chance to collect.'
+ ]});
+ Object.assign(WIRE_LINES,{championshipWin:[
+ 'The title changes hands. Backing for the old champion settles on the losing side.',
+ 'Canto Bight pays the challenger’s tickets. The title holder’s reputation covers none of the losses.',
+ 'Outer Rim credits backed the upset and collect. The champion’s loyal money pays for its confidence.',
+ 'Private pools settle a new champion. Familiar backing has an expensive result to explain.',
+ 'The challenger takes the crown and the winning stakes. Rival pools are left with the bill.',
+ 'Title backing changes allegiance after settlement. The losing tickets get no such second chance.'
+ ],championshipDefense:[
+ 'The title stays put. Challenger backing funds another unsuccessful attempt.',
+ 'Canto Bight’s defence stakes collect. Money behind a new champion gets no return.',
+ 'Outer Rim credits tested the title holder and lost. Repeat backing collects again.',
+ 'The private pools pay another successful defence. Challenger confidence proves expensive.',
+ 'A change of champion was the wager. The title holder leaves those tickets worthless.',
+ 'The crown survives the challenge. Backers of its removal absorb the settlement.'
+ ]});
+ function gauntletClearReport(heat,prior){
+  const cleared=heat.results.find(r=>resultStatus(r)==='CLEARED'&&Number(r.phase)===3);
+  if(!cleared)return null;
+  let report=cleared.pilot+' wins the Galactic Gauntlet final at '+heat.planet+' · qualifies to face Kestar Bool. '+reaction('gauntletClear',heat);
+  const campaign=prior.filter(h=>h.tour===heat.tour);
+  const flawless=campaign.length>0&&campaign.every(h=>h.results.some(r=>r.pilot===cleared.pilot&&(r.category==='Galactic Gauntlet'?resultStatus(r)==='CLEARED':r.position===1&&!isDQ(r))));
+  if(flawless)report+='\u001e'+cleared.pilot+' reaches the Kestar Bool challenge with a flawless '+heat.tour+' · '+campaign.filter(h=>h.category!=='Galactic Gauntlet').length+' wins and a Gauntlet clear. '+reaction('flawlessGauntlet',heat);
+  return report;
+ }
  function heatReport(heat){
   const ordered=[...heat.results].sort(resultOrder),winner=ordered.find(r=>r.position===1&&!isDQ(r)),shade=ordered.find(r=>r.pilot==='Shade'),eliminated=ordered.filter(isEliminated).length,prior=wireHistory.get(heat.race_id)||[],movement=wireChanges.get(heat.race_id)?.pilots;
+  if(heat.category==='Championship Race'){
+   const overturned=heat.results.find(r=>r.position===1&&isDQ(r));
+   if(overturned)return overturned.pilot+' finished first at '+heat.track+' but was disqualified. Kestar Bool retains the title.';
+   const championWinner=heat.results.find(r=>r.position===1&&!isDQ(r));
+   const incumbent=championshipState(prior.flatMap(h=>h.results)).pilot;
+   if(!championWinner)return heat.track+': championship settlement awaits an official result.';
+   const defending=championWinner.pilot===incumbent;
+   return championWinner.pilot+(defending?' defends the championship':' defeats '+incumbent+' and takes the championship')+' at '+heat.track+'. '+reaction(defending?'championshipDefense':'championshipWin',heat);
+  }
   if(heat.category==='Galactic Gauntlet'){
+   const clearReport=gauntletClearReport(heat,prior);if(clearReport)return clearReport;
    if(shade&&isEliminated(shade)){
     const standings=new Map();
     for(const event of [...prior,heat].filter(h=>h.tour===heat.tour))for(const result of event.results){if(!standings.has(result.pilot))standings.set(result.pilot,newPilotStats(result.pilot));addResult(standings.get(result.pilot),result);}

@@ -1,1 +1,1 @@
-window.CURRENT_TOUR_CONFIGURATION = {"tour":"Tour 09","pilot":"Shade","vehicle":"Skim speeder","mechanical_spec":"Redliner"};
+window.CURRENT_TOUR_CONFIGURATION = {"tour":"Tour 11","pilot":"Shade","vehicle":"Speeder bike","mechanical_spec":"Slipstreamer"};

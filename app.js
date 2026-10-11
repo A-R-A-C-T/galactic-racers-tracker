@@ -16,7 +16,7 @@ const isEliminated=r=>resultStatus(r)==='ELIMINATED';
 const isDQ=r=>['DQ','DNF','ELIMINATED'].includes(resultStatus(r));
 const isUnclassified=r=>r.category==='Galactic Gauntlet'||isDNF(r)||resultStatus(r)==='DQ';
 const points=p=>p==='DQ'?0:POINTS[p-1]||0;
-const resultPoints=r=>r.category==='Galactic Gauntlet'?(resultStatus(r)==='CLEARED'?25:isEliminated(r)?(Number(r.phase)-1)*8:0):isDQ(r)?0:points(r.position);
+const resultPoints=r=>r.category==='Galactic Gauntlet'?(resultStatus(r)==='CLEARED'?45:isEliminated(r)?[8,16,25][Number(r.phase)-1]||0:0):isDQ(r)?0:points(r.position);
 const resultOrder=(a,b)=>(Number.isInteger(a.position)?a.position:Infinity)-(Number.isInteger(b.position)?b.position:Infinity)||a.pilot.localeCompare(b.pilot);
 const positionLabel=r=>r.category==='Galactic Gauntlet'?'Phase '+r.phase+' · '+(resultStatus(r)==='CLEARED'?'Cleared':isEliminated(r)?'Eliminated':resultStatus(r)):isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · ':'')+(isEliminated(r)?'Eliminated':resultStatus(r)):'P'+r.position;
 const finishBadge=r=>'<span class="finish '+(isDQ(r)?'dq '+(isEliminated(r)?'finish-eliminated':isDNF(r)?'finish-dnf':'finish-legacy'):(r.position<=3?'podium medal-'+r.position:'')+(r.position>=10?' finish-double':' finish-single'))+'"><span class="finish-label">'+positionLabel(r)+'</span></span>';
@@ -42,13 +42,13 @@ function validate(data){
   if(r.direction&&!['Forward','Reverse'].includes(r.direction))throw Error(`Row ${i+2}: direction must be Forward, Reverse or blank.`);
   if(r.laps!==''){if(!/^\d+$/.test(r.laps)||!Number.isSafeInteger(Number(r.laps))||Number(r.laps)<1)throw Error(`Row ${i+2}: laps must be a positive integer or blank.`);r.laps=Number(r.laps);}
   if(r.category==='Sprint')r.category='Race';else if(r.category==='Circuit race')r.category='Eliminator';
-  const known=PILOT_CONFIGURATIONS[r.pilot];if(known){r.vehicle=r.vehicle||known.vehicle;r.mechanical_spec=r.mechanical_spec||known.mechanical_spec;}
+  const known=PILOT_CONFIGURATIONS[r.pilot];if(known){r.vehicle=r.vehicle||(r.pilot==='Kestar Bool'&&r.category==='Championship Race'&&r.race_id>'GR-087'?'Podracer':known.vehicle);r.mechanical_spec=r.mechanical_spec||known.mechanical_spec;}
   if(r.mechanical_spec&&!MECHANICAL_SPECS.includes(r.mechanical_spec))throw Error(`Row ${i+2}: unknown mechanical spec.`);
   if(r.vehicle&&!VEHICLES.includes(r.vehicle))throw Error(`Row ${i+2}: unknown vehicle type.`);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!Number.isFinite(Date.parse(r.date+'T00:00:00Z'))||new Date(r.date+'T00:00:00Z').toISOString().slice(0,10)!==r.date)throw Error(`Row ${i+2}: use a valid YYYY-MM-DD date.`);
   r.status=r.status.toUpperCase();
   if(r.status&&!['DQ','DNF','ELIMINATED','CLEARED'].includes(r.status))throw Error(`Row ${i+2}: status must be blank, DNF, ELIMINATED or legacy DQ.`);
-  if(r.status==='DQ'&&r.category!=='Eliminator'&&r.position.toUpperCase()!=='DQ')throw Error(`Row ${i+2}: ranked DQ is supported only for Eliminator events.`);
+  if(r.status==='DQ'&&!['Eliminator','Championship Race'].includes(r.category)&&r.position.toUpperCase()!=='DQ')throw Error(`Row ${i+2}: ranked DQ is supported for Eliminator or Championship Race events.`);
   if(r.category==='Galactic Gauntlet')r.position='';
   else if(['DQ','DNF'].includes(r.position.toUpperCase()))r.position=r.position.toUpperCase();
   else {if(!/^\d+$/.test(r.position)||!Number.isSafeInteger(Number(r.position))||Number(r.position)<1)throw Error(`Row ${i+2}: position must be a positive integer, DNF or DQ.`);r.position=Number(r.position);}
@@ -56,7 +56,7 @@ function validate(data){
   if(r.position==='DQ'&&(!r.status||r.status==='DQ')){r.position='DNF';r.status='DNF';}
   if(r.status==='ELIMINATED'&&r.category!=='Galactic Gauntlet'&&(r.category!=='Eliminator'||!Number.isInteger(r.position)))throw Error(`Row ${i+2}: elimination requires an Eliminator position.`);
   if(r.status==='CLEARED'&&r.category!=='Galactic Gauntlet')throw Error(`Row ${i+2}: CLEARED is only supported for Galactic Gauntlet.`);
-  if(r.time_ms===''&&(isDQ(r)||r.category==='Galactic Gauntlet'))r.time_ms='';
+  if(r.time_ms===''&&(isDQ(r)||['Galactic Gauntlet','Championship Race'].includes(r.category)))r.time_ms='';
   else {if(!/^\d+$/.test(r.time_ms)||!Number.isSafeInteger(Number(r.time_ms))||Number(r.time_ms)<1)throw Error(`Row ${i+2}: time_ms must be a positive integer, or blank for DQ.`);r.time_ms=Number(r.time_ms);}
   const meta=JSON.stringify([r.date,r.tour,r.category,r.planet,r.track,r.subcategory,r.laps,r.direction]);
   if(!events.has(r.race_id))events.set(r.race_id,{meta,pilots:new Set(),positions:new Set()});
@@ -94,7 +94,7 @@ function options(){
  $('vehicle').value=VEHICLES.includes(previousVehicle)?previousVehicle:'';
  for(const key of ['tour','planet','track','category','subcategory']){
   const old=$(key).value;
-  const values=key==='planet'?[...PLANETS.slice(0,-1),...new Set(rows.map(r=>r.planet).filter(p=>!PLANETS.includes(p))),PLANETS.at(-1)]:[...new Set((key==='category'?['Race','Eliminator',...rows.map(r=>r.category)]:(key==='track'&&$('planet').value?rows.filter(r=>r.planet===$('planet').value):rows).map(r=>r[key])).filter(Boolean))].sort();
+  const values=key==='planet'?[...PLANETS.slice(0,-1),...new Set(rows.map(r=>r.planet).filter(p=>!PLANETS.includes(p))),PLANETS.at(-1)]:[...new Set((key==='category'?['Race','Eliminator','Championship Race',...rows.map(r=>r.category)]:(key==='track'&&$('planet').value?rows.filter(r=>r.planet===$('planet').value):rows).map(r=>r[key])).filter(Boolean))].sort();
   if(key==='tour')values.sort((a,b)=>b.localeCompare(a,undefined,{numeric:true}));
   $(key).innerHTML=`<option value="">All ${key==='category'?'categories':key==='subcategory'?'subcategories':key+'s'}</option>`+(key==='subcategory'?'<option value="__unspecified__">Unspecified</option>':'')+values.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
   $(key).value=values.includes(old)||(key==='subcategory'&&old==='__unspecified__')?old:'';
@@ -150,7 +150,39 @@ function reserveDashboardSpace(){
  if(window.innerWidth>1250){const standings=document.getElementById('standings'),telemetry=document.querySelector?.('.circuit');if(standings?.style&&telemetry){const height=telemetry.getBoundingClientRect().height;standings.style.minHeight=height+'px';standings.style.maxHeight=height+'px';}}
 
 }
+
+function championshipState(data=rows){
+ const baseline=window.CHAMPIONSHIP_BASELINE||{pilot:'Kestar Bool',total_titles:11,defenses:0,through_race:'GR-086'};
+ const totals=new Map([[baseline.pilot,baseline.total_titles]]);let pilot=baseline.pilot,defenses=baseline.defenses,streak=baseline.title_streak??null;
+ for(const heat of groupRaceResults(data).filter(h=>h.category==='Championship Race'&&h.race_id>baseline.through_race)){
+  // An overturned finish does not transfer the title or count as a successful defence.
+  if(heat.results.some(r=>r.position===1&&isDQ(r)))continue;
+  const winner=heat.results.find(r=>r.position===1&&!isDQ(r));if(!winner)continue;
+  if(winner.pilot===pilot){defenses++;if(streak!==null)streak++;}else{pilot=winner.pilot;defenses=0;streak=1;}
+  totals.set(pilot,(totals.get(pilot)||0)+1);
+ }
+ return {pilot,defenses,streak,total:totals.get(pilot)||0,totals};
+}
+function pilotConfiguration(pilot,data=rows){
+ const recent=groupRaceResults(data).reverse().flatMap(h=>h.results).find(r=>r.pilot===pilot&&r.vehicle);
+ return recent||PILOT_CONFIGURATIONS[pilot]||{};
+}
+function renderChampion(){
+ const state=championshipState();const card=$('champion-card');if(!card)return;
+ const configuration=pilotConfiguration(state.pilot);
+ const latestChallenge=groupRaceResults(rows).filter(h=>h.category==='Championship Race').at(-1);
+ const challenger=latestChallenge?.results.find(r=>r.pilot==='Shade');
+ const challengeDetail=challenger?'Shade · '+(resultStatus(challenger)==='DQ'?'Disqualified':championshipState().pilot==='Shade'?'Title won':'Challenge unsuccessful'):'';
+ card.innerHTML='<button class="champion-portrait" data-pilot="'+esc(state.pilot)+'" aria-label="View '+esc(state.pilot)+' profile"><img src="'+esc(PILOT_PORTRAITS[state.pilot]||'')+'" alt="'+esc(state.pilot)+'"></button><div><div class="eyebrow">REIGNING CHAMPION</div><strong class="champion-name">'+esc(state.pilot)+'</strong><small>'+(state.defenses?state.defenses+' consecutive title defence'+(state.defenses===1?'':'s'):state.pilot==='Kestar Bool'?'Defending the championship':'New title holder')+'</small></div>'+(challengeDetail?'<div class="champion-challenge pilot-detail-column pilot-detail-left"><span class="pilot-detail-label">Latest challenge</span><small class="pilot-detail-value">'+esc(challengeDetail)+'</small></div>':'')+'<dl class="champion-configuration pilot-detail-column pilot-detail-right"><div><dt>Vehicle</dt><dd>'+esc(configuration.vehicle||'No telemetry')+'</dd></div><div><dt>Mechanical spec</dt><dd>'+esc(configuration.mechanical_spec||'No telemetry')+'</dd></div></dl>';
+ card.parentElement.querySelector('.champion-streak .eyebrow').textContent=state.pilot.toUpperCase()+' / CURRENT TITLE STREAK';
+ card.parentElement.querySelector('.champion-total .eyebrow').textContent=state.pilot.toUpperCase()+' / TOTAL TITLES';
+ const portrait=card.querySelector?.('.champion-portrait');if(portrait){portrait.addEventListener('pointerenter',()=>showPilotPreview(portrait));portrait.addEventListener('pointerleave',hidePilotPreview);portrait.addEventListener('focus',()=>showPilotPreview(portrait));portrait.addEventListener('blur',hidePilotPreview);}
+ $('champion-streak').textContent=state.streak??'—';$('champion-streak-detail').textContent=state.streak===null?'Starting streak unrecorded':'Consecutive championship wins';
+ $('champion-total').textContent=state.total;$('champion-total-detail').textContent=state.pilot+' · career championships';
+}
+
 function render(){
+ renderChampion();
  window.GalacticExchange?.refresh();
  $('pilot').value=selectedPilot;
  hidePilotPreview();
@@ -199,10 +231,14 @@ function render(){
  const latestTour=[...new Set(rows.map(r=>r.tour))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).at(-1)||'';
  const declared=window.CURRENT_TOUR_CONFIGURATION;
  const useDeclared=declared&&(!latestTour||declared.tour.localeCompare(latestTour,undefined,{numeric:true})>=0);
- const configuration=selectedPilot==='Shade'?(useDeclared?declared:[...rows].reverse().find(r=>r.pilot==='Shade'&&r.tour===latestTour&&r.vehicle)):PILOT_CONFIGURATIONS[selectedPilot];
- $('configuration-label').textContent=selectedPilot.toUpperCase()+' / CURRENT CONFIGURATION';
- $('configuration-value').textContent=configuration?.vehicle?configuration.vehicle+(configuration.mechanical_spec?' · '+configuration.mechanical_spec:''):'No telemetry';
- $('configuration-detail').textContent=configuration?(selectedPilot==='Shade'?configuration.tour+' · '+(configuration.mechanical_spec?'Mechanical spec recorded':'Mechanical spec unspecified'):'Fixed racer configuration'):'Vehicle and mechanical spec data unavailable';
+ const configurationTour=$('tour').value;
+ const configuration=selectedPilot==='Shade'?(configurationTour?[...rows].reverse().find(r=>r.pilot==='Shade'&&r.tour===configurationTour&&r.vehicle):(useDeclared?declared:[...rows].reverse().find(r=>r.pilot==='Shade'&&r.vehicle))):pilotConfiguration(selectedPilot);
+ $('selected-pilot-summary').textContent=selectedPilot;
+ const latestHeat=groupRaceResults(data).reverse().flatMap(heat=>heat.results).find(r=>r.pilot===selectedPilot);
+ const filteredRank=leaders.findIndex(p=>p.pilot===selectedPilot);
+ const selectedCard=$('selected-pilot-card');
+ selectedCard.innerHTML='<button class="selected-pilot-portrait" data-pilot="'+esc(selectedPilot)+'" aria-label="View '+esc(selectedPilot)+' profile"><img src="'+esc(PILOT_PORTRAITS[selectedPilot]||'')+'" alt=""></button><div class="selected-pilot-identity"><div class="eyebrow">SELECTED PILOT</div><strong>'+esc(selectedPilot)+'</strong><small>'+esc(PILOT_SPECIES[selectedPilot]||'Species unrecorded')+'</small></div><dl class="selected-pilot-heat pilot-detail-column pilot-detail-left"><div><dt>League position</dt><dd>'+(filteredRank>=0?'P'+(filteredRank+1):isLeaguePilot({pilot:selectedPilot})?'No classified position':'Outside league standings')+'</dd></div><div><dt>Latest recorded heat</dt><dd>'+(latestHeat?esc(positionLabel(latestHeat))+' · '+esc(latestHeat.track||latestHeat.planet):'No telemetry')+'</dd></div></dl><dl class="selected-pilot-configuration pilot-detail-column pilot-detail-right"><div><dt>Vehicle</dt><dd>'+esc(configuration?.vehicle||'No telemetry')+'</dd></div><div><dt>Mechanical spec</dt><dd>'+esc(configuration?.mechanical_spec||'No telemetry')+'</dd></div></dl>';
+ const selectedPortrait=selectedCard.querySelector('.selected-pilot-portrait');selectedPortrait.addEventListener('pointerenter',()=>showPilotPreview(selectedPortrait));selectedPortrait.addEventListener('pointerleave',hidePilotPreview);selectedPortrait.addEventListener('focus',()=>showPilotPreview(selectedPortrait));selectedPortrait.addEventListener('blur',hidePilotPreview);
  const specUsage=new Map();
  for(const r of data.filter(r=>r.pilot===selectedPilot&&r.mechanical_spec))specUsage.set(r.mechanical_spec,(specUsage.get(r.mechanical_spec)||0)+1);
  for(const kind of ['least','most']){
@@ -215,13 +251,17 @@ function render(){
  if(typeof syncPlanetDisplay==='function')syncPlanetDisplay();
  const visitTrend=planetVisitTrend(data);
  $('standings-trend-caption').textContent=visitTrend.planet?'Rank change during the latest planet visit · '+visitTrend.planet:'Awaiting planet visit records';
- $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge" data-portrait-pilot="${esc(p.pilot)}">${PILOT_PORTRAITS[p.pilot]?'<img src="'+esc(PILOT_PORTRAITS[p.pilot])+'" alt="" loading="lazy" decoding="async">':p.pilot==='Shade'?'SH':esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td><td class="standings-trend">${trendMarkup(visitTrend.changes.get(p.pilot))}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">No results match these filters.</td></tr>';
+ $('leaders').innerHTML=leaders.map((p,i)=>`<tr data-pilot="${esc(p.pilot)}" class="${p.pilot==='Shade'?'self':''} ${p.pilot===championshipState().pilot?'title-holder':''} ${p.pilot===selectedPilot?'pilot-selected':''}"><td><span class="rank ${i===0?'first':''}">${String(i+1).padStart(2,'0')}</span></td><td><button class="pilot-select" data-pilot="${esc(p.pilot)}" aria-pressed="${p.pilot===selectedPilot}"><span class="pilot-badge" data-portrait-pilot="${esc(p.pilot)}">${PILOT_PORTRAITS[p.pilot]?'<img src="'+esc(PILOT_PORTRAITS[p.pilot])+'" alt="" loading="lazy" decoding="async">':p.pilot==='Shade'?'SH':esc(p.pilot.split(' ').map(s=>s[0]).join(''))}</span>${esc(p.pilot)}${p.pilot==='Shade'?'<span class="you">BACKED PILOT</span>':''}</button></td><td>${p.races}</td><td>${p.wins}</td><td>${averageFinish(p)}</td><td>${p.points}</td><td class="standings-trend">${trendMarkup(visitTrend.changes.get(p.pilot))}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">No results match these filters.</td></tr>';
+ const title=championshipState(),kestarReigning=title.pilot==='Kestar Bool';
+ const kestarEntry='<tr class="champion-standings '+(kestarReigning?'title-holder reigning-entry':'former-champion-entry')+(selectedPilot==='Kestar Bool'?' pilot-selected':'')+'" data-pilot="Kestar Bool"><td><span class="rank" title="'+(kestarReigning?'Reigning champion':'Championship rival')+'">'+(kestarReigning?'✦':'◇')+'</span></td><td><button class="pilot-select" data-pilot="Kestar Bool" aria-pressed="'+(selectedPilot==='Kestar Bool')+'"><span class="pilot-badge"><img src="'+esc(PILOT_PORTRAITS['Kestar Bool'])+'" alt=""></span>Kestar Bool</button></td><td colspan="5" class="champion-standings-caption">'+(kestarReigning?'Reigning champion':'Championship rival')+' · '+(title.totals.get('Kestar Bool')||0)+' titles</td></tr>';
+ $('leaders').innerHTML=kestarReigning?kestarEntry+$('leaders').innerHTML:$('leaders').innerHTML+kestarEntry;
+
  renderTelemetry(data);
  renderSectors();
  const isGauntlet=r=>r.category==='Galactic Gauntlet';
  const betterRecord=(a,b)=>isGauntlet(a)?resultPoints(a)>resultPoints(b):a.time_ms<b.time_ms;
  const recordValue=r=>isGauntlet(r)?(resultStatus(r)==='CLEARED'?'Cleared':'Phase '+r.phase):time(r.time_ms);
- const records=new Map();rows.filter(r=>r.track&&r.direction&&(isGauntlet(r)||(!isDQ(r)&&r.time_ms&&(r.category==='Eliminator'||r.subcategory)))).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'',r.direction||'']);if(!records.has(key)||betterRecord(r,records.get(key)))records.set(key,r);});
+ const records=new Map();rows.filter(r=>r.track&&r.direction&&(isGauntlet(r)||(r.category==='Championship Race'&&!isDQ(r))||(!isDQ(r)&&r.time_ms&&(r.category==='Eliminator'||r.subcategory)))).forEach(r=>{const key=JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',r.laps||'',r.direction||'']);if(!records.has(key)||betterRecord(r,records.get(key)))records.set(key,r);});
  const recordKey=r=>JSON.stringify([r.planet,r.track,r.category,r.subcategory||'',String(r.laps??''),r.direction||'']);
  const matchingRecords=new Set(data.map(recordKey));
  const personalBests=new Map();for(const r of rows.filter(r=>r.pilot===selectedPilot&&(isGauntlet(r)||(!isDQ(r)&&r.time_ms)))){const key=recordKey(r);if(!personalBests.has(key)||betterRecord(r,personalBests.get(key)))personalBests.set(key,r);}
@@ -231,7 +271,9 @@ function render(){
   const latest=personalLatest.get(recordKey(r)),latestClass=isGauntlet(r)?(latest?(resultPoints(latest)===resultPoints(r)?'record-equal':'record-slower'):'record-missing'):latest?(isDQ(latest)?'record-slower':latest.time_ms===r.time_ms?'record-equal':'record-slower'):'record-missing';
   const personal=personalBests.get(recordKey(r)),comparison=isGauntlet(r)?(personal?(resultPoints(personal)===resultPoints(r)?'record-equal':'record-slower'):'record-missing'):personal?(personal.time_ms===r.time_ms?'record-equal':'record-slower'):'record-missing';
   const config=[r.category,r.subcategory,r.laps?r.laps+' laps':''].filter(Boolean).join(' · ');
-  return `<article class="record ${match?'':'record-muted'}" role="button" tabindex="0" aria-label="Select ${esc(r.track)}, ${esc(config)}, ${esc(r.planet)}" aria-pressed="${selected}" data-planet="${esc(r.planet)}" data-track="${esc(r.track)}" data-category="${esc(r.category)}" data-subcategory="${esc(r.subcategory||'')}" data-laps="${r.laps||''}" data-direction="${esc(r.direction||'')}"><div class="eyebrow">${esc(r.planet)} · ${esc(selectedPilot)}</div><h3>${esc(r.track)}${!isGauntlet(r)&&directionLabel(r)?' · '+directionLabel(r):''} <span class="record-config">${esc(config)}</span></h3><div class="record-times"><div><span class="record-time-label">${isGauntlet(r)?'Record time':'Record'}</span><strong${isGauntlet(r)?' class="record-no-telemetry"':''}>${isGauntlet(r)?'No telemetry':recordValue(r)}</strong></div><div class="${comparison}"><span class="record-time-label">Personal best</span><strong>${personal?recordValue(personal):'—'}</strong></div><div class="${latestClass}"><span class="record-time-label">Personal latest</span><strong>${latest?(isGauntlet(latest)?recordValue(latest):isDQ(latest)?(isEliminated(latest)?'Eliminated':resultStatus(latest)):time(latest.time_ms)):'—'}</strong></div></div><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`;
+  const missingChampionshipTime=r.category==='Championship Race'&&!r.time_ms;
+  const missingChampionshipBest=r.category==='Championship Race'&&(!personal||!personal.time_ms);
+  return `<article class="record ${match?'':'record-muted'}" role="button" tabindex="0" aria-label="Select ${esc(r.track)}, ${esc(config)}, ${esc(r.planet)}" aria-pressed="${selected}" data-planet="${esc(r.planet)}" data-track="${esc(r.track)}" data-category="${esc(r.category)}" data-subcategory="${esc(r.subcategory||'')}" data-laps="${r.laps||''}" data-direction="${esc(r.direction||'')}"><div class="eyebrow">${esc(r.planet)} · ${esc(selectedPilot)}</div><h3>${esc(r.track)}${!isGauntlet(r)&&r.category!=='Championship Race'&&directionLabel(r)?' · '+directionLabel(r):''} <span class="record-config">${esc(config)}</span></h3><div class="record-times"><div><span class="record-time-label">${isGauntlet(r)?'Record time':'Record'}</span><strong${isGauntlet(r)||missingChampionshipTime?' class="record-no-telemetry"':''}>${isGauntlet(r)||missingChampionshipTime?'No telemetry':recordValue(r)}</strong></div><div class="${comparison}"><span class="record-time-label">Personal best</span><strong${missingChampionshipBest?' class="record-no-telemetry"':''}>${missingChampionshipBest?'No telemetry':personal?recordValue(personal):'—'}</strong></div><div class="${latestClass}"><span class="record-time-label">Personal latest</span><strong>${latest?(isGauntlet(latest)?recordValue(latest):isDQ(latest)?(isEliminated(latest)?'Eliminated':resultStatus(latest)):time(latest.time_ms)):'—'}</strong></div></div><small>${esc(r.pilot)} · ${esc(galacticDate(r.date))}</small></article>`;
  };
  const recordPlanets=[...new Set(groupRaceResults(rows).reverse().map(r=>r.planet))];
  const recordMarkup=recordPlanets.map(planet=>{const cards=[...records.values()].filter(r=>r.planet===planet).sort((a,b)=>a.track.localeCompare(b.track)||(['Forward','Reverse',''].indexOf(a.direction||'')-['Forward','Reverse',''].indexOf(b.direction||''))||a.category.localeCompare(b.category)||(a.subcategory||'').localeCompare(b.subcategory||'')||Number(a.laps)-Number(b.laps));if(!cards.length)return '';return `<section class="record-planet-group" aria-label="${esc(planet)} track records"><h3 class="record-planet-heading"><button type="button" data-record-planet="${esc(planet)}" aria-pressed="${$('planet').value===planet}">${esc(planet)}</button></h3><div class="record-grid">${cards.map(renderRecord).join('')}</div></section>`;}).join('')||'<div class="empty">Awaiting circuit identification. Track records will appear when circuit names are entered in the ledger.</div>';
@@ -422,9 +464,10 @@ function showPilotPreview(button){
  const preview=$('pilot-portrait-preview');if(!preview||!button.getBoundingClientRect)return;
  const marketPreview=!!button.closest?.('#exchange-odds');preview.classList[marketPreview?'add':'remove']('pilot-preview-market');
  const modal=button.closest?.('dialog[open]');const host=modal||document.body;if(host&&preview.parentElement!==host)host.appendChild(preview);clearTimeout(pilotPreviewCloseTimer);preview.classList.remove('closing');const pilot=button.dataset.pilot,path=PILOT_PORTRAITS[pilot];const rect=button.getBoundingClientRect();if(rect.bottom<0||rect.top>window.innerHeight)return;
- const data=filtered(),stats=new Map();for(const r of data){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}const personal=stats.get(pilot)||newPilotStats(pilot),rank=[...stats.values()].filter(isLeaguePilot).sort(compareStandings).findIndex(p=>p.pilot===pilot),role=pilot==='Shade'?'BACKED PILOT':isLeaguePilot({pilot})?'LEAGUE PILOT':'GUEST RIVAL';
+ const data=filtered(),stats=new Map();for(const r of data){if(!stats.has(r.pilot))stats.set(r.pilot,newPilotStats(r.pilot));addResult(stats.get(r.pilot),r);}const personal=stats.get(pilot)||newPilotStats(pilot),rank=[...stats.values()].filter(isLeaguePilot).sort(compareStandings).findIndex(p=>p.pilot===pilot),role=pilot===championshipState().pilot?'REIGNING CHAMPION':pilot==='Shade'?'BACKED PILOT':isLeaguePilot({pilot})?'LEAGUE PILOT':'GUEST RIVAL';
  const overallStats=new Map();for(const r of rows){if(!overallStats.has(r.pilot))overallStats.set(r.pilot,newPilotStats(r.pilot));addResult(overallStats.get(r.pilot),r);}const overallRank=[...overallStats.values()].filter(isLeaguePilot).sort(compareStandings).findIndex(p=>p.pilot===pilot);
- preview.innerHTML='<div class="pilot-preview-image" data-preview-pilot="'+esc(pilot)+'">'+(path?'<img src="'+esc(path)+'" alt="">':'<span class="pilot-preview-initials">'+esc(pilot==='Shade'?'SH':pilot.split(' ').map(part=>part[0]).join(''))+'</span>')+'</div><div class="pilot-preview-info"><div class="eyebrow">'+role+(PILOT_SPECIES[pilot]?' · '+esc(PILOT_SPECIES[pilot]):'')+'</div><strong>'+esc(pilot)+'</strong><div class="pilot-preview-stats"><div><span>League position</span><b class="pilot-preview-position">'+(rank>=0?'P'+(rank+1):'—')+'<small class="pilot-preview-overall" title="Overall league position">'+(overallRank>=0?'P'+(overallRank+1):'—')+' OVR</small></b></div><div><span>Points</span><b>'+personal.points+'</b></div><div><span>Podiums</span><b>'+personal.podiums+'</b></div></div><small>'+personal.races+' recorded starts · '+'Current filters'+'</small></div>';
+ const config=pilotConfiguration(pilot);
+ preview.innerHTML='<div class="pilot-preview-image" data-preview-pilot="'+esc(pilot)+'">'+(path?'<img src="'+esc(path)+'" alt="">':'<span class="pilot-preview-initials">'+esc(pilot==='Shade'?'SH':pilot.split(' ').map(part=>part[0]).join(''))+'</span>')+'</div><div class="pilot-preview-info"><div class="eyebrow">'+role+(PILOT_SPECIES[pilot]?' · '+esc(PILOT_SPECIES[pilot]):'')+'</div><strong>'+esc(pilot)+'</strong><div class="pilot-preview-stats"><div><span>League position</span><b class="pilot-preview-position">'+(rank>=0?'P'+(rank+1):'—')+'<small class="pilot-preview-overall" title="Overall league position">'+(overallRank>=0?'P'+(overallRank+1):'—')+' OVR</small></b></div><div><span>Points</span><b>'+personal.points+'</b></div><div><span>Podiums</span><b>'+personal.podiums+'</b></div></div><small>'+personal.races+' recorded starts · '+'Current filters'+(pilot==='Kestar Bool'&&config.vehicle?'<span class="champion-preview-vehicle">'+esc(config.vehicle)+(config.mechanical_spec?' · '+esc(config.mechanical_spec):'')+'</span>':'')+'</small></div>';
  preview.style.animation='none';preview.hidden=false;if(preview.showPopover&&!preview.matches?.(':popover-open'))preview.showPopover();const box=preview.getBoundingClientRect(),left=rect.right+12+box.width<=window.innerWidth-12?rect.right+12:Math.max(12,rect.left-box.width-12);preview.style.left=left+'px';preview.style.top=Math.max(12,Math.min(rect.top-24,window.innerHeight-box.height-12))+'px';preview.style.setProperty('--preview-slide',left>=rect.right?' -18px':'18px');void preview.offsetWidth;preview.style.animation='';button.setAttribute('aria-describedby','pilot-portrait-preview');}
 
 function setupPilotPreview(){
@@ -473,3 +516,11 @@ function setupLegendGraphHover(){
  legend.addEventListener('focusout',e=>{const button=e.relatedTarget?.closest?.('[data-pilot]');highlightGraphPilot(button?.dataset.pilot||null);});
 }
 setupLegendGraphHover();
+
+// Restore disclosure preferences independently of archive filters.
+for(const id of ['league-overview-fold','pilot-overview-fold']){
+ const panel=$(id),storageKey='galactic-racing-disclosure-'+id;
+ panel.querySelector('summary').addEventListener('mousedown',event=>{if(event.button===0)event.preventDefault();});
+ try{const saved=localStorage.getItem(storageKey);if(saved!==null)panel.open=saved==='true';}catch{}
+ panel.addEventListener('toggle',()=>{try{localStorage.setItem(storageKey,String(panel.open));}catch{}});
+}

@@ -33,10 +33,10 @@ Normal races award **25, 18, 15, 12, 10, 8, 6, 4, 2, 1** points for P1–P10. P1
 
 | Outcome | Points |
 | --- | ---: |
-| Eliminated in phase 1 | 0 |
-| Eliminated in phase 2 | 8 |
-| Eliminated in phase 3 | 16 |
-| Cleared the final phase | 25 |
+| Eliminated in phase 1 | 8 |
+| Eliminated in phase 2 | 16 |
+| Eliminated in phase 3 | 25 |
+| Cleared the final phase | 45 |
 
 Points and historical league movements are calculated from the archive, so scoring changes apply retroactively. Ties are resolved by wins, average classified finish, then pilot name. Gauntlet starts and points count toward standings, but do not count toward conventional finish averages, wins, or podiums.
 
@@ -162,3 +162,11 @@ The core dashboard works offline. Google Fonts load when connected, with system-
 ## License and game assets
 
 The MIT license covers this project's original code only. Star Wars names, game names, and game imagery—including pilot portraits captured from the game—belong to their respective rights holders and are not covered by this license.
+
+### Championship title
+
+Championship Race is a separate category. The championship panel shows the current title holder, consecutive successful defences, and total championship wins; it is independent of telemetry filters and league points. Kestar Bool starts with a declared eleven-title baseline through GR-086. Future official Championship Race wins transfer or defend the title and add to the winner’s total; an overturned first-place result does neither. Kestar’s champion entry is separate from ranked league contenders.
+
+GR-087 is the story exception: Shade finished first at Stadium Showdown but was disqualified for collusion with the league owner. The title stays with Kestar. A classified Championship Race DQ preserves the finish position, earns zero points, and is excluded from win and finish statistics. Missing championship times remain blank. Stadium Showdown has six laps; D1 is stored but omitted from its planet record heading.
+
+Vehicle and mechanical spec are stored per result. Kestar used a Land speeder in GR-087; subsequent Championship Race entries default to Podracer unless an explicit vehicle is supplied. Profile telemetry uses the latest recorded configuration, preserving the historical vehicle shown in each race popup.

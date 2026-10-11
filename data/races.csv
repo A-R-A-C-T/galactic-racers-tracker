@@ -727,3 +727,199 @@ GR-068,2026-10-11,Tour 09,Eliminator,Sentinel One,The Acid Ring,Sen Fira,9,,Spee
 GR-068,2026-10-11,Tour 09,Eliminator,Sentinel One,The Acid Ring,Goli & 02-R0,10,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
 GR-068,2026-10-11,Tour 09,Eliminator,Sentinel One,The Acid Ring,Biddy Blas,11,,Speeder bike,ELIMINATED,,,,Forward,Firebug
 GR-068,2026-10-11,Tour 09,Eliminator,Sentinel One,The Acid Ring,Katja Mox,12,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
+GR-069,2026-10-11,Tour 09,Race,Jakku,The War Fields,Shade,DNF,,Skim speeder,DNF,Circuit,2,,Reverse,Redliner
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Shade,1,127650,Skim speeder,,Point-to-point,,,Forward,Slipstreamer
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Malis Vazosk,2,132930,Speeder bike,,Point-to-point,,,Forward,Brawler
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Goli & 02-R0,3,134360,Skim speeder,,Point-to-point,,,Forward,Clean Racer
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Katja Mox,4,134790,Speeder bike,,Point-to-point,,,Forward,Tech Expert
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Soren Zaks,5,135000,Land speeder,,Point-to-point,,,Forward,Engineer
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Nik Skandaro,6,135780,Land speeder,,Point-to-point,,,Forward,Survivor
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Ary Quill,7,138930,Land speeder,,Point-to-point,,,Forward,Redliner
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Fola Kanjen,8,141490,Skim speeder,,Point-to-point,,,Forward,Tenacious
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Sen Fira,9,141700,Speeder bike,,Point-to-point,,,Forward,Slipstreamer
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Griff Halloran,10,144260,Skim speeder,,Point-to-point,,,Forward,Afterburner
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Biddy Blas,11,152700,Speeder bike,,Point-to-point,,,Forward,Firebug
+GR-070,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Lyren Shok,12,156250,Skim speeder,,Point-to-point,,,Forward,Stunt Runner
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Shade,1,175690,Skim speeder,,,,,Forward,Slipstreamer
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Ary Quill,2,175840,Land speeder,,,,,Forward,Redliner
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Sen Fira,3,179930,Speeder bike,,,,,Forward,Slipstreamer
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Goli & 02-R0,4,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Katja Mox,5,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Malis Vazosk,6,,Speeder bike,ELIMINATED,,,,Forward,Brawler
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Griff Halloran,7,,Skim speeder,ELIMINATED,,,,Forward,Afterburner
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Nik Skandaro,8,,Land speeder,ELIMINATED,,,,Forward,Survivor
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Lyren Shok,9,,Skim speeder,ELIMINATED,,,,Forward,Stunt Runner
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Fola Kanjen,10,,Skim speeder,ELIMINATED,,,,Forward,Tenacious
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Soren Zaks,11,,Land speeder,ELIMINATED,,,,Forward,Engineer
+GR-071,2026-10-11,Tour 10,Eliminator,Sentinel One,Sentinel Lakes,Biddy Blas,12,,Speeder bike,ELIMINATED,,,,Forward,Firebug
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Shade,1,126400,Skim speeder,,Circuit,2,,Reverse,Slipstreamer
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Sen Fira,2,136050,Speeder bike,,Circuit,2,,Reverse,Slipstreamer
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Goli & 02-R0,3,138480,Skim speeder,,Circuit,2,,Reverse,Clean Racer
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Ary Quill,4,139370,Land speeder,,Circuit,2,,Reverse,Redliner
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Katja Mox,5,140600,Speeder bike,,Circuit,2,,Reverse,Tech Expert
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Biddy Blas,6,140930,Speeder bike,,Circuit,2,,Reverse,Firebug
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Malis Vazosk,7,143090,Speeder bike,,Circuit,2,,Reverse,Brawler
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Lyren Shok,8,144040,Skim speeder,,Circuit,2,,Reverse,Stunt Runner
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Griff Halloran,9,145120,Skim speeder,,Circuit,2,,Reverse,Afterburner
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Soren Zaks,10,145860,Land speeder,,Circuit,2,,Reverse,Engineer
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Fola Kanjen,11,149560,Skim speeder,,Circuit,2,,Reverse,Tenacious
+GR-072,2026-10-11,Tour 10,Race,Sentinel One,Caustic Fields,Nik Skandaro,12,151310,Land speeder,,Circuit,2,,Reverse,Survivor
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Shade,1,108990,Skim speeder,,Point-to-point,,,Reverse,Slipstreamer
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Sen Fira,2,118070,Speeder bike,,Point-to-point,,,Reverse,Slipstreamer
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Goli & 02-R0,3,119790,Skim speeder,,Point-to-point,,,Reverse,Clean Racer
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Katja Mox,4,123630,Speeder bike,,Point-to-point,,,Reverse,Tech Expert
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Lyren Shok,5,123730,Skim speeder,,Point-to-point,,,Reverse,Stunt Runner
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Fola Kanjen,6,125250,Skim speeder,,Point-to-point,,,Reverse,Tenacious
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Ary Quill,7,125280,Land speeder,,Point-to-point,,,Reverse,Redliner
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Malis Vazosk,8,127420,Speeder bike,,Point-to-point,,,Reverse,Brawler
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Nik Skandaro,9,129520,Land speeder,,Point-to-point,,,Reverse,Survivor
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Soren Zaks,10,130100,Land speeder,,Point-to-point,,,Reverse,Engineer
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Griff Halloran,11,134550,Skim speeder,,Point-to-point,,,Reverse,Afterburner
+GR-073,2026-10-11,Tour 10,Race,Sentinel One,Bool River Run,Biddy Blas,12,135900,Speeder bike,,Point-to-point,,,Reverse,Firebug
+GR-074,2026-10-11,Tour 10,Eliminator,Jakku,Scrap Spiral,Shade,DNF,,Skim speeder,DNF,,,,Forward,Slipstreamer
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Shade,1,129270,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Goli & 02-R0,2,133040,Skim speeder,,Circuit,2,,Forward,Clean Racer
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Lyren Shok,3,133760,Skim speeder,,Circuit,2,,Forward,Stunt Runner
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Fola Kanjen,4,134090,Skim speeder,,Circuit,2,,Forward,Tenacious
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Soren Zaks,5,136080,Land speeder,,Circuit,2,,Forward,Engineer
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Sen Fira,6,136920,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Nik Skandaro,7,138100,Land speeder,,Circuit,2,,Forward,Survivor
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Ary Quill,8,141340,Land speeder,,Circuit,2,,Forward,Redliner
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Griff Halloran,9,141790,Skim speeder,,Circuit,2,,Forward,Afterburner
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Katja Mox,10,145260,Speeder bike,,Circuit,2,,Forward,Tech Expert
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Biddy Blas,11,148740,Speeder bike,,Circuit,2,,Forward,Firebug
+GR-075,2026-10-11,Tour 11,Race,Sentinel One,Caustic Fields,Malis Vazosk,12,154770,Speeder bike,,Circuit,2,,Forward,Brawler
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Shade,1,118260,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Fola Kanjen,2,119110,Skim speeder,,Circuit,2,,Forward,Tenacious
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Griff Halloran,3,125190,Skim speeder,,Circuit,2,,Forward,Afterburner
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Soren Zaks,4,125320,Land speeder,,Circuit,2,,Forward,Engineer
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Nik Skandaro,5,126900,Land speeder,,Circuit,2,,Forward,Survivor
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Ary Quill,6,127740,Land speeder,,Circuit,2,,Forward,Redliner
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Lyren Shok,7,128930,Skim speeder,,Circuit,2,,Forward,Stunt Runner
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Goli & 02-R0,8,130800,Skim speeder,,Circuit,2,,Forward,Clean Racer
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Sen Fira,9,132850,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Malis Vazosk,10,136680,Speeder bike,,Circuit,2,,Forward,Brawler
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Biddy Blas,11,138590,Speeder bike,,Circuit,2,,Forward,Firebug
+GR-076,2026-10-11,Tour 11,Race,Sentinel One,Sentinel Lakes,Katja Mox,12,142220,Speeder bike,,Circuit,2,,Forward,Tech Expert
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Shade,1,192010,Speeder bike,,,,,Reverse,Slipstreamer
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Griff Halloran,2,198420,Skim speeder,,,,,Reverse,Afterburner
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Soren Zaks,3,199170,Land speeder,,,,,Reverse,Engineer
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Goli & 02-R0,4,,Skim speeder,ELIMINATED,,,,Reverse,Clean Racer
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Ary Quill,5,,Land speeder,ELIMINATED,,,,Reverse,Redliner
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Lyren Shok,6,,Skim speeder,ELIMINATED,,,,Reverse,Stunt Runner
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Fola Kanjen,7,,Skim speeder,ELIMINATED,,,,Reverse,Tenacious
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Nik Skandaro,8,,Land speeder,ELIMINATED,,,,Reverse,Survivor
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Sen Fira,9,,Speeder bike,ELIMINATED,,,,Reverse,Slipstreamer
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Malis Vazosk,10,,Speeder bike,ELIMINATED,,,,Reverse,Brawler
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Katja Mox,11,,Speeder bike,ELIMINATED,,,,Reverse,Tech Expert
+GR-077,2026-10-11,Tour 11,Eliminator,Sentinel One,Caustic Fields,Biddy Blas,12,,Speeder bike,ELIMINATED,,,,Reverse,Firebug
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Shade,1,170410,Speeder bike,,,,,Forward,Slipstreamer
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Fola Kanjen,2,173970,Skim speeder,,,,,Forward,Tenacious
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Lyren Shok,3,174380,Skim speeder,,,,,Forward,Stunt Runner
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Goli & 02-R0,4,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Sen Fira,5,,Speeder bike,ELIMINATED,,,,Forward,Slipstreamer
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Griff Halloran,6,,Skim speeder,ELIMINATED,,,,Forward,Afterburner
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Katja Mox,7,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Malis Vazosk,8,,Speeder bike,ELIMINATED,,,,Forward,Brawler
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Nik Skandaro,9,,Land speeder,ELIMINATED,,,,Forward,Survivor
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Soren Zaks,10,,Land speeder,ELIMINATED,,,,Forward,Engineer
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Ary Quill,11,,Land speeder,ELIMINATED,,,,Forward,Redliner
+GR-078,2026-10-11,Tour 11,Eliminator,Jakku,Scrap Spiral,Biddy Blas,12,,Speeder bike,ELIMINATED,,,,Forward,Firebug
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Shade,1,158520,Speeder bike,,,,,Forward,Slipstreamer
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Griff Halloran,2,161500,Skim speeder,,,,,Forward,Afterburner
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Fola Kanjen,3,169070,Skim speeder,,,,,Forward,Tenacious
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Sen Fira,4,,Speeder bike,ELIMINATED,,,,Forward,Slipstreamer
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Lyren Shok,5,,Skim speeder,ELIMINATED,,,,Forward,Stunt Runner
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Soren Zaks,6,,Land speeder,ELIMINATED,,,,Forward,Engineer
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Biddy Blas,7,,Speeder bike,ELIMINATED,,,,Forward,Firebug
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Nik Skandaro,8,,Land speeder,ELIMINATED,,,,Forward,Survivor
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Malis Vazosk,9,,Speeder bike,ELIMINATED,,,,Forward,Brawler
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Ary Quill,10,,Land speeder,ELIMINATED,,,,Forward,Redliner
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Katja Mox,11,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
+GR-079,2026-10-11,Tour 11,Eliminator,Jakku,Debris Dunes,Goli & 02-R0,12,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Shade,1,147230,Speeder bike,,,,,Forward,Slipstreamer
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Soren Zaks,2,158900,Land speeder,,,,,Forward,Engineer
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Griff Halloran,3,159290,Skim speeder,,,,,Forward,Afterburner
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Sen Fira,4,,Speeder bike,ELIMINATED,,,,Forward,Slipstreamer
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Fola Kanjen,5,,Skim speeder,ELIMINATED,,,,Forward,Tenacious
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Lyren Shok,6,,Skim speeder,ELIMINATED,,,,Forward,Stunt Runner
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Katja Mox,7,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Malis Vazosk,8,,Speeder bike,ELIMINATED,,,,Forward,Brawler
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Nik Skandaro,9,,Land speeder,ELIMINATED,,,,Forward,Survivor
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Ary Quill,10,,Land speeder,ELIMINATED,,,,Forward,Redliner
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Biddy Blas,11,,Speeder bike,ELIMINATED,,,,Forward,Firebug
+GR-080,2026-10-11,Tour 11,Eliminator,Jakku,Fallen Empire,Goli & 02-R0,12,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Shade,1,132850,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Griff Halloran,2,138420,Skim speeder,,Circuit,2,,Forward,Afterburner
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Goli & 02-R0,3,145460,Skim speeder,,Circuit,2,,Forward,Clean Racer
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Fola Kanjen,4,147520,Skim speeder,,Circuit,2,,Forward,Tenacious
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Soren Zaks,5,150120,Land speeder,,Circuit,2,,Forward,Engineer
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Lyren Shok,6,150540,Skim speeder,,Circuit,2,,Forward,Stunt Runner
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Ary Quill,7,150930,Land speeder,,Circuit,2,,Forward,Redliner
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Nik Skandaro,8,155190,Land speeder,,Circuit,2,,Forward,Survivor
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Sen Fira,9,159280,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Biddy Blas,10,160160,Speeder bike,,Circuit,2,,Forward,Firebug
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Malis Vazosk,11,160240,Speeder bike,,Circuit,2,,Forward,Brawler
+GR-081,2026-10-11,Tour 11,Race,Crait,Crimson Mines,Katja Mox,12,167070,Speeder bike,,Circuit,2,,Forward,Tech Expert
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Shade,1,152590,Speeder bike,,,,,Forward,Slipstreamer
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Griff Halloran,2,158800,Skim speeder,,,,,Forward,Afterburner
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Sen Fira,3,162350,Speeder bike,,,,,Forward,Slipstreamer
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Lyren Shok,4,,Skim speeder,ELIMINATED,,,,Forward,Stunt Runner
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Kestar Bool,5,,Land speeder,ELIMINATED,,,,Forward,Weaponized
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Ary Quill,6,,Land speeder,ELIMINATED,,,,Forward,Redliner
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Nik Skandaro,7,,Land speeder,ELIMINATED,,,,Forward,Survivor
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Biddy Blas,8,,Speeder bike,ELIMINATED,,,,Forward,Firebug
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Katja Mox,9,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Goli & 02-R0,10,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Fola Kanjen,11,,Skim speeder,ELIMINATED,,,,Forward,Tenacious
+GR-082,2026-10-11,Tour 11,Eliminator,Crait,Crystal Caves,Malis Vazosk,12,,Speeder bike,ELIMINATED,,,,Forward,Brawler
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Shade,1,142030,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Fola Kanjen,2,147190,Skim speeder,,Circuit,2,,Forward,Tenacious
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Griff Halloran,3,147620,Skim speeder,,Circuit,2,,Forward,Afterburner
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Goli & 02-R0,4,153770,Skim speeder,,Circuit,2,,Forward,Clean Racer
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Lyren Shok,5,159670,Skim speeder,,Circuit,2,,Forward,Stunt Runner
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Soren Zaks,6,161810,Land speeder,,Circuit,2,,Forward,Engineer
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Biddy Blas,7,168750,Speeder bike,,Circuit,2,,Forward,Firebug
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Ary Quill,8,172260,Land speeder,,Circuit,2,,Forward,Redliner
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Sen Fira,9,173850,Speeder bike,,Circuit,2,,Forward,Slipstreamer
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Katja Mox,10,175540,Speeder bike,,Circuit,2,,Forward,Tech Expert
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Nik Skandaro,11,177560,Land speeder,,Circuit,2,,Forward,Survivor
+GR-083,2026-10-11,Tour 11,Race,Crait,Forgil Canyon,Malis Vazosk,12,178860,Speeder bike,,Circuit,2,,Forward,Brawler
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Shade,1,147940,Speeder bike,,,,,Reverse,Slipstreamer
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Sen Fira,2,157150,Speeder bike,,,,,Reverse,Slipstreamer
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Fola Kanjen,3,159150,Skim speeder,,,,,Reverse,Tenacious
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Soren Zaks,4,,Land speeder,ELIMINATED,,,,Reverse,Engineer
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Lyren Shok,5,,Skim speeder,ELIMINATED,,,,Reverse,Stunt Runner
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Ary Quill,6,,Land speeder,ELIMINATED,,,,Reverse,Redliner
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Biddy Blas,7,,Speeder bike,ELIMINATED,,,,Reverse,Firebug
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Griff Halloran,8,,Skim speeder,ELIMINATED,,,,Reverse,Afterburner
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Katja Mox,9,,Speeder bike,ELIMINATED,,,,Reverse,Tech Expert
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Nik Skandaro,10,,Land speeder,ELIMINATED,,,,Reverse,Survivor
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Malis Vazosk,11,,Speeder bike,ELIMINATED,,,,Reverse,Brawler
+GR-084,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Goli & 02-R0,12,,Skim speeder,ELIMINATED,,,,Reverse,Clean Racer
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Shade,1,141100,Speeder bike,,,,,Forward,Slipstreamer
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Griff Halloran,2,149610,Skim speeder,,,,,Forward,Afterburner
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Soren Zaks,3,153410,Land speeder,,,,,Forward,Engineer
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Ary Quill,4,,Land speeder,ELIMINATED,,,,Forward,Redliner
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Sen Fira,5,,Speeder bike,ELIMINATED,,,,Forward,Slipstreamer
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Lyren Shok,6,,Skim speeder,ELIMINATED,,,,Forward,Stunt Runner
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Biddy Blas,7,,Speeder bike,ELIMINATED,,,,Forward,Firebug
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Nik Skandaro,8,,Land speeder,ELIMINATED,,,,Forward,Survivor
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Goli & 02-R0,9,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Katja Mox,10,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Malis Vazosk,11,,Speeder bike,ELIMINATED,,,,Forward,Brawler
+GR-085,2026-10-11,Tour 11,Eliminator,Ando Prime,Monastery Mountains,Fola Kanjen,12,,Skim speeder,ELIMINATED,,,,Forward,Tenacious
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Shade,,320910,Speeder bike,CLEARED,,,3,Forward,Slipstreamer
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Griff Halloran,,,Skim speeder,ELIMINATED,,,3,Forward,Afterburner
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Sen Fira,,,Speeder bike,ELIMINATED,,,3,Forward,Slipstreamer
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Lyren Shok,,,Skim speeder,ELIMINATED,,,2,Forward,Stunt Runner
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Ary Quill,,,Land speeder,ELIMINATED,,,2,Forward,Redliner
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Katja Mox,,,Speeder bike,ELIMINATED,,,2,Forward,Tech Expert
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Soren Zaks,,,Land speeder,ELIMINATED,,,2,Forward,Engineer
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Biddy Blas,,,Speeder bike,ELIMINATED,,,1,Forward,Firebug
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Goli & 02-R0,,,Skim speeder,ELIMINATED,,,1,Forward,Clean Racer
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Fola Kanjen,,,Skim speeder,ELIMINATED,,,1,Forward,Tenacious
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Malis Vazosk,,,Speeder bike,ELIMINATED,,,1,Forward,Brawler
+GR-086,2026-10-11,Tour 11,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Nik Skandaro,,,Land speeder,ELIMINATED,,,1,Forward,Survivor
+GR-087,2026-10-11,Tour 11,Championship Race,Derven Akos,Stadium Showdown,Shade,1,,Speeder bike,DQ,Circuit,6,,Forward,Slipstreamer
+GR-087,2026-10-11,Tour 11,Championship Race,Derven Akos,Stadium Showdown,Kestar Bool,2,,Land speeder,,Circuit,6,,Forward,Weaponized
