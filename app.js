@@ -154,7 +154,10 @@ function reserveDashboardSpace(){
 function championshipState(data=rows){
  const baseline=window.CHAMPIONSHIP_BASELINE||{pilot:'Kestar Bool',total_titles:11,defenses:0,through_race:'GR-086'};
  const totals=new Map([[baseline.pilot,baseline.total_titles]]);let pilot=baseline.pilot,defenses=baseline.defenses,streak=baseline.title_streak??null;
- for(const heat of groupRaceResults(data).filter(h=>h.category==='Championship Race'&&h.race_id>baseline.through_race)){
+ for(const heat of groupRaceResults(data).filter(h=>h.race_id>baseline.through_race)){
+  const forfeiture=(window.CHAMPIONSHIP_FORFEITURES||[]).find(event=>event.race_id===heat.race_id&&event.pilot===pilot);
+  if(forfeiture){pilot=forfeiture.successor;defenses=0;streak=1;totals.set(pilot,(totals.get(pilot)||0)+1);continue;}
+  if(heat.category!=='Championship Race')continue;
   // An overturned finish does not transfer the title or count as a successful defence.
   if(heat.results.some(r=>r.position===1&&isDQ(r)))continue;
   const winner=heat.results.find(r=>r.position===1&&!isDQ(r));if(!winner)continue;
