@@ -1007,8 +1007,8 @@ GR-094,2026-10-11,Tour 12,Eliminator,Ando Prime,Ice Field Circuit,Lyren Shok,9,,
 GR-094,2026-10-11,Tour 12,Eliminator,Ando Prime,Ice Field Circuit,Ary Quill,10,,Land speeder,ELIMINATED,,,,Forward,Redliner
 GR-094,2026-10-11,Tour 12,Eliminator,Ando Prime,Ice Field Circuit,Nik Skandaro,11,,Land speeder,ELIMINATED,,,,Forward,Survivor
 GR-094,2026-10-11,Tour 12,Eliminator,Ando Prime,Ice Field Circuit,Biddy Blas,12,,Speeder bike,ELIMINATED,,,,Forward,Firebug
-GR-095,2026-10-11,Tour 12,Race,Ando Prime,Mawhonic Speedway,Shade,1,172210,Podracer,,Circuit,3,,Forward,
-GR-095,2026-10-11,Tour 12,Race,Ando Prime,Mawhonic Speedway,Gasgano,2,178600,Podracer,,Circuit,3,,Forward,
+GR-095,2026-10-11,Tour 12,Podrace,Ando Prime,Mawhonic Speedway,Shade,1,172210,Podracer,,Circuit,3,,Forward,
+GR-095,2026-10-11,Tour 12,Podrace,Ando Prime,Mawhonic Speedway,Gasgano,2,178600,Podracer,,Circuit,3,,Forward,
 GR-096,2026-10-12,Tour 12,Eliminator,Sentinel One,Caustic Fields,Shade,1,149980,Land speeder,,,,,Forward,Redliner
 GR-096,2026-10-12,Tour 12,Eliminator,Sentinel One,Caustic Fields,Sen Fira,2,157040,Speeder bike,,,,,Forward,Slipstreamer
 GR-096,2026-10-12,Tour 12,Eliminator,Sentinel One,Caustic Fields,Nik Skandaro,3,157180,Land speeder,,,,,Forward,Survivor
@@ -1033,8 +1033,8 @@ GR-097,2026-10-12,Tour 12,Eliminator,Sentinel One,Mineral Loop,Soren Zaks,9,,Lan
 GR-097,2026-10-12,Tour 12,Eliminator,Sentinel One,Mineral Loop,Fola Kanjen,10,,Skim speeder,ELIMINATED,,,,Forward,Tenacious
 GR-097,2026-10-12,Tour 12,Eliminator,Sentinel One,Mineral Loop,Biddy Blas,11,,Speeder bike,ELIMINATED,,,,Forward,Firebug
 GR-097,2026-10-12,Tour 12,Eliminator,Sentinel One,Mineral Loop,Griff Halloran,12,,Skim speeder,ELIMINATED,,,,Forward,Afterburner
-GR-098,2026-10-12,Tour 12,Race,Tatooine,Mos Espa Speedway,Shade,1,152640,Podracer,,Circuit,3,,Forward,
-GR-098,2026-10-12,Tour 12,Race,Tatooine,Mos Espa Speedway,Ody Mandrell,2,154590,Podracer,,Circuit,3,,Forward,
+GR-098,2026-10-12,Tour 12,Podrace,Tatooine,Mos Espa Speedway,Shade,1,152640,Podracer,,Circuit,3,,Forward,
+GR-098,2026-10-12,Tour 12,Podrace,Tatooine,Mos Espa Speedway,Ody Mandrell,2,154590,Podracer,,Circuit,3,,Forward,
 GR-099,2026-10-12,Tour 12,Eliminator,Jakku,Fallen Empire,Shade,1,154260,Land speeder,,,,,Forward,Redliner
 GR-099,2026-10-12,Tour 12,Eliminator,Jakku,Fallen Empire,Griff Halloran,2,154760,Skim speeder,,,,,Forward,Afterburner
 GR-099,2026-10-12,Tour 12,Eliminator,Jakku,Fallen Empire,Sen Fira,3,156280,Speeder bike,,,,,Forward,Slipstreamer
@@ -1047,18 +1047,18 @@ GR-099,2026-10-12,Tour 12,Eliminator,Jakku,Fallen Empire,Lyren Shok,9,,Skim spee
 GR-099,2026-10-12,Tour 12,Eliminator,Jakku,Fallen Empire,Fola Kanjen,10,,Skim speeder,ELIMINATED,,,,Forward,Tenacious
 GR-099,2026-10-12,Tour 12,Eliminator,Jakku,Fallen Empire,Goli & 02-R0,11,,Skim speeder,ELIMINATED,,,,Forward,Clean Racer
 GR-099,2026-10-12,Tour 12,Eliminator,Jakku,Fallen Empire,Ary Quill,12,,Land speeder,ELIMINATED,,,,Forward,Redliner
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Shade,1,89100,Land speeder,,Point to point,,,Forward,Redliner
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Sen Fira,2,89280,Speeder bike,,Point to point,,,Forward,Slipstreamer
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Lyren Shok,3,92490,Skim speeder,,Point to point,,,Forward,Stunt Runner
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Ary Quill,4,95310,Land speeder,,Point to point,,,Forward,Redliner
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Malis Vazosk,5,97070,Speeder bike,,Point to point,,,Forward,Brawler
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Nik Skandaro,6,99320,Land speeder,,Point to point,,,Forward,Survivor
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Fola Kanjen,7,101940,Skim speeder,,Point to point,,,Forward,Tenacious
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Biddy Blas,8,102140,Speeder bike,,Point to point,,,Forward,Firebug
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Goli & 02-R0,9,102450,Skim speeder,,Point to point,,,Forward,Clean Racer
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Griff Halloran,10,107380,Skim speeder,,Point to point,,,Forward,Afterburner
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Soren Zaks,11,110450,Land speeder,,Point to point,,,Forward,Engineer
-GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Katja Mox,12,124830,Speeder bike,,Point to point,,,Forward,Tech Expert
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Shade,1,89100,Land speeder,,Point-to-point,,,Forward,Redliner
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Sen Fira,2,89280,Speeder bike,,Point-to-point,,,Forward,Slipstreamer
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Lyren Shok,3,92490,Skim speeder,,Point-to-point,,,Forward,Stunt Runner
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Ary Quill,4,95310,Land speeder,,Point-to-point,,,Forward,Redliner
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Malis Vazosk,5,97070,Speeder bike,,Point-to-point,,,Forward,Brawler
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Nik Skandaro,6,99320,Land speeder,,Point-to-point,,,Forward,Survivor
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Fola Kanjen,7,101940,Skim speeder,,Point-to-point,,,Forward,Tenacious
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Biddy Blas,8,102140,Speeder bike,,Point-to-point,,,Forward,Firebug
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Goli & 02-R0,9,102450,Skim speeder,,Point-to-point,,,Forward,Clean Racer
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Griff Halloran,10,107380,Skim speeder,,Point-to-point,,,Forward,Afterburner
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Soren Zaks,11,110450,Land speeder,,Point-to-point,,,Forward,Engineer
+GR-100,2026-10-12,Tour 12,Race,Jakku,The Giants' Graveyard,Katja Mox,12,124830,Speeder bike,,Point-to-point,,,Forward,Tech Expert
 GR-101,2026-10-12,Tour 12,Eliminator,Jakku,Debris Dunes,Shade,1,173990,Land speeder,,,,,Forward,Redliner
 GR-101,2026-10-12,Tour 12,Eliminator,Jakku,Debris Dunes,Griff Halloran,2,181840,Skim speeder,,,,,Forward,Afterburner
 GR-101,2026-10-12,Tour 12,Eliminator,Jakku,Debris Dunes,Sen Fira,3,185540,Speeder bike,,,,,Forward,Slipstreamer
@@ -1107,20 +1107,20 @@ GR-104,2026-10-12,Tour 12,Race,Crait,Forgil Canyon,Nik Skandaro,9,158550,Land sp
 GR-104,2026-10-12,Tour 12,Race,Crait,Forgil Canyon,Goli & 02-R0,10,165450,Skim speeder,,Circuit,2,,Forward,Clean Racer
 GR-104,2026-10-12,Tour 12,Race,Crait,Forgil Canyon,Sen Fira,11,168570,Speeder bike,,Circuit,2,,Forward,Slipstreamer
 GR-104,2026-10-12,Tour 12,Race,Crait,Forgil Canyon,Lyren Shok,12,175970,Skim speeder,,Circuit,2,,Forward,Stunt Runner
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Shade,1,70750,Land speeder,,Point to point,,,Forward,Redliner
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Fola Kanjen,2,74150,Skim speeder,,Point to point,,,Forward,Tenacious
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Soren Zaks,3,76420,Land speeder,,Point to point,,,Forward,Engineer
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Nik Skandaro,4,78000,Land speeder,,Point to point,,,Forward,Survivor
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Ary Quill,5,78550,Land speeder,,Point to point,,,Forward,Redliner
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Biddy Blas,6,81920,Speeder bike,,Point to point,,,Forward,Firebug
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Katja Mox,7,84950,Speeder bike,,Point to point,,,Forward,Tech Expert
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Sen Fira,8,85820,Speeder bike,,Point to point,,,Forward,Slipstreamer
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Malis Vazosk,9,86910,Speeder bike,,Point to point,,,Forward,Brawler
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Griff Halloran,10,89530,Skim speeder,,Point to point,,,Forward,Afterburner
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Goli & 02-R0,11,94330,Skim speeder,,Point to point,,,Forward,Clean Racer
-GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Lyren Shok,12,112010,Skim speeder,,Point to point,,,Forward,Stunt Runner
-GR-106,2026-10-12,Tour 12,Race,Crait,Quadinaros' Revenge,Shade,1,203570,Podracer,,Circuit,3,,Forward,
-GR-106,2026-10-12,Tour 12,Race,Crait,Quadinaros' Revenge,Ben Quadinaros,2,225500,Podracer,,Circuit,3,,Forward,
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Shade,1,70750,Land speeder,,Point-to-point,,,Forward,Redliner
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Fola Kanjen,2,74150,Skim speeder,,Point-to-point,,,Forward,Tenacious
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Soren Zaks,3,76420,Land speeder,,Point-to-point,,,Forward,Engineer
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Nik Skandaro,4,78000,Land speeder,,Point-to-point,,,Forward,Survivor
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Ary Quill,5,78550,Land speeder,,Point-to-point,,,Forward,Redliner
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Biddy Blas,6,81920,Speeder bike,,Point-to-point,,,Forward,Firebug
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Katja Mox,7,84950,Speeder bike,,Point-to-point,,,Forward,Tech Expert
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Sen Fira,8,85820,Speeder bike,,Point-to-point,,,Forward,Slipstreamer
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Malis Vazosk,9,86910,Speeder bike,,Point-to-point,,,Forward,Brawler
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Griff Halloran,10,89530,Skim speeder,,Point-to-point,,,Forward,Afterburner
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Goli & 02-R0,11,94330,Skim speeder,,Point-to-point,,,Forward,Clean Racer
+GR-105,2026-10-12,Tour 12,Race,Crait,Rhodochrosite Run,Lyren Shok,12,112010,Skim speeder,,Point-to-point,,,Forward,Stunt Runner
+GR-106,2026-10-12,Tour 12,Podrace,Crait,Quadinaros' Revenge,Shade,1,203570,Podracer,,Circuit,3,,Forward,
+GR-106,2026-10-12,Tour 12,Podrace,Crait,Quadinaros' Revenge,Ben Quadinaros,2,225500,Podracer,,Circuit,3,,Forward,
 GR-107,2026-10-12,Tour 12,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Shade,,325920,Land speeder,CLEARED,,,3,Forward,Redliner
 GR-107,2026-10-12,Tour 12,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Malis Vazosk,,,Speeder bike,ELIMINATED,,,3,Forward,Brawler
 GR-107,2026-10-12,Tour 12,Galactic Gauntlet,Derven Akos,Derven Akos Circuit,Ary Quill,,,Land speeder,ELIMINATED,,,3,Forward,Redliner
@@ -1159,19 +1159,19 @@ GR-110,2026-10-22,Tour 13,Race,Lantaana,Moro Kehn Tunnels,Nik Skandaro,9,134160,
 GR-110,2026-10-22,Tour 13,Race,Lantaana,Moro Kehn Tunnels,Lyren Shok,10,137390,Skim speeder,,Circuit,2,,Forward,Stunt Runner
 GR-110,2026-10-22,Tour 13,Race,Lantaana,Moro Kehn Tunnels,Soren Zaks,11,137840,Land speeder,,Circuit,2,,Forward,Engineer
 GR-110,2026-10-22,Tour 13,Race,Lantaana,Moro Kehn Tunnels,Ary Quill,12,138190,Land speeder,,Circuit,2,,Forward,Redliner
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Shade,1,115360,Skim speeder,,Point to point,,,Forward,Clean Racer
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Nik Skandaro,2,115500,Land speeder,,Point to point,,,Forward,Survivor
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Sen Fira,3,119270,Speeder bike,,Point to point,,,Forward,Slipstreamer
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Fola Kanjen,4,121090,Skim speeder,,Point to point,,,Forward,Tenacious
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Biddy Blas,5,122070,Speeder bike,,Point to point,,,Forward,Firebug
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Katja Mox,6,123730,Speeder bike,,Point to point,,,Forward,Tech Expert
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Lyren Shok,7,125500,Skim speeder,,Point to point,,,Forward,Stunt Runner
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Ary Quill,8,126240,Land speeder,,Point to point,,,Forward,Redliner
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Soren Zaks,9,129890,Land speeder,,Point to point,,,Forward,Engineer
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Malis Vazosk,10,132180,Speeder bike,,Point to point,,,Forward,Brawler
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Goli & 02-R0,11,132960,Skim speeder,,Point to point,,,Forward,Clean Racer
-GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Griff Halloran,12,139630,Skim speeder,,Point to point,,,Forward,Afterburner
-GR-112,2026-10-22,Tour 13,Race,Lantaana,Holdfast's Folly,Shade,DNF,,Podracer,DNF,Circuit,3,,Forward,
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Shade,1,115360,Skim speeder,,Point-to-point,,,Forward,Clean Racer
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Nik Skandaro,2,115500,Land speeder,,Point-to-point,,,Forward,Survivor
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Sen Fira,3,119270,Speeder bike,,Point-to-point,,,Forward,Slipstreamer
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Fola Kanjen,4,121090,Skim speeder,,Point-to-point,,,Forward,Tenacious
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Biddy Blas,5,122070,Speeder bike,,Point-to-point,,,Forward,Firebug
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Katja Mox,6,123730,Speeder bike,,Point-to-point,,,Forward,Tech Expert
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Lyren Shok,7,125500,Skim speeder,,Point-to-point,,,Forward,Stunt Runner
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Ary Quill,8,126240,Land speeder,,Point-to-point,,,Forward,Redliner
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Soren Zaks,9,129890,Land speeder,,Point-to-point,,,Forward,Engineer
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Malis Vazosk,10,132180,Speeder bike,,Point-to-point,,,Forward,Brawler
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Goli & 02-R0,11,132960,Skim speeder,,Point-to-point,,,Forward,Clean Racer
+GR-111,2026-10-22,Tour 13,Race,Lantaana,Geothermal Tour,Griff Halloran,12,139630,Skim speeder,,Point-to-point,,,Forward,Afterburner
+GR-112,2026-10-22,Tour 13,Podrace,Lantaana,Holdfast's Folly,Shade,DNF,,Podracer,DNF,Circuit,3,,Forward,
 GR-113,2026-10-22,Tour 14,Race,Lantaana,Ahlren Jungle Speedway,Shade,1,123740,Skim speeder,,Circuit,5,,Forward,Clean Racer
 GR-113,2026-10-22,Tour 14,Race,Lantaana,Ahlren Jungle Speedway,Katja Mox,2,125130,Speeder bike,,Circuit,5,,Forward,Tech Expert
 GR-113,2026-10-22,Tour 14,Race,Lantaana,Ahlren Jungle Speedway,Sen Fira,3,127510,Speeder bike,,Circuit,5,,Forward,Slipstreamer
@@ -1208,8 +1208,8 @@ GR-115,2026-10-22,Tour 14,Race,Lantaana,Dhunkri River Circuit,Malis Vazosk,9,827
 GR-115,2026-10-22,Tour 14,Race,Lantaana,Dhunkri River Circuit,Soren Zaks,10,82800,Land speeder,,Circuit,5,,Forward,Engineer
 GR-115,2026-10-22,Tour 14,Race,Lantaana,Dhunkri River Circuit,Ary Quill,11,91620,Land speeder,,Circuit,5,,Forward,Redliner
 GR-115,2026-10-22,Tour 14,Race,Lantaana,Dhunkri River Circuit,Biddy Blas,12,97480,Speeder bike,,Circuit,5,,Forward,Firebug
-GR-116,2026-10-22,Tour 14,Race,Lantaana,Holdfast's Folly,Shade,1,193780,Podracer,,Circuit,3,,Forward,
-GR-116,2026-10-22,Tour 14,Race,Lantaana,Holdfast's Folly,Dud Bolt,2,195450,Podracer,,Circuit,3,,Forward,
+GR-116,2026-10-22,Tour 14,Podrace,Lantaana,Holdfast's Folly,Shade,1,193780,Podracer,,Circuit,3,,Forward,
+GR-116,2026-10-22,Tour 14,Podrace,Lantaana,Holdfast's Folly,Dud Bolt,2,195450,Podracer,,Circuit,3,,Forward,
 GR-117,2026-10-22,Tour 14,Race,Ando Prime,Monastery Mountains,Shade,1,172430,Skim speeder,,Circuit,3,,Forward,Clean Racer
 GR-117,2026-10-22,Tour 14,Race,Ando Prime,Monastery Mountains,Katja Mox,2,174460,Speeder bike,,Circuit,3,,Forward,Tech Expert
 GR-117,2026-10-22,Tour 14,Race,Ando Prime,Monastery Mountains,Ary Quill,3,177180,Land speeder,,Circuit,3,,Forward,Redliner
@@ -1246,20 +1246,20 @@ GR-119,2026-10-22,Tour 14,Eliminator,Ando Prime,Monastery Mountains,Biddy Blas,9
 GR-119,2026-10-22,Tour 14,Eliminator,Ando Prime,Monastery Mountains,Nik Skandaro,10,,Land speeder,ELIMINATED,,,,Reverse,Survivor
 GR-119,2026-10-22,Tour 14,Eliminator,Ando Prime,Monastery Mountains,Soren Zaks,11,,Land speeder,ELIMINATED,,,,Reverse,Engineer
 GR-119,2026-10-22,Tour 14,Eliminator,Ando Prime,Monastery Mountains,Fola Kanjen,12,,Skim speeder,ELIMINATED,,,,Reverse,Tenacious
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Shade,1,118350,Skim speeder,,Point to point,,,Forward,Clean Racer
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Katja Mox,2,122330,Speeder bike,,Point to point,,,Forward,Tech Expert
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Ary Quill,3,125160,Land speeder,,Point to point,,,Forward,Redliner
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Soren Zaks,4,129220,Land speeder,,Point to point,,,Forward,Engineer
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Lyren Shok,5,130670,Skim speeder,,Point to point,,,Forward,Stunt Runner
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Sen Fira,6,131470,Speeder bike,,Point to point,,,Forward,Slipstreamer
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Nik Skandaro,7,131900,Land speeder,,Point to point,,,Forward,Survivor
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Goli & 02-R0,8,132030,Skim speeder,,Point to point,,,Forward,Clean Racer
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Malis Vazosk,9,133570,Speeder bike,,Point to point,,,Forward,Brawler
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Griff Halloran,10,139140,Skim speeder,,Point to point,,,Forward,Afterburner
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Biddy Blas,11,141580,Speeder bike,,Point to point,,,Forward,Firebug
-GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Fola Kanjen,12,144890,Skim speeder,,Point to point,,,Forward,Tenacious
-GR-121,2026-10-22,Tour 14,Race,Ando Prime,Mawhonic Speedway,Shade,1,161430,Podracer,,Circuit,3,,Forward,
-GR-121,2026-10-22,Tour 14,Race,Ando Prime,Mawhonic Speedway,Gasgano,2,169620,Podracer,,Circuit,3,,Forward,
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Shade,1,118350,Skim speeder,,Point-to-point,,,Forward,Clean Racer
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Katja Mox,2,122330,Speeder bike,,Point-to-point,,,Forward,Tech Expert
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Ary Quill,3,125160,Land speeder,,Point-to-point,,,Forward,Redliner
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Soren Zaks,4,129220,Land speeder,,Point-to-point,,,Forward,Engineer
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Lyren Shok,5,130670,Skim speeder,,Point-to-point,,,Forward,Stunt Runner
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Sen Fira,6,131470,Speeder bike,,Point-to-point,,,Forward,Slipstreamer
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Nik Skandaro,7,131900,Land speeder,,Point-to-point,,,Forward,Survivor
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Goli & 02-R0,8,132030,Skim speeder,,Point-to-point,,,Forward,Clean Racer
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Malis Vazosk,9,133570,Speeder bike,,Point-to-point,,,Forward,Brawler
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Griff Halloran,10,139140,Skim speeder,,Point-to-point,,,Forward,Afterburner
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Biddy Blas,11,141580,Speeder bike,,Point-to-point,,,Forward,Firebug
+GR-120,2026-10-22,Tour 14,Race,Ando Prime,Mountain to Sea,Fola Kanjen,12,144890,Skim speeder,,Point-to-point,,,Forward,Tenacious
+GR-121,2026-10-22,Tour 14,Podrace,Ando Prime,Mawhonic Speedway,Shade,1,161430,Podracer,,Circuit,3,,Forward,
+GR-121,2026-10-22,Tour 14,Podrace,Ando Prime,Mawhonic Speedway,Gasgano,2,169620,Podracer,,Circuit,3,,Forward,
 GR-122,2026-11-01,Tour 14,Eliminator,Sentinel One,Sentinel Lakes,Shade,1,183840,Skim speeder,,,,,Forward,Clean Racer
 GR-122,2026-11-01,Tour 14,Eliminator,Sentinel One,Sentinel Lakes,Malis Vazosk,2,191690,Speeder bike,,,,,Forward,Brawler
 GR-122,2026-11-01,Tour 14,Eliminator,Sentinel One,Sentinel Lakes,Kestar Bool,3,196350,Land speeder,,,,,Forward,Weaponized
@@ -1272,5 +1272,17 @@ GR-122,2026-11-01,Tour 14,Eliminator,Sentinel One,Sentinel Lakes,Fola Kanjen,9,,
 GR-122,2026-11-01,Tour 14,Eliminator,Sentinel One,Sentinel Lakes,Biddy Blas,10,,Speeder bike,ELIMINATED,,,,Forward,Firebug
 GR-122,2026-11-01,Tour 14,Eliminator,Sentinel One,Sentinel Lakes,Griff Halloran,11,,Skim speeder,ELIMINATED,,,,Forward,Afterburner
 GR-122,2026-11-01,Tour 14,Eliminator,Sentinel One,Sentinel Lakes,Katja Mox,12,,Speeder bike,ELIMINATED,,,,Forward,Tech Expert
-GR-123,2026-11-01,Tour 14,Race,Tatooine,Mos Espa Speedway,Shade,1,147900,Podracer,,Circuit,3,,Forward,
-GR-123,2026-11-01,Tour 14,Race,Tatooine,Mos Espa Speedway,Ody Mandrell,2,155340,Podracer,,Circuit,3,,Forward,
+GR-123,2026-11-01,Tour 14,Podrace,Tatooine,Mos Espa Speedway,Shade,1,147900,Podracer,,Circuit,3,,Forward,
+GR-123,2026-11-01,Tour 14,Podrace,Tatooine,Mos Espa Speedway,Ody Mandrell,2,155340,Podracer,,Circuit,3,,Forward,
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Shade,1,131290,Skim speeder,,Circuit,3,,Forward,Clean Racer
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Lyren Shok,2,134970,Skim speeder,,Circuit,3,,Forward,Stunt Runner
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Katja Mox,3,135260,Speeder bike,,Circuit,3,,Forward,Tech Expert
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Ary Quill,4,147390,Land speeder,,Circuit,3,,Forward,Redliner
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Malis Vazosk,5,148670,Speeder bike,,Circuit,3,,Forward,Brawler
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Goli & 02-R0,6,150170,Skim speeder,,Circuit,3,,Forward,Clean Racer
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Kestar Bool,7,151580,Land speeder,,Circuit,3,,Forward,Weaponized
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Fola Kanjen,8,152980,Skim speeder,,Circuit,3,,Forward,Tenacious
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Soren Zaks,9,155230,Land speeder,,Circuit,3,,Forward,Engineer
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Griff Halloran,10,156050,Skim speeder,,Circuit,3,,Forward,Afterburner
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Nik Skandaro,11,157260,Land speeder,,Circuit,3,,Forward,Survivor
+GR-124,2026-11-01,Tour 14,Race,Jakku,Debris Dunes,Biddy Blas,12,167900,Speeder bike,,Circuit,3,,Forward,Firebug

@@ -171,4 +171,4 @@ GR-087 is the story exception: Shade finished first at Stadium Showdown but was 
 
 Vehicle and mechanical spec are stored per result. Kestar used a Land speeder in GR-087; subsequent Championship Race entries default to Podracer unless an explicit vehicle is supplied. Profile telemetry uses the latest recorded configuration, preserving the historical vehicle shown in each race popup.
 
-Podracer events use the existing Race category and award zero league points; Championship Race retains its own rules. Podracer entrants are recorded explicitly, and private events do not replace the declared league-tour vehicle/spec. Gasgano is a guest rival outside the ranked league grid.
+Podracer events use the Podrace category and award zero league points; Championship Race retains its own category and rules. Point-to-point is the canonical subcategory spelling; imports and logging normalize spaced variants. Podracer entrants are recorded explicitly, and private events do not replace the declared league-tour vehicle/spec. Gasgano is a guest rival outside the ranked league grid.

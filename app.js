@@ -16,7 +16,7 @@ const isEliminated=r=>resultStatus(r)==='ELIMINATED';
 const isDQ=r=>['DQ','DNF','ELIMINATED'].includes(resultStatus(r));
 const isUnclassified=r=>r.category==='Galactic Gauntlet'||isDNF(r)||resultStatus(r)==='DQ';
 const points=p=>p==='DQ'?0:POINTS[p-1]||0;
-const resultPoints=r=>r.vehicle==='Podracer'&&r.category!=='Championship Race'?0:r.category==='Galactic Gauntlet'?(resultStatus(r)==='CLEARED'?45:isEliminated(r)?[8,16,25][Number(r.phase)-1]||0:0):isDQ(r)?0:points(r.position);
+const resultPoints=r=>r.category==='Podrace'||(r.vehicle==='Podracer'&&r.category!=='Championship Race')?0:r.category==='Galactic Gauntlet'?(resultStatus(r)==='CLEARED'?45:isEliminated(r)?[8,16,25][Number(r.phase)-1]||0:0):isDQ(r)?0:points(r.position);
 const resultOrder=(a,b)=>(Number.isInteger(a.position)?a.position:Infinity)-(Number.isInteger(b.position)?b.position:Infinity)||a.pilot.localeCompare(b.pilot);
 const positionLabel=r=>r.category==='Galactic Gauntlet'?'Phase '+r.phase+' · '+(resultStatus(r)==='CLEARED'?'Cleared':isEliminated(r)?'Eliminated':resultStatus(r)):isDQ(r)?(Number.isInteger(r.position)?'P'+r.position+' · ':'')+(isEliminated(r)?'Eliminated':resultStatus(r)):'P'+r.position;
 const finishBadge=r=>'<span class="finish '+(isDQ(r)?'dq '+(isEliminated(r)?'finish-eliminated':isDNF(r)?'finish-dnf':'finish-legacy'):(r.position<=3?'podium medal-'+r.position:'')+(r.position>=10?' finish-double':' finish-single'))+'"><span class="finish-label">'+positionLabel(r)+'</span></span>';
@@ -42,6 +42,8 @@ function validate(data){
   if(r.direction&&!['Forward','Reverse'].includes(r.direction))throw Error(`Row ${i+2}: direction must be Forward, Reverse or blank.`);
   if(r.laps!==''){if(!/^\d+$/.test(r.laps)||!Number.isSafeInteger(Number(r.laps))||Number(r.laps)<1)throw Error(`Row ${i+2}: laps must be a positive integer or blank.`);r.laps=Number(r.laps);}
   if(r.category==='Sprint')r.category='Race';else if(r.category==='Circuit race')r.category='Eliminator';
+  if(/^point[ -]+to[ -]+point$/i.test(r.subcategory))r.subcategory='Point-to-point';
+  if(r.category==='Race'&&r.vehicle==='Podracer')r.category='Podrace';
   const known=PILOT_CONFIGURATIONS[r.pilot];if(known){r.vehicle=r.vehicle||(r.pilot==='Kestar Bool'&&r.category==='Championship Race'&&r.race_id>'GR-087'?'Podracer':known.vehicle);r.mechanical_spec=r.mechanical_spec||known.mechanical_spec;}
   if(r.mechanical_spec&&!MECHANICAL_SPECS.includes(r.mechanical_spec))throw Error(`Row ${i+2}: unknown mechanical spec.`);
   if(r.vehicle&&!VEHICLES.includes(r.vehicle))throw Error(`Row ${i+2}: unknown vehicle type.`);

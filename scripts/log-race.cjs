@@ -6,6 +6,8 @@ const incomingPath=process.argv[2]?path.resolve(process.argv[2]):file('data/pend
 const incoming=JSON.parse(fs.readFileSync(incomingPath,'utf8'));
 assert.ok(Array.isArray(incoming.results)&&incoming.results.length,'A nonempty results array is required.');
 assert.ok(incoming.category,'Category is required.');
+if(incoming.category==='Race'&&incoming.vehicle==='Podracer')incoming.category='Podrace';
+if(/^point[ -]+to[ -]+point$/i.test(incoming.subcategory||''))incoming.subcategory='Point-to-point';
 const nodes=new Map();function el(id){if(!nodes.has(id))nodes.set(id,{value:'',checked:true,hidden:true,options:[],style:{setProperty(){}},parentElement:{querySelector(){return {textContent:''};}},querySelector(){return {addEventListener(){},getBoundingClientRect(){return {height:0};}};},addEventListener(){},querySelectorAll(){return [];}});return nodes.get(id);}
 const context={setTimeout,clearTimeout,window:{},document:{getElementById:el},localStorage:{getItem(){return null;}}};vm.createContext(context);
 vm.runInContext(fs.readFileSync(file('data/races.js'),'utf8'),context);vm.runInContext(fs.readFileSync(file('app.js'),'utf8'),context);

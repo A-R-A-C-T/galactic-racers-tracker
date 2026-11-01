@@ -253,7 +253,7 @@
  }
  function heatReport(heat){
   const ordered=[...heat.results].sort(resultOrder),winner=ordered.find(r=>r.position===1&&!isDQ(r)),shade=ordered.find(r=>r.pilot==='Shade'),eliminated=ordered.filter(isEliminated).length,prior=wireHistory.get(heat.race_id)||[],movement=wireChanges.get(heat.race_id)?.pilots;
-  if(heat.category==='Race'&&heat.results.some(r=>r.vehicle==='Podracer'))return (winner?winner.pilot+' wins the '+heat.laps+'-lap podrace at '+heat.track+'!':'Podracing at '+heat.track+'!')+' '+reaction(winner?.pilot==='Shade'?'shadePodraceWin':shade?'shadePodracer':'podraceHeat',heat);
+  if(heat.category==='Podrace')return (winner?winner.pilot+' wins the '+heat.laps+'-lap podrace at '+heat.track+'!':'Podracing at '+heat.track+'!')+' '+reaction(winner?.pilot==='Shade'?'shadePodraceWin':shade?'shadePodracer':'podraceHeat',heat);
   if(heat.category==='Championship Race'){
    const championWinner=heat.results.find(r=>r.position===1&&!isDQ(r));
    const incumbent=championshipState(prior.flatMap(h=>h.results)).pilot;
@@ -417,7 +417,7 @@
   const priorLeader=[...priorStats.values()].filter(isLeaguePilot).sort(compareStandings)[0];
   const momentum=ending&&priorLeader?.pilot===ending.pilot&&priorTour.some(h=>h.results.some(r=>r.pilot===ending.pilot&&r.position===1&&!isDQ(r)))?' Backers riding the tour leader’s winning form take a costly hit.':'';
   let report=ending?`${ending.pilot} ${ending.position==='DNF'?'does not finish':'eliminated at P'+ending.position} at ${heat.track} · ${heat.planet}. ${heat.tour} ends early.${momentum} ${reaction('earlyEnd',heat)}`:heatReport(heat);
-  const podComment=heat.category==='Race'?'':podracerComment(heat);if(podComment){const parts=report.split('\u001e');parts[0]+=' '+podComment;report=parts.join('\u001e');}
+  const podComment=heat.category==='Podrace'?'':podracerComment(heat);if(podComment){const parts=report.split('\u001e');parts[0]+=' '+podComment;report=parts.join('\u001e');}
   const profile=ending?vehicleProfile(heat,ending.pilot,(wireHistory.get(heat.race_id)||[]).filter(h=>h.tour!==heat.tour)):null;
   const vehicleKind=profile?.rare?'vehicleRareEnd':profile?.favored?'vehicleFavoredEnd':null;
   const vehicleReport=vehicleKind&&occasionalVehicle(vehicleKind,heat)?[ending.pilot+' exits '+heat.tour+' in the '+profile.current+'. '+reaction(vehicleKind,heat)]:[];
